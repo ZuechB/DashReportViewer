@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DashReportViewer.Models.Reporting.ReportParams>
+
+@foreach (var filter in Model)
+{
+    if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.TextBox)
+    {
+        <div style="margin-top:10px;">
+            <small>@filter.Name: </small>
+            <input name="@filter.Id" id="" class="form-control dashField" type="text" value="@(filter.DefaultValue)" />
+        </div>
+    }
+    else if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.DateRange)
+    {
+        <div style="margin-top:10px;">
+            <small>@filter.Name: </small>
+            <input name="@filter.Id" type="text" id="reportrange" class="form-control dashField" value="01/01/2018 - 01/15/2018" />
+            
+            @*<div name="@filter.Id" id="reportrange" class="dashField" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                <i class="fa fa-calendar"></i>&nbsp;
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>*@
+        </div>
+    }
+    @*else if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.CustomOption)
+    {
+        <div>
+            <select>
+                <option>It will look like this</option>
+            </select>
+        </div>
+    }*@
+}

@@ -11,6 +11,7 @@ namespace DashReportViewer.Services
     public interface IReportService
     {
         Task<IReport> RunReport(Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
+        IList<Report> GetReports(long? UserId = null);
     }
 
     public class ReportService : IReportService

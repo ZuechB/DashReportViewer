@@ -1,4 +1,5 @@
 ﻿using DashReportViewer.Attributes;
+using DashReportViewer.Models;
 using DashReportViewer.Models.Reporting;
 using DashReportViewer.Services;
 using System;
@@ -8,18 +9,22 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Daily Sales", "E7135E62-0DCA-4133-8273-5606182F9EDD", typeof(DailyActiveUsers))]
-    [ReportParams("Start Date", ReportInputType.DateTime, OrderId = 1, DefaultValue = "day:0_starttime"),
-     ReportParams("End Date", ReportInputType.DateTime, OrderId = 2, DefaultValue = "day:0_endtime"),
-     //ReportParams("Select Location", ReportInputType.CustomOption, OrderId = 3, DefaultValue = (int)ReportParams.ListOptions.ALL),
-     //ReportParams("Select Status", ReportInputType.CustomOption, OrderId = 4, DefaultValue = (int)ReportParams.ListOptions.ALL)
-        ]
+    [ReportName("Daily Active Users", "E7135E62-0DCA-4133-8273-5606182F9EDD", typeof(DailyActiveUsers), Description = "This is a test")]
+    [
+        ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
+        ReportParams("First Name", ReportInputType.TextBox, OrderId = 3, DefaultValue = "Hello world"),
+    ]
     public class DailyActiveUsers : ReportEntity, IReport
     {
         public DailyActiveUsers(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {
+            var parm = parameters;
+            var firstName = GetParameterValue<string>("FirstName");
+            var date = GetParameterValue<DateRange>("Date");
+            
+
             return await Task.Run(() =>
             {
                 var users = new List<User>();
@@ -52,7 +57,9 @@ namespace DashReportViewer.Reports
 
     public class User
     {
+        [ColumnName("First Name")]
         public string FirstName { get; set; }
+        [ColumnName("Last Name")]
         public string LastName { get; set; }
     }
 }

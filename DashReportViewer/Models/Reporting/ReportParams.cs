@@ -56,9 +56,9 @@ namespace DashReportViewer.Models.Reporting
 
     public enum ReportInputType
     {
-        String = 0, // returns string
-        DateTime = 1, // returns DateTime
+        TextBox = 0, // returns string
+        DateRange = 1, // returns Start DateTime and End DateTime
         CustomOption = 2, // return string value
-        Checkbox = 3 // return bool
+        Checkbox = 3, // return bool
     }
 }

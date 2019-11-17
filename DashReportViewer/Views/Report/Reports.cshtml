@@ -1,20 +1,54 @@
 ﻿@model DashReportViewer.Models.Reporting.ReportViewModel
 @{
-    ViewData["Title"] = "Reports";
+    ViewData["Title"] = Model.ReportName;
 }
 
-<h1>Reports</h1>
+<div class="mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <h1 class="h3 mb-0 text-gray-800">@Html.Raw(Model.ReportName)</h1>
+        @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>*@
+    </div>
+    <div>
+        @if (!String.IsNullOrWhiteSpace(Model.ReportDescription))
+        {
+            <span style="font-size:16px;">@(Model.ReportDescription)</span>
+        }
+    </div>
+</div>
+
+@*<div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
 
 <div class="wrapper-content">
     <div class="ibox-content">
         <h1 class="headline m-top-md text-center">
-            <span>@Html.Raw(Model.ReportName)</span>
-
-            @if (!String.IsNullOrWhiteSpace(Model.ReportDescription))
-            {
-                <br />
-                <span style="font-size:16px;">@(Model.ReportDescription)</span>
-            }
+            <span></span>
         </h1>
 
         @if (Model.HasData)
@@ -57,54 +91,85 @@
 </div>
 
 
-<div>
-    Date time picker
-    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-        <i class="fa fa-calendar"></i>&nbsp;
-        <span></span> <i class="fa fa-caret-down"></i>
-    </div>
 
+
+
+<div id="slider">
+    <div>
+        <div>
+            Filters
+        </div>
+
+        @await Html.PartialAsync("Parameters", Model.Parameters)
+
+        <div class="btnFilterContainer">
+            <button id="btnApply" class="btn btn-primary">Apply Filters</button>
+        </div>
+    </div>
 </div>
 
+<input id="ReportType" type="hidden" value="@Model.UniqueID" />
+<input id="ContentType" type="hidden" value="0" />
 
-
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
 @section Scripts
 {
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script type="text/javascript">
+        $(function () {
 
-@*<script>
-    $('input[name="dates"]').daterangepicker();
-</script>*@
+            var start = moment().subtract(29, 'days');
+            var end = moment();
 
-<script type="text/javascript">
-    $(function () {
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
-        var start = moment().subtract(29, 'days');
-        var end = moment();
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            }
 
-        function cb(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+        });
+
+        $("#btnApply").click(function () {
+            LoadReport();
+        });
+
+        function LoadReport() {
+            var reportType = $("#ReportType").val();
+            var contentType = $("#ContentType").val();
+
+            var fields = $('.dashField').map(function () {
+                return "[" + $(this).attr("name") + "~" + handleInput(this) + "]";
+            }).get();
+
+            var encoded = encodeURIComponent(fields);
+            var url = "/report/reports?reportType=" + reportType + "&param=" + encoded + "&ContentType=" + contentType
+
+            window.location = url;
         }
 
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        function handleInput(input) {
+            if ($(input).is(":checkbox")) {
+                if ($(input).prop('checked')) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        }, cb);
+            return input.value;
+        };
 
-        cb(start, end);
-
-    });
-</script>
+    </script>
 }

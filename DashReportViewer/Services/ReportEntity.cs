@@ -1,4 +1,5 @@
 ﻿using DashReportViewer.Attributes;
+using DashReportViewer.Models;
 using DashReportViewer.Models.CoreBackPack.Time;
 using DashReportViewer.Models.Reporting;
 using System;
@@ -111,44 +112,57 @@ namespace DashReportViewer.Services
 
                     if (paramVal != null && paramVal.DefaultValue != null)
                     {
-                        if (paramVal.DefaultValue.GetType() == typeof(string) && paramVal.InputType == ReportInputType.DateTime && !String.IsNullOrWhiteSpace(paramVal.DefaultValue.ToString()))
+                        if (paramVal.DefaultValue.GetType() == typeof(string) && paramVal.InputType == ReportInputType.DateRange && !String.IsNullOrWhiteSpace(paramVal.DefaultValue.ToString()))
                         {
-                            var dt = DateTime.Now;
-                            var ParamConditions = paramVal.DefaultValue.ToString().Split('_');
-                            if (ParamConditions.Any())
-                            {
-                                foreach (var parmItem in ParamConditions)
-                                {
-                                    if (parmItem.Contains("year:"))
-                                    {
-                                        var YearNum = Convert.ToInt32(parmItem.Replace("year:", ""));
-                                        dt = DateTime.Now.AddYears(YearNum);
-                                    }
-                                    else if (parmItem.Contains("month:"))
-                                    {
-                                        var MonthNum = Convert.ToInt32(parmItem.Replace("month:", ""));
-                                        dt = DateTime.Now.AddMonths(MonthNum);
-                                    }
-                                    else if (parmItem.Contains("day:"))
-                                    {
-                                        var dayNum = Convert.ToInt32(parmItem.Replace("day:", ""));
-                                        dt = DateTime.Now.AddDays(dayNum);
-                                    }
-                                    else if (parmItem.Contains("starttime"))
-                                    {
-                                        dt = TimeFrame.StartOfDay(dt);
-                                    }
-                                    else if (parmItem.Contains("endtime"))
-                                    {
-                                        dt = TimeFrame.EndOfDay(dt);
-                                    }
-                                    else if (parmItem == paramVal.DefaultValue.ToString())
-                                    {
-                                        dt = Convert.ToDateTime(parmItem);
-                                    }
-                                }
-                            }
-                            paramVal.DefaultValue = dt.ToString();
+                            //11/16/2019 - 11/16/2019
+
+                            DateTime start;
+                            DateTime end;
+
+                            var dates = ((string)paramVal.Value).Trim().Split("-");
+                            start = TimeFrame.StartOfDay(DateTime.Parse(dates[0]));
+                            end = TimeFrame.EndOfDay(DateTime.Parse(dates[1]));
+
+                            paramVal.DefaultValue = new DateRange() { Start = start, End = end };
+
+
+
+                            //var dt = DateTime.Now;
+                            //var ParamConditions = paramVal.DefaultValue.ToString().Split('_');
+                            //if (ParamConditions.Any())
+                            //{
+                            //    foreach (var parmItem in ParamConditions)
+                            //    {
+                            //        if (parmItem.Contains("year:"))
+                            //        {
+                            //            var YearNum = Convert.ToInt32(parmItem.Replace("year:", ""));
+                            //            dt = DateTime.Now.AddYears(YearNum);
+                            //        }
+                            //        else if (parmItem.Contains("month:"))
+                            //        {
+                            //            var MonthNum = Convert.ToInt32(parmItem.Replace("month:", ""));
+                            //            dt = DateTime.Now.AddMonths(MonthNum);
+                            //        }
+                            //        else if (parmItem.Contains("day:"))
+                            //        {
+                            //            var dayNum = Convert.ToInt32(parmItem.Replace("day:", ""));
+                            //            dt = DateTime.Now.AddDays(dayNum);
+                            //        }
+                            //        else if (parmItem.Contains("starttime"))
+                            //        {
+                            //            dt = TimeFrame.StartOfDay(dt);
+                            //        }
+                            //        else if (parmItem.Contains("endtime"))
+                            //        {
+                            //            dt = TimeFrame.EndOfDay(dt);
+                            //        }
+                            //        else if (parmItem == paramVal.DefaultValue.ToString())
+                            //        {
+                            //            dt = Convert.ToDateTime(parmItem);
+                            //        }
+                            //    }
+                            //}
+                            //paramVal.DefaultValue = dt.ToString();
                         }
                     }
 
@@ -262,7 +276,7 @@ namespace DashReportViewer.Services
             return attributes.ToArray();
         }
 
-        protected T GetParameterDefaultValue<T>(string name, Func<object, T> conversion = null)
+        protected T GetParameterDefaultValue<T>(string name)
         {
             try
             {
@@ -273,10 +287,10 @@ namespace DashReportViewer.Services
                                              .Where(a => a.GetType() == typeof(ReportParams) && ((ReportParams)a).Name.Replace(" ", "") == name)
                                              .FirstOrDefault() as ReportParams;
                 }
-                if (conversion != null && attribute.DefaultValue.GetType() != typeof(T))
-                {
-                    return conversion(attribute.DefaultValue);
-                }
+                //if (conversion != null && attribute.DefaultValue.GetType() != typeof(T))
+                //{
+                //    return conversion(attribute.DefaultValue);
+                //}
 
                 return (T)attribute.DefaultValue;
             }
@@ -306,37 +320,37 @@ namespace DashReportViewer.Services
             return default(T);
         }
 
-        public string GetParameterValue(string name)
-        {
-            if (parameterValues != null)
-            {
-                foreach (var item in parameterValues)
-                {
-                    if (item.Key.ToString().ToLower() == name.ToLower())
-                        return item.Value.ToString();
-                }
-            }
-            return GetParameterDefaultValue<string>(name);
-        }
+        //public string GetParameterValue(string name)
+        //{
+        //    if (parameterValues != null)
+        //    {
+        //        foreach (var item in parameterValues)
+        //        {
+        //            if (item.Key.ToString().ToLower() == name.ToLower())
+        //                return item.Value.ToString();
+        //        }
+        //    }
+        //    return GetParameterDefaultValue<string>(name);
+        //}
 
-        public T GetParameterValue<T>(string name, Func<object, T> conversion) where T : struct
+        public T GetParameterValue<T>(string name) where T : class
         {
-            if (parameterValues != null)
-            {
-                foreach (var item in parameterValues)
-                {
-                    if (item.Key.ToLower() == name.ToLower())
-                    {
-                        if (!string.IsNullOrWhiteSpace(item.Value.ToString()))
-                        {
-                            return conversion(item.Value);
-                        }
-                        break;
-                    }
-                }
-            }
+            //if (parameterValues != null)
+            //{
+            //    foreach (var item in parameterValues)
+            //    {
+            //        if (item.Key.ToLower() == name.ToLower())
+            //        {
+            //            if (!string.IsNullOrWhiteSpace(item.Value.ToString()))
+            //            {
+            //                return conversion(item.Value);
+            //            }
+            //            break;
+            //        }
+            //    }
+            //}
 
-            return GetParameterDefaultValue<T>(name, conversion);
+            return GetParameterDefaultValue<T>(name);
 
         }
 
@@ -462,10 +476,19 @@ namespace DashReportViewer.Services
 
                     foreach (var column in propInfo)
                     {
-                        if (excludedProperties.Contains((string)column.Name) == false)
+                        // get the attribute of the column name
+                        var newName = column.GetCustomAttribute<ColumnNameAttribute>();
+                        if (newName != null)
                         {
-                            var columnName = mappedProperties.ContainsKey((string)column.Name) ? mappedProperties[(string)column.Name] : (string)column.Name;
-                            columns.Add(columnName);
+                            columns.Add(newName.Name);
+                        }
+                        else
+                        {
+                            if (excludedProperties.Contains((string)column.Name) == false)
+                            {
+                                var columnName = mappedProperties.ContainsKey((string)column.Name) ? mappedProperties[(string)column.Name] : (string)column.Name;
+                                columns.Add(columnName);
+                            }
                         }
                     }
 
