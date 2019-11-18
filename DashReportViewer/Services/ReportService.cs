@@ -19,6 +19,8 @@ namespace DashReportViewer.Services
         public async Task<IReport> RunReport(Guid id, Dictionary<string, object> paramsList, dynamic Id = null)
         {
             var report = GetReport(id);
+
+
             var instance = (IReport)Activator.CreateInstance(report.ReportType, paramsList, this);
 
             await instance.Run();
@@ -60,7 +62,7 @@ namespace DashReportViewer.Services
                 {
                     Id = Id,
                     Name = reportAttribute.ReportName,
-                    ReportType = reportAttribute.ReportType,
+                    ReportType = report,
                     Description = reportAttribute.Description,
                     IsFavorite = isFavorite
                 });

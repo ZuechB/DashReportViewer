@@ -112,10 +112,13 @@ namespace DashReportViewer.Services
 
                     if (paramVal != null && paramVal.DefaultValue != null)
                     {
+                        //if (paramVal.DefaultValue.GetType() == typeof(Widget))
+                        //{
+                        //    var widget = ((Widget)paramVal.DefaultValue);
+                        //    var test = widget;
+                        //}
                         if (paramVal.DefaultValue.GetType() == typeof(string) && paramVal.InputType == ReportInputType.DateRange && !String.IsNullOrWhiteSpace(paramVal.DefaultValue.ToString()))
                         {
-                            //11/16/2019 - 11/16/2019
-
                             DateTime start;
                             DateTime end;
 
@@ -499,16 +502,24 @@ namespace DashReportViewer.Services
                         {
                             if (excludedProperties.Contains((string)column.Name) == false)
                             {
-                                var propValue = GetPropValue(propertyItem, column.Name);
-                                if (propValue != null)
-                                {
-                                    RowData.Add(propValue);
+                                //if (propertyItem.GetType() == typeof(Widget))
+                                //{
+                                //    //var val = (propertyItem as Widget).Content;
+                                //    RowData.Add(propertyItem);
+                                //}
+                                //else
+                                //{
+                                    var propValue = GetPropValue(propertyItem, column.Name);
+                                    if (propValue != null)
+                                    {
+                                        RowData.Add(propValue);
 
-                                }
-                                else
-                                {
-                                    RowData.Add("");
-                                }
+                                    }
+                                    else
+                                    {
+                                        RowData.Add("");
+                                    }
+                                //}
                             }
                         }
                         data.Add(RowData);

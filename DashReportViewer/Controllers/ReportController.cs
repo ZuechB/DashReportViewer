@@ -64,7 +64,7 @@ namespace DashReportViewer.Controllers
 
                             viewModel.Parameters = report.Parameters;
                             viewModel.Columns = new List<string>() { "Message" };
-                            viewModel.Data = new List<List<string>>() { new List<string>() { "Please download the report to get results." } };
+                            viewModel.Data = new List<List<object>>() { new List<object>() { "Please download the report to get results." } };
                             viewModel.ViewTypes = report.ViewOptions;
 
                         }
@@ -72,14 +72,14 @@ namespace DashReportViewer.Controllers
                         {
                             viewModel.Parameters = report.Parameters;
                             viewModel.Columns = new List<string>() { "Message" };
-                            viewModel.Data = new List<List<string>>() { new List<string>() { "No data is available. Please expand parameters or contact support." } };
+                            viewModel.Data = new List<List<object>>() { new List<object>() { "No data is available. Please expand parameters or contact support." } };
                             viewModel.ViewTypes = report.ViewOptions;
                         }
                         else if (report.Data.Count > 1000)
                         {
                             viewModel.Parameters = report.Parameters;
                             viewModel.Columns = new List<string>() { "Message" };
-                            viewModel.Data = new List<List<string>>() { new List<string>() { "Too many rows to display in browser - please narrow parameters or download the report to get results." } };
+                            viewModel.Data = new List<List<object>>() { new List<object>() { "Too many rows to display in browser - please narrow parameters or download the report to get results." } };
                             viewModel.ViewTypes = report.ViewOptions;
                         }
                         else
@@ -161,7 +161,7 @@ namespace DashReportViewer.Controllers
                 {
                     viewModel.Parameters = report.Parameters;
                     viewModel.Columns = new List<string>();
-                    viewModel.Data = new List<List<string>>();
+                    viewModel.Data = new List<List<object>>();
                     viewModel.ViewTypes = report.ViewOptions;
 
                     return View(viewModel);
@@ -328,12 +328,12 @@ namespace DashReportViewer.Controllers
             return dataCell.ToString();
         }
 
-        private List<List<string>> CellsToString(List<List<object>> data)
+        private List<List<object>> CellsToString(List<List<object>> data)
         {
-            List<List<string>> toReturn = new List<List<string>>();
+            List<List<object>> toReturn = new List<List<object>>();
             foreach (var row in data)
             {
-                var stringRow = new List<string>();
+                var stringRow = new List<object>();
                 toReturn.Add(stringRow);
                 foreach (var cell in row)
                 {

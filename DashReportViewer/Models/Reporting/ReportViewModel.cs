@@ -31,7 +31,7 @@ namespace DashReportViewer.Models.Reporting
         }
 
         public IList<string> Columns { get; set; }
-        public IList<List<string>> Data { get; set; }
+        public IList<List<object>> Data { get; set; }
         public IList<ReportType> ViewTypes { get; set; }
         public bool HasData { get { return Data.Count > 0; } }
     }
