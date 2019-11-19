@@ -2,6 +2,7 @@
 using DashReportViewer.Models;
 using DashReportViewer.Models.CoreBackPack.Time;
 using DashReportViewer.Models.Reporting;
+using DashReportViewer.Models.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,42 +17,15 @@ namespace DashReportViewer.Services
         private string name;
         private string description;
 
-        private IList<string> excludedProperties = new List<string>();
-        private IDictionary<string, string> mappedProperties = new Dictionary<string, string>();
+        //private IList<string> excludedProperties = new List<string>();
+        //private IDictionary<string, string> mappedProperties = new Dictionary<string, string>();
+
+        public IEnumerable<object> RawData { get; private set; }
 
         protected readonly IReportService reportService;
         protected readonly Dictionary<string, object> parameterValues;
         protected IList<ReportParams> parameters;
         protected IList<ReportType> viewOptions;
-
-        public IEnumerable<object> RawData { get; private set; }
-
-        private List<string> _columns;
-        private List<List<object>> _data;
-
-        public List<string> Columns
-        {
-            get
-            {
-                if (_columns == null)
-                {
-                    (_columns, _data) = ProcessData(RawData);
-                }
-                return _columns;
-            }
-        }
-
-        public List<List<object>> Data
-        {
-            get
-            {
-                if (_data == null)
-                {
-                    (_columns, _data) = ProcessData(RawData);
-                }
-                return _data;
-            }
-        }
 
         public string Filename { get; set; }
 
@@ -112,11 +86,6 @@ namespace DashReportViewer.Services
 
                     if (paramVal != null && paramVal.DefaultValue != null)
                     {
-                        //if (paramVal.DefaultValue.GetType() == typeof(Widget))
-                        //{
-                        //    var widget = ((Widget)paramVal.DefaultValue);
-                        //    var test = widget;
-                        //}
                         if (paramVal.DefaultValue.GetType() == typeof(string) && paramVal.InputType == ReportInputType.DateRange && !String.IsNullOrWhiteSpace(paramVal.DefaultValue.ToString()))
                         {
                             DateTime start;
@@ -127,8 +96,6 @@ namespace DashReportViewer.Services
                             end = TimeFrame.EndOfDay(DateTime.Parse(dates[1]));
 
                             paramVal.DefaultValue = new DateRange() { Start = start, End = end };
-
-
 
                             //var dt = DateTime.Now;
                             //var ParamConditions = paramVal.DefaultValue.ToString().Split('_');
@@ -323,69 +290,10 @@ namespace DashReportViewer.Services
             return default(T);
         }
 
-        //public string GetParameterValue(string name)
-        //{
-        //    if (parameterValues != null)
-        //    {
-        //        foreach (var item in parameterValues)
-        //        {
-        //            if (item.Key.ToString().ToLower() == name.ToLower())
-        //                return item.Value.ToString();
-        //        }
-        //    }
-        //    return GetParameterDefaultValue<string>(name);
-        //}
-
         public T GetParameterValue<T>(string name) where T : class
         {
-            //if (parameterValues != null)
-            //{
-            //    foreach (var item in parameterValues)
-            //    {
-            //        if (item.Key.ToLower() == name.ToLower())
-            //        {
-            //            if (!string.IsNullOrWhiteSpace(item.Value.ToString()))
-            //            {
-            //                return conversion(item.Value);
-            //            }
-            //            break;
-            //        }
-            //    }
-            //}
-
             return GetParameterDefaultValue<T>(name);
-
         }
-
-        //protected Location GetLocation(long locationId)
-        //{
-        //    return dataContext.Locations.Where(l => l.Id == locationId).FirstOrDefault();
-        //}
-
-        //protected Company GetCompany(long companyId)
-        //{
-        //    return dataContext.Companies.Where(c => c.Id == companyId).FirstOrDefault();
-        //}
-
-        //[ReportParams("Select Location")]
-        //public List<KeyValuePair<string, string>> SelectLocation()
-        //{
-        //    var locations = (from l in dataContext.Locations
-        //                     where PartnerId < 0 || l.PartnerId == PartnerId
-        //                     orderby l.Name
-        //                     select new { l.Id, l.Name })
-        //                     .AsEnumerable()
-        //                     .Select(l => new KeyValuePair<string, string>(l.Id.ToString(), l.Name))
-        //                     .ToList();
-
-        //    var listOption = GetParameterDefaultValue<ReportParams.ListOptions>("SelectLocation");
-
-        //    if (listOption == ReportParams.ListOptions.ALL)
-        //        locations.Insert(0, new KeyValuePair<string, string>(((int)listOption).ToString(), "All Locations"));
-
-        //    return locations;
-        //}
-
 
         protected List<KeyValuePair<string, string>> EnumValueToParamList(Type type)
         {
@@ -403,19 +311,6 @@ namespace DashReportViewer.Services
 
         }
 
-        [ReportParams("Date Grouping")]
-        public List<KeyValuePair<string, string>> DateGrouping()
-        {
-            var list = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("Weeks", "Weeks"),
-                new KeyValuePair<string, string>("Months", "Months")
-
-            };
-
-            return list;
-        }
-
         protected List<KeyValuePair<string, string>> EnumToParamList(Type type)
         {
             return Enum.GetNames(type).AsEnumerable()
@@ -423,133 +318,10 @@ namespace DashReportViewer.Services
                                       .ToList();
         }
 
-        public Guid ToGuid(object guid)
-        {
-            return Guid.Parse(guid.ToString());
-
-        }
-
         protected virtual Task<IEnumerable<object>> Main()
         {
             throw new Exception("Report must override Main method to populate data.");
         }
-
-
-        public (List<string> columns, List<List<object>> data) ProcessData(IEnumerable<object> reportData)
-        {
-            if (reportData != null && reportData.Any())
-            {
-                var columns = new List<string>();
-                var data = new List<List<object>>();
-
-                if (reportData.First().GetType() == typeof(Dictionary<string, object>))
-                {
-                    columns = ((Dictionary<string, object>)reportData.First()).Keys.ToList();
-                    var ReportLayout = (List<Dictionary<string, object>>)reportData;
-
-                    foreach (var dataItem in ReportLayout)
-                    {
-                        var RowData = new List<object>();
-                        foreach (var item in dataItem)
-                        {
-                            RowData.Add(item.Value);
-                        }
-                        data.Add(RowData);
-                    }
-                }
-                else if (reportData.First().GetType() == typeof(List<object>))
-                {
-                    columns = ((List<object>)reportData.First()).Select(c => c.ToString()).ToList();
-
-                    var ReportLayout = (List<List<object>>)reportData;
-
-                    foreach (var dataItem in ReportLayout.Skip(1))
-                    {
-                        var RowData = new List<object>();
-                        foreach (var item in dataItem)
-                        {
-                            RowData.Add(item);
-                        }
-                        data.Add(RowData);
-                    }
-                }
-                else
-                {
-                    var propInfo = reportData.First().GetType().GetProperties();
-
-                    foreach (var column in propInfo)
-                    {
-                        // get the attribute of the column name
-                        var newName = column.GetCustomAttribute<ColumnNameAttribute>();
-                        if (newName != null)
-                        {
-                            columns.Add(newName.Name);
-                        }
-                        else
-                        {
-                            if (excludedProperties.Contains((string)column.Name) == false)
-                            {
-                                var columnName = mappedProperties.ContainsKey((string)column.Name) ? mappedProperties[(string)column.Name] : (string)column.Name;
-                                columns.Add(columnName);
-                            }
-                        }
-                    }
-
-                    foreach (var propertyItem in reportData)
-                    {
-                        var RowData = new List<object>();
-                        foreach (var column in propInfo)
-                        {
-                            if (excludedProperties.Contains((string)column.Name) == false)
-                            {
-                                //if (propertyItem.GetType() == typeof(Widget))
-                                //{
-                                //    //var val = (propertyItem as Widget).Content;
-                                //    RowData.Add(propertyItem);
-                                //}
-                                //else
-                                //{
-                                    var propValue = GetPropValue(propertyItem, column.Name);
-                                    if (propValue != null)
-                                    {
-                                        RowData.Add(propValue);
-
-                                    }
-                                    else
-                                    {
-                                        RowData.Add("");
-                                    }
-                                //}
-                            }
-                        }
-                        data.Add(RowData);
-                    }
-                }
-                return (columns, data);
-            }
-            return (null, null);
-        }
-
-        //protected void Exclude<T>(Expression<Func<T, object>> property)
-        //{
-        //    excludedProperties.Add(Reflection.FindProperty(property).Name);
-        //}
-
-        //protected void MapColumnName<T>(Expression<Func<T, object>> property, string columnName)
-        //{
-        //    mappedProperties.Add(Reflection.FindProperty(property).Name, columnName);
-        //}
-
-        //public IList<IWidget> Widgets
-        //{
-        //    get
-        //    {
-        //        if (widgets == null)
-        //            widgets = new List<IWidget>();
-
-        //        return widgets;
-        //    }
-        //}
 
         public virtual void RowClick(long Id)
         {
@@ -569,11 +341,6 @@ namespace DashReportViewer.Services
         public virtual void RowClick(string Id)
         {
 
-        }
-
-        public static object GetPropValue(object src, string propName)
-        {
-            return src.GetType().GetProperty(propName).GetValue(src, null);
         }
     }
 }

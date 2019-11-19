@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DashReportViewer.ReportComponents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace DashReportViewer.Models.Reporting
 {
     public class ReportViewModel
     {
-        private IEnumerable<ReportParams> parameters;
+        private IEnumerable<ReportParams> parameters = new List<ReportParams>();
 
         public string ReportName { get; set; }
         public string ReportDescription { get; set; }
@@ -22,17 +23,19 @@ namespace DashReportViewer.Models.Reporting
                 this.parameters = value;
             }
         }
-        public bool HasViewTypes
-        {
-            get
-            {
-                return ViewTypes.Where(t => t != ReportType.View).Count() > 0;
-            }
-        }
 
-        public IList<string> Columns { get; set; }
-        public IList<List<object>> Data { get; set; }
-        public IList<ReportType> ViewTypes { get; set; }
-        public bool HasData { get { return Data.Count > 0; } }
+        public List<BaseReportComponent> Components { get; set; }
+        //public bool HasViewTypes
+        //{
+        //    get
+        //    {
+        //        return ViewTypes.Where(t => t != ReportType.View).Count() > 0;
+        //    }
+        //}
+
+        //public IList<string> Columns { get; set; }
+        //public IList<List<object>> Data { get; set; }
+        //public IList<ReportType> ViewTypes { get; set; }
+        //public bool HasData { get { return Data.Count > 0; } }
     }
 }

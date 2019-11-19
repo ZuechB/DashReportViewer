@@ -28,42 +28,43 @@ namespace DashReportViewer.Reports
 
             return await Task.Run(() =>
             {
-                return GetUsersList();
+                //return GetUsersList();
 
-                //var widgets = new List<Widget>();
+                var widgets = new List<Widget>();
 
-                //widgets.Add(GetUsers());
-                //widgets.Add(GetUsers());
+                widgets.Add(GetUsers());
+                widgets.Add(GetUsers());
 
-                //return widgets;
+                return widgets;
             });
         }
+
+
+
 
         private List<User> GetUsersList()
         {
             var users = new List<User>();
-
             users.Add(new User()
             {
                 FirstName = "Brandon",
-                    LastName = "Zuech"
-                });
-                users.Add(new User()
+                LastName = "Zuech"
+            });
+            users.Add(new User()
             {
                 FirstName = "Mallory",
-                    LastName = "Zuech"
-                });
+                LastName = "Zuech"
+            });
                 users.Add(new User()
             {
                 FirstName = "Cameron",
-                    LastName = "Zuech"
-                });
-                users.Add(new User()
+                LastName = "Zuech"
+            });
+            users.Add(new User()
             {
                 FirstName = "Carter",
                 LastName = "Zuech"
             });
-
             return users;
         }
 
@@ -93,7 +94,7 @@ namespace DashReportViewer.Reports
                 LastName = "Zuech"
             });
 
-            return new Widget() { Content = users };
+            return new Widget("Users", WidgetType.Table) { Content = users, Column = 6 };
         }
     }
 

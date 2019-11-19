@@ -13,12 +13,12 @@ namespace DashReportViewer.Models.Reporting
         bool HideHeader { get; }
         IList<ReportType> ViewOptions { get; }
         IEnumerable<object> RawData { get; }
-        List<string> Columns { get; }
-        List<List<object>> Data { get; }
+        //List<string> Columns { get; }
+        //List<List<object>> Data { get; }
 
-        string Filename { get; set; }
-        Func<object, List<(string filename, List<object> data)>> MultipleFileExport { get; set; }
-        (List<string> columns, List<List<object>> data) ProcessData(IEnumerable<object> reportData);
+        //string Filename { get; set; }
+        //Func<object, List<(string filename, List<object> data)>> MultipleFileExport { get; set; }
+        //(List<string> columns, List<List<object>> data) ProcessData(IEnumerable<object> reportData);
 
         // row clicked
         void RowClick(string Id);
