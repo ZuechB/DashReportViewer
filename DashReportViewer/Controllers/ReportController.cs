@@ -69,7 +69,8 @@ namespace DashReportViewer.Controllers
                     ReportName = report.Name,
                     ReportDescription = report.Description,
                     UniqueID = report.Id,
-                    Components = components
+                    Components = components,
+                    Parameters = report.Parameters
                 };
 
                 return View(viewModel);
