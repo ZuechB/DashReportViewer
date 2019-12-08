@@ -1,8 +1,8 @@
-﻿using DashReportViewer.Attributes;
-using DashReportViewer.Models;
+﻿using DashReportViewer.Shared.Attributes;
+using DashReportViewer.Shared.Models;
 using DashReportViewer.Models.CoreBackPack.Time;
-using DashReportViewer.Models.Reporting;
-using DashReportViewer.Models.Widgets;
+using DashReportViewer.Shared.Models.Reporting;
+using DashReportViewer.Shared.Models.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace DashReportViewer.Services
+namespace DashReportViewer.Shared.Services
 {
     public class ReportEntity
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DashReportViewer.Models.Reporting
+namespace DashReportViewer.Shared.Models.Reporting
 {
     public interface IReport
     {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using DashReportViewer.Models;
+using DashReportViewer.Shared.Models;
+using System;
+using DashReportViewer.Reports;
+using System.Linq;
 
 namespace DashReportViewer.Controllers
 {
@@ -20,6 +19,9 @@ namespace DashReportViewer.Controllers
 
         public IActionResult Index()
         {
+            var appdomain = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer"));
+
+
             return View();
         }
 

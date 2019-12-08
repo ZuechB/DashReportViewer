@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DashReportViewer.Models.Widgets
+namespace DashReportViewer.Shared.Models.Widgets
 {
     public class Widget
     {

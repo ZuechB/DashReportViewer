@@ -1,9 +1,9 @@
-﻿using DashReportViewer.ReportComponents;
+﻿using DashReportViewer.Shared.ReportComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DashReportViewer.Models.Reporting
+namespace DashReportViewer.Shared.Models.Reporting
 {
     public class ReportViewModel
     {

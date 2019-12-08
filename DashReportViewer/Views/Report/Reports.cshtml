@@ -1,4 +1,4 @@
-﻿@model DashReportViewer.Models.Reporting.ReportViewModel
+﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
 @{
     ViewData["Title"] = Model.ReportName;
 }
@@ -24,9 +24,9 @@
         @foreach (var component in Model.Components)
         {
             <div class="col-md-@(component.ColumnNum)">
-                @if (component.GetType() == typeof(DashReportViewer.ReportComponents.TableComponent))
+                @if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TableComponent))
                 {
-                    var tableComponent = (DashReportViewer.ReportComponents.TableComponent)component;
+                    var tableComponent = (DashReportViewer.Shared.ReportComponents.TableComponent)component;
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -72,7 +72,7 @@
                     </div>
             
                 }
-                else if (component.GetType() == typeof(DashReportViewer.ReportComponents.AreaChartComponent))
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.AreaChartComponent))
                 {
                     <text>
                     <div class="chart-area">

@@ -1,24 +1,24 @@
-﻿using DashReportViewer.Attributes;
-using DashReportViewer.Models.Reporting;
+﻿using DashReportViewer.Shared.Attributes;
+using DashReportViewer.Shared.Models.Reporting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace DashReportViewer.Services
+namespace DashReportViewer.Shared.Services
 {
     public interface IReportService
     {
-        Task<IReport> RunReport(Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
-        IList<Report> GetReports(long? UserId = null);
+        Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
+        IList<Report> GetReports(AppDomain domain, long? UserId = null);
     }
 
     public class ReportService : IReportService
     {
-        public async Task<IReport> RunReport(Guid id, Dictionary<string, object> paramsList, dynamic Id = null)
+        public async Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null)
         {
-            var report = GetReport(id);
+            var report = GetReport(domain, id);
 
 
             var instance = (IReport)Activator.CreateInstance(report.ReportType, paramsList, this);
@@ -32,16 +32,16 @@ namespace DashReportViewer.Services
             return instance;
         }
 
-        public Report GetReport(Guid id)
+        public Report GetReport(AppDomain domain, Guid id)
         {
-            return GetReports().Where(r => r.Id == id).FirstOrDefault();
+            return GetReports(domain).Where(r => r.Id == id).FirstOrDefault();
         }
 
-        public IList<Report> GetReports(long? UserId = null)
+        public IList<Report> GetReports(AppDomain domain, long? UserId = null)
         {
             var reports = new List<Report>();
 
-            var reportTypes = GetReportTypesInNamespace(AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer")));
+            var reportTypes = GetReportTypesInNamespace(domain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer")));
 
             foreach (var report in reportTypes)
             {

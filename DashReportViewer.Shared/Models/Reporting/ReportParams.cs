@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DashReportViewer.Models.Reporting
+namespace DashReportViewer.Shared.Models.Reporting
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class ReportParams : Attribute

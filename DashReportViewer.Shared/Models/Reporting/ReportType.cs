@@ -1,4 +1,4 @@
-﻿namespace DashReportViewer.Models.Reporting
+﻿namespace DashReportViewer.Shared.Models.Reporting
 {
     public enum ReportType
     {

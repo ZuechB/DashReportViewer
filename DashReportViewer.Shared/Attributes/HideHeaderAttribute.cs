@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DashReportViewer.Attributes
+namespace DashReportViewer.Shared.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class HideHeaderAttribute : Attribute

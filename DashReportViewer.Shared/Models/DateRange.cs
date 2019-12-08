@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DashReportViewer.Models
+namespace DashReportViewer.Shared.Models
 {
     public class DateRange
     {

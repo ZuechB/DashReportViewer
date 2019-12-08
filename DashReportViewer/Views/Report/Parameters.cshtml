@@ -1,22 +1,22 @@
-﻿@model IEnumerable<DashReportViewer.Models.Reporting.ReportParams>
+﻿@model IEnumerable<DashReportViewer.Shared.Models.Reporting.ReportParams>
 
 @foreach (var filter in Model)
 {
-    if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.TextBox)
+    if (filter.InputType == DashReportViewer.Shared.Models.Reporting.ReportInputType.TextBox)
     {
         <div style="margin-top:10px;">
             <small>@filter.Name: </small>
             <input name="@filter.Id" class="form-control dashField" type="text" value="@(filter.DefaultValue)" />
         </div>
     }
-    else if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.DateRange)
+    else if (filter.InputType == DashReportViewer.Shared.Models.Reporting.ReportInputType.DateRange)
     {
         <div style="margin-top:10px;">
             <small>@filter.Name: </small>
             <input name="@filter.Id" type="text" class="form-control dashField reportrange" value="01/01/2018 - 01/15/2018" />
         </div>
     }
-    else if (filter.InputType == DashReportViewer.Models.Reporting.ReportInputType.CustomOption)
+    else if (filter.InputType == DashReportViewer.Shared.Models.Reporting.ReportInputType.CustomOption)
     {
         <div style="margin-top:10px;">
             @foreach (var filterOptions in filter.Option)

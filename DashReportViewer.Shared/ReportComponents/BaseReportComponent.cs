@@ -1,7 +1,7 @@
-﻿using DashReportViewer.Models.Widgets;
+﻿using DashReportViewer.Shared.Models.Widgets;
 using System.Collections.Generic;
 
-namespace DashReportViewer.ReportComponents
+namespace DashReportViewer.Shared.ReportComponents
 {
     public class BaseReportComponent
     {

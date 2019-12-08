@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DashReportViewer.Attributes
+namespace DashReportViewer.Shared.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class ColumnNameAttribute : Attribute

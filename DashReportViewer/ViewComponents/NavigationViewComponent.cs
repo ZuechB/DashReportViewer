@@ -1,5 +1,6 @@
-﻿using DashReportViewer.Services;
+﻿using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace DashReportViewer.ViewComponents
         {
             var reports = await Task.Run(() =>
             {
-                return reportService.GetReports();
+                return reportService.GetReports(AppDomain.CurrentDomain);
             });
             
             return View(reports);

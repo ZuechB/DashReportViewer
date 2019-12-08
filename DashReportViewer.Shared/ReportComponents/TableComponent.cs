@@ -1,10 +1,10 @@
-﻿using DashReportViewer.Attributes;
-using DashReportViewer.Models.Widgets;
+﻿using DashReportViewer.Shared.Attributes;
+using DashReportViewer.Shared.Models.Widgets;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DashReportViewer.ReportComponents
+namespace DashReportViewer.Shared.ReportComponents
 {
     public class TableComponent : BaseReportComponent
     {

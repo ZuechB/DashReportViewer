@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DashReportViewer.Models.Reporting
+namespace DashReportViewer.Shared.Models.Reporting
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ReportViewAttribute : Attribute

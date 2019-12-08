@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using DashReportViewer.Models.Reporting;
-using DashReportViewer.Models.Widgets;
-using DashReportViewer.ReportComponents;
-using DashReportViewer.Services;
+using DashReportViewer.Reports;
+using DashReportViewer.Shared.Models.Reporting;
+using DashReportViewer.Shared.Models.Widgets;
+using DashReportViewer.Shared.ReportComponents;
+using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DashReportViewer.Controllers
@@ -45,7 +46,7 @@ namespace DashReportViewer.Controllers
                 }
             }
 
-            var report = await reportService.RunReport(reportType, paramsList);
+            var report = await reportService.RunReport(AppDomain.CurrentDomain, reportType, paramsList);
 
 
             var components = new List<BaseReportComponent>();
