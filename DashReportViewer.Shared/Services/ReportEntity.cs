@@ -2,11 +2,9 @@
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Models.CoreBackPack.Time;
 using DashReportViewer.Shared.Models.Reporting;
-using DashReportViewer.Shared.Models.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -16,9 +14,6 @@ namespace DashReportViewer.Shared.Services
     {
         private string name;
         private string description;
-
-        //private IList<string> excludedProperties = new List<string>();
-        //private IDictionary<string, string> mappedProperties = new Dictionary<string, string>();
 
         public IEnumerable<object> RawData { get; private set; }
 
@@ -98,7 +93,6 @@ namespace DashReportViewer.Shared.Services
                             paramVal.DefaultValue = new DateRange() { Start = start, End = end };
                         }
                     }
-
 
                     if (paramVal.InputType == ReportInputType.CustomOption)
                     {
@@ -277,7 +271,6 @@ namespace DashReportViewer.Shared.Services
             }
 
             return toReturn;
-
         }
 
         protected List<KeyValuePair<string, string>> EnumToParamList(Type type)

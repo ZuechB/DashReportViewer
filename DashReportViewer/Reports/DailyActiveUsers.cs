@@ -27,7 +27,6 @@ namespace DashReportViewer.Reports
             var firstName = GetParameterValue<string>("FirstName");
             var date = GetParameterValue<DateRange>("Date");
 
-
             return await Task.Run(() =>
             {
                 //return GetUsersList();
@@ -67,8 +66,6 @@ namespace DashReportViewer.Reports
             return users;
         }
 
-
-
         [ReportParams("Multiple Options")]
         public List<KeyValuePair<string, string>> MultipleOptions()
         {
@@ -79,8 +76,6 @@ namespace DashReportViewer.Reports
 
             return options;
         }
-
-
 
         private Widget GetUsers(string firstName)
         {
@@ -106,7 +101,6 @@ namespace DashReportViewer.Reports
                 FirstName = "Carter",
                 LastName = "Zuech"
             });
-
 
             if (!String.IsNullOrWhiteSpace(firstName))
             { 

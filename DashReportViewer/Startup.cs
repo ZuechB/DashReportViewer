@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Authsome;
+using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +32,12 @@ namespace DashReportViewer
             //}, ServiceLifetime.Scoped);
 
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IAuthsomeService, AuthsomeService>();
+
+
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
+
             services.AddControllersWithViews();
         }
 
