@@ -9,5 +9,6 @@ namespace DashReportViewer.Shared.Models.Reporting
         public string Description { get; set; }
         public Type ReportType { get; set; }
         public bool IsFavorite { get; set; }
+        public string Folder { get; set; }
     }
 }

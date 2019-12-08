@@ -19,7 +19,7 @@ namespace DashReportViewer.Controllers
 
         public IActionResult Index()
         {
-            var appdomain = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer"));
+            //var appdomain = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer"));
 
 
             return View();

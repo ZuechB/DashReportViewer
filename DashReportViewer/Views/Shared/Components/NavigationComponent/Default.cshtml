@@ -2,10 +2,28 @@
 
 @foreach (var report in Model)
 {
-    <li class="nav-item active">
-        <a class="nav-link" href="~/report/reports?reportType=@(report.Id.ToString())">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>@(report.Name)</span>
-        </a>
-    </li>
+    if (String.IsNullOrWhiteSpace(report.Folder))
+    {
+        <li class="nav-item active">
+            <a class="nav-link" href="~/report/reports?reportType=@(report.Id.ToString())">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>@(report.Name)</span>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                @*<i class="fas fa-fw fa-cog"></i>*@
+                <span>@(report.Folder)</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/report/reports?reportType=@(report.Id.ToString())">@(report.Name)</a>
+                    @*<a class="collapse-item" href="cards.html">Cards</a>*@
+                </div>
+            </div>
+        </li>
+    }
 }

@@ -64,7 +64,8 @@ namespace DashReportViewer.Shared.Services
                     Name = reportAttribute.ReportName,
                     ReportType = report,
                     Description = reportAttribute.Description,
-                    IsFavorite = isFavorite
+                    IsFavorite = isFavorite,
+                    Folder = reportAttribute.Folder
                 });
             }
             return reports.OrderBy(r => r.Name).ToList();
