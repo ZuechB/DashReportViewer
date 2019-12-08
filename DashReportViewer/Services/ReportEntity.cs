@@ -96,44 +96,13 @@ namespace DashReportViewer.Services
                             end = TimeFrame.EndOfDay(DateTime.Parse(dates[1]));
 
                             paramVal.DefaultValue = new DateRange() { Start = start, End = end };
-
-                            //var dt = DateTime.Now;
-                            //var ParamConditions = paramVal.DefaultValue.ToString().Split('_');
-                            //if (ParamConditions.Any())
-                            //{
-                            //    foreach (var parmItem in ParamConditions)
-                            //    {
-                            //        if (parmItem.Contains("year:"))
-                            //        {
-                            //            var YearNum = Convert.ToInt32(parmItem.Replace("year:", ""));
-                            //            dt = DateTime.Now.AddYears(YearNum);
-                            //        }
-                            //        else if (parmItem.Contains("month:"))
-                            //        {
-                            //            var MonthNum = Convert.ToInt32(parmItem.Replace("month:", ""));
-                            //            dt = DateTime.Now.AddMonths(MonthNum);
-                            //        }
-                            //        else if (parmItem.Contains("day:"))
-                            //        {
-                            //            var dayNum = Convert.ToInt32(parmItem.Replace("day:", ""));
-                            //            dt = DateTime.Now.AddDays(dayNum);
-                            //        }
-                            //        else if (parmItem.Contains("starttime"))
-                            //        {
-                            //            dt = TimeFrame.StartOfDay(dt);
-                            //        }
-                            //        else if (parmItem.Contains("endtime"))
-                            //        {
-                            //            dt = TimeFrame.EndOfDay(dt);
-                            //        }
-                            //        else if (parmItem == paramVal.DefaultValue.ToString())
-                            //        {
-                            //            dt = Convert.ToDateTime(parmItem);
-                            //        }
-                            //    }
-                            //}
-                            //paramVal.DefaultValue = dt.ToString();
                         }
+                    }
+
+
+                    if (paramVal.InputType == ReportInputType.CustomOption)
+                    {
+                        paramVal.DefaultValue = paramVal.Value;
                     }
 
                     parameters.Add(paramVal);

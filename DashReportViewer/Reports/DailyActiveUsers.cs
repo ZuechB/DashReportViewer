@@ -13,7 +13,8 @@ namespace DashReportViewer.Reports
     [ReportName("Daily Active Users", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
-        ReportParams("First Name", ReportInputType.TextBox, OrderId = 3, DefaultValue = "Hello world"),
+        ReportParams("First Name", ReportInputType.TextBox, OrderId = 2, DefaultValue = "Hello world"),
+        ReportParams("MultipleOptions", ReportInputType.CustomOption, OrderId = 3),
     ]
     public class DailyActiveUsers : ReportEntity, IReport
     {
@@ -22,6 +23,7 @@ namespace DashReportViewer.Reports
         protected override async Task<IEnumerable<object>> Main()
         {
             var parm = parameters;
+
             var firstName = GetParameterValue<string>("FirstName");
             var date = GetParameterValue<DateRange>("Date");
 
@@ -38,9 +40,6 @@ namespace DashReportViewer.Reports
                 return widgets;
             });
         }
-
-
-
 
         private List<User> GetUsersList()
         {
@@ -67,6 +66,20 @@ namespace DashReportViewer.Reports
             });
             return users;
         }
+
+
+
+        [ReportParams("Multiple Options")]
+        public List<KeyValuePair<string, string>> MultipleOptions()
+        {
+            var options = new List<KeyValuePair<string, string>>();
+
+            options.Add(new KeyValuePair<string, string>("1", "This is a test"));
+            options.Add(new KeyValuePair<string, string>("2", "This is another test"));
+
+            return options;
+        }
+
 
 
         private Widget GetUsers()
