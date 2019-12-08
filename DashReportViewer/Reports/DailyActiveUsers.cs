@@ -13,7 +13,7 @@ namespace DashReportViewer.Reports
     [ReportName("Daily Active Users", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
-        ReportParams("First Name", ReportInputType.TextBox, OrderId = 2, DefaultValue = "Hello world"),
+        ReportParams("First Name", ReportInputType.TextBox, OrderId = 2),
         ReportParams("MultipleOptions", ReportInputType.CustomOption, OrderId = 3),
     ]
     public class DailyActiveUsers : ReportEntity, IReport
@@ -34,8 +34,8 @@ namespace DashReportViewer.Reports
 
                 var widgets = new List<Widget>();
 
-                widgets.Add(GetUsers());
-                widgets.Add(GetUsers());
+                widgets.Add(GetUsers(firstName));
+                widgets.Add(GetUsers(null));
 
                 return widgets;
             });
@@ -82,7 +82,7 @@ namespace DashReportViewer.Reports
 
 
 
-        private Widget GetUsers()
+        private Widget GetUsers(string firstName)
         {
             var users = new List<User>();
 
@@ -106,6 +106,12 @@ namespace DashReportViewer.Reports
                 FirstName = "Carter",
                 LastName = "Zuech"
             });
+
+
+            if (!String.IsNullOrWhiteSpace(firstName))
+            { 
+                users = users.Where(u => u.FirstName.ToLower().Contains(firstName.ToLower())).ToList();
+            }
 
             return new Widget("Users", WidgetType.Table) { Content = users, Column = 6 };
         }
