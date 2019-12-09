@@ -55,7 +55,16 @@
                                             <tr>
                                                 @foreach (var column in row)
                                                 {
-                                                    <td>@Html.Raw(column)</td>
+                                                    if (column.GetType() == typeof(DateTimeOffset))
+                                                    {
+                                                        var dtData = DashReportViewer.Shared.Models.CoreBackPack.Time.TimeZoneExtention.Convert((DateTimeOffset)column, "Eastern Standard Time");
+
+                                                        <td>@Html.Raw(dtData.ToString())</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@Html.Raw(column)</td>
+                                                    }
                                                 }
                                             </tr>
                                         }
@@ -174,31 +183,6 @@
         };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $(function () {
 
             // Area Chart Example
@@ -291,13 +275,7 @@
               }
             });
 
-
         });
-
-
-
-
-        
 
     </script>
 }

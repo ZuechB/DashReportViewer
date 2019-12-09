@@ -117,5 +117,7 @@ namespace DashReportViewer.Reports
         public string FirstName { get; set; }
         [ColumnName("Last Name")]
         public string LastName { get; set; }
+        [ColumnName("Joined")]
+        public DateTimeOffset Created { get; set; }
     }
 }
