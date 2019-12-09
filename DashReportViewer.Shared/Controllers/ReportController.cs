@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using DashReportViewer.Reports;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportComponents;
