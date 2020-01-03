@@ -68,7 +68,7 @@ namespace DashReportViewer.Reports
                 users = users.Where(u => u.FirstName.ToLower().Contains(firstName.ToLower())).ToList();
             }
 
-            return new Widget("Users", WidgetType.CandlestickChart) { Content = users, Column = 6 };
+            return new Widget("Users", WidgetType.AreaChart) { Content = users, Column = 6 };
         }
     }
 }
