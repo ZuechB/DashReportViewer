@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Authsome;
+using DashReportViewer.Controllers;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
+using DashReportViewer.Shared.Startup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace DashReportViewer
@@ -55,7 +60,11 @@ namespace DashReportViewer
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+
             app.UseStaticFiles();
+            app.UseStaticFiles(StaticFiles.UseDashReportViewer());
+
 
             app.UseRouting();
 

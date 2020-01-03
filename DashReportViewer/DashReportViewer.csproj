@@ -21,9 +21,4 @@
     <ProjectReference Include="..\DashReportViewer.Shared\DashReportViewer.Shared.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>

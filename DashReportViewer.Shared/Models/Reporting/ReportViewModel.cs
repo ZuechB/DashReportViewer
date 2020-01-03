@@ -24,7 +24,7 @@ namespace DashReportViewer.Shared.Models.Reporting
             }
         }
 
-        public List<BaseReportComponent> Components { get; set; }
+        public List<BaseReportReportComponent> Components { get; set; }
         //public bool HasViewTypes
         //{
         //    get

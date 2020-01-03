@@ -48,16 +48,28 @@ namespace DashReportViewer.Controllers
             var report = await reportService.RunReport(AppDomain.CurrentDomain, reportType, paramsList);
 
 
-            var components = new List<BaseReportComponent>();
+            var components = new List<BaseReportReportComponent>();
             foreach (Widget widget in report.RawData)
             {
                 switch(widget.WidgetType)
                 {
                     case WidgetType.Table:
-                        components.Add(new TableComponent(widget));
+                        components.Add(new TableReportComponent(widget));
                         break;
-                    case WidgetType.BarGraph:
-                        components.Add(new AreaChartComponent(widget));
+                    case WidgetType.AreaChart:
+                        components.Add(new AreaChartReportComponent(widget));
+                        break;
+                    case WidgetType.BarChart:
+                        components.Add(new BarChartReportComponent(widget));
+                        break;
+                    case WidgetType.BubbleChart:
+                        components.Add(new BubbleChartReportComponent(widget));
+                        break;
+                    case WidgetType.CalendarChart:
+                        components.Add(new CalendarChartReportComponent(widget));
+                        break;
+                    case WidgetType.CandlestickChart:
+                        components.Add(new CandlestickChartReportComponent(widget));
                         break;
                 }
             }

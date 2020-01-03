@@ -20,6 +20,10 @@ namespace DashReportViewer.Shared.Models.Widgets
     public enum WidgetType
     {
         Table,
-        BarGraph
+        AreaChart,
+        BarChart,
+        BubbleChart,
+        CalendarChart,
+        CandlestickChart
     }
 }
