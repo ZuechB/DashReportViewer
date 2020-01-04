@@ -1,34 +1,30 @@
-﻿@*@model string*@
+﻿@model DashReportViewer.Shared.ReportComponents.CalendarChartReportComponent
+@{ 
+    var CalendarContent = (DashReportViewer.Shared.ReportContent.CalendarChartContent)Model.RawData;
+}
 
 <script type="text/javascript">
-    google.charts.load("current", { packages: ["calendar"] });
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChart@(Model.Index));
 
-    function drawChart() {
+    function drawChart@(Model.Index)() {
+
+        let container = [];
+        @foreach (var dataPoint in CalendarContent.DataPoints)
+        {
+            <text>
+                container.push([new Date(@(dataPoint.Date.Year), @(dataPoint.Date.Month), @(dataPoint.Date.Day)), @(dataPoint.Size)]);
+            </text>
+        }
+
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn({ type: 'date', id: 'Date' });
-        dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
-        dataTable.addRows([
-            [new Date(2012, 3, 13), 37032],
-            [new Date(2012, 3, 14), 38024],
-            [new Date(2012, 3, 15), 38024],
-            [new Date(2012, 3, 16), 38108],
-            [new Date(2012, 3, 17), 38229],
-            // Many rows omitted for brevity.
-            [new Date(2013, 9, 4), 38177],
-            [new Date(2013, 9, 5), 38705],
-            [new Date(2013, 9, 12), 38210],
-            [new Date(2013, 9, 13), 38029],
-            [new Date(2013, 9, 19), 38823],
-            [new Date(2013, 9, 23), 38345],
-            [new Date(2013, 9, 24), 38436],
-            [new Date(2013, 9, 30), 38447]
-        ]);
+        dataTable.addColumn({ type: 'number', id: 'Number' });
+        dataTable.addRows(container);
 
-        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic@(Model.Index)'));
 
         var options = {
-            title: "Red Sox Attendance",
+            title: '@(CalendarContent.Title)',
             height: 350,
         };
 
@@ -37,6 +33,13 @@
 </script>
 
 
-<div>
-    <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body" style="padding:unset;">
+        <div id="calendar_basic@(Model.Index)" style="width: 1000px; height: 350px;"></div>
+    </div>
 </div>

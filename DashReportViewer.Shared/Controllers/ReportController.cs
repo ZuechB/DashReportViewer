@@ -64,30 +64,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new BubbleChartReportComponent(widget));
                 }
-                //else if (widget.Content.GetType() == )
-
-
-                    //switch ()
-                    //{
-                    //    case WidgetType.Table:
-                    //        
-                    //        break;
-                    //    case WidgetType.AreaChart:
-
-                    //        break;
-                    //    case WidgetType.BarChart:
-                    //        components.Add(new BarChartReportComponent(widget));
-                    //        break;
-                    //    case WidgetType.BubbleChart:
-                    //        components.Add(new BubbleChartReportComponent(widget));
-                    //        break;
-                    //    case WidgetType.CalendarChart:
-                    //        components.Add(new CalendarChartReportComponent(widget));
-                    //        break;
-                    //    case WidgetType.CandlestickChart:
-                    //        components.Add(new CandlestickChartReportComponent(widget));
-                    //        break;
-                    //}
+                else if (widget.Content.GetType() == typeof(CalendarChartContent))
+                {
+                    components.Add(new CalendarChartReportComponent(widget));
+                }
             }
 
             if (report != null)
