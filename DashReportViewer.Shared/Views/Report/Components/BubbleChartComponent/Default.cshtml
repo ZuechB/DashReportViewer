@@ -9,23 +9,26 @@
 
     function drawSeriesChart@(Model.Index)() {
 
-        var data = google.visualization.arrayToDataTable([
-            ['ID', 'Life Expectancy', 'Fertility Rate', 'Region', 'Population'],
-            ['CAN', 80.66, 1.67, 'North America', 33739900],
-            ['DEU', 79.84, 1.36, 'Europe', 81902307],
-            ['DNK', 78.6, 1.84, 'Europe', 5523095],
-            ['EGY', 72.73, 2.78, 'Middle East', 79716203],
-            ['GBR', 80.05, 2, 'Europe', 61801570],
-            ['IRN', 72.49, 1.7, 'Middle East', 73137148],
-            ['IRQ', 68.09, 4.77, 'Middle East', 31090763],
-            ['ISR', 81.55, 2.96, 'Middle East', 7485600],
-            ['RUS', 68.6, 1.54, 'Europe', 141850000],
-            ['USA', 78.09, 2.05, 'North America', 307007000]
-        ]);
+        var dataPoints = @Html.Raw(Json.Serialize(BubbleContent.dataPoints));
+
+        let dataContainer = [
+            ['ID', '@(BubbleContent.Header.X)', '@(BubbleContent.Header.Y)', '@(BubbleContent.Header.Name)', '@(BubbleContent.Header.Size)'],
+        ];
+
+        for (var i = 0; i < dataPoints.length; i++) {
+            let tempData = [];
+            tempData.push(dataPoints[i].id);
+            tempData.push(dataPoints[i].x);
+            tempData.push(dataPoints[i].y);
+            tempData.push(dataPoints[i].name);
+            tempData.push(dataPoints[i].size);
+            dataContainer.push(tempData);
+        }
+
+        var data = google.visualization.arrayToDataTable(dataContainer);
 
         var options = {
-            title: 'Correlation between life expectancy, fertility rate ' +
-                'and population of some world countries (2010)',
+            title: '@(BubbleContent.Title)',
             hAxis: { title: '@(BubbleContent.HorizontalText)' },
             vAxis: { title: '@(BubbleContent.VerticalText)' },
             bubble: { textStyle: { fontSize: 11 } }
