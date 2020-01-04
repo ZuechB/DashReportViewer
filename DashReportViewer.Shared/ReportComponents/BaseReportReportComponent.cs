@@ -9,6 +9,7 @@ namespace DashReportViewer.Shared.ReportComponents
         public string Name { get; set; }
         public int RowNum { get; set; }
         public int ColumnNum { get; set; }
+        public int Index { get; set; }
 
         public BaseReportReportComponent(Widget widget)
         {

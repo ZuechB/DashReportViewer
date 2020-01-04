@@ -4,6 +4,9 @@
 }
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+</script>
 
 <div class="mb-4">
     <div class="d-sm-flex align-items-center justify-content-between">
@@ -22,41 +25,47 @@
 <div class="wrapper-content">
 
     <div class="row">
-        
-        @foreach (var component in Model.Components)
-        {
-        <div class="col-md-@(component.ColumnNum)">
-            @if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TableReportComponent))
+        @{
+            int index = 1;
+            foreach (var component in Model.Components)
             {
-                @await Component.InvokeAsync("TableComponent", component);
+                component.Index = index;
+
+            <div class="col-md-@(component.ColumnNum)">
+                @if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TableReportComponent))
+                {
+                    @await Component.InvokeAsync("TableComponent", component);
+                }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.AreaChartReportComponent))
+                {
+                    @await Component.InvokeAsync("AreaChartComponent", component);
+                }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BarChartReportComponent))
+                {
+                    @await Component.InvokeAsync("BarChartComponent", component);
+                }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BubbleChartReportComponent))
+                {
+                    @await Component.InvokeAsync("BubbleChartComponent", component);
+                }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CalendarChartReportComponent))
+                {
+                    @await Component.InvokeAsync("CalendarChartComponent", component);
+                }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CandlestickChartReportComponent))
+                {
+                    @await Component.InvokeAsync("CandlestickChartComponent", component);
+                }
+                else
+                {
+                    <div>
+                        Unknown component
+                    </div>
+                }
+            </div>
+
+            index++;
             }
-            else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.AreaChartReportComponent))
-            {
-                @await Component.InvokeAsync("AreaChartComponent", component);
-            }
-            else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BarChartReportComponent))
-            {
-                @await Component.InvokeAsync("BarChartComponent", component);
-            }
-            else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BubbleChartReportComponent))
-            {
-                @await Component.InvokeAsync("BubbleChartComponent", component);
-            }
-            else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CalendarChartReportComponent))
-            {
-                @await Component.InvokeAsync("CalendarChartComponent", component);
-            }
-            else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CandlestickChartReportComponent))
-            {
-                @await Component.InvokeAsync("CandlestickChartComponent", component);
-            }
-            else
-            {
-                <div>
-                    Unknown component
-                </div>
-            }
-        </div>
         }
     </div>
 

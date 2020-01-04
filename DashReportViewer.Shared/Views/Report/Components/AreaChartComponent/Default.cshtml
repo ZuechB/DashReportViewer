@@ -6,10 +6,10 @@
 }
 
 <script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawAreaChart);
 
-    function drawAreaChart() {
+    google.charts.setOnLoadCallback(drawAreaChart@(Model.Index));
+
+    function drawAreaChart@(Model.Index)() {
 
         var dataPoints = @Html.Raw(Json.Serialize(dataPoints));
         var xAxis = @Html.Raw(Json.Serialize(xAxis));
@@ -53,16 +53,24 @@
 
         var options = {
             //title: 'Company Performance',
-            hAxis: { title: "Test", titleTextStyle: { color: '#333' } },
+            //hAxis: { title: "Test", titleTextStyle: { color: '#333' } },
             vAxis: { minValue: 0 }
         };
 
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div@(Model.Index)'));
         chart.draw(data, options);
     }
 </script>
 
 
-<div>
-    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body" style="padding:unset;">
+
+        <div id="chart_div@(Model.Index)" style="width: 100%; height: 500px;"></div>
+
+    </div>
 </div>
