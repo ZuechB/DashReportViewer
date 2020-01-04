@@ -68,6 +68,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new CalendarChartReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(PieChartContent))
+                {
+                    components.Add(new PieChartReportComponent(widget));
+                }
             }
 
             if (report != null)

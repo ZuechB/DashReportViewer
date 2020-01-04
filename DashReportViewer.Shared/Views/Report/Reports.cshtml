@@ -56,6 +56,10 @@
                 {
                     @await Component.InvokeAsync("CandlestickChartComponent", component);
                 }
+                else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.PieChartReportComponent))
+                {
+                    @await Component.InvokeAsync("PieChartComponent", component);
+                }
                 else
                 {
                     <div>
