@@ -14,8 +14,8 @@ namespace DashReportViewer.ClickUp
 
     public class ClickUpService : IClickUpService
     {
-        private const string apiToken = "pk_PCO8XZG4BVZJFW3QSWK5ZO54DQJPF2YY";
-        private const string spaceId = "2339092";
+        private const string apiToken = "";
+        private const string spaceId = "";
 
         readonly IAuthsomeService authsomeService;
 
