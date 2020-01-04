@@ -1,10 +1,13 @@
-﻿@*@model string*@
+﻿@model DashReportViewer.Shared.ReportComponents.BubbleChartReportComponent
+
+@{ 
+    var BubbleContent = (DashReportViewer.Shared.ReportContent.BubbleChartContent)Model.RawData;
+}
 
 <script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawSeriesChart);
+    google.charts.setOnLoadCallback(drawSeriesChart@(Model.Index));
 
-    function drawSeriesChart() {
+    function drawSeriesChart@(Model.Index)() {
 
         var data = google.visualization.arrayToDataTable([
             ['ID', 'Life Expectancy', 'Fertility Rate', 'Region', 'Population'],
@@ -23,17 +26,22 @@
         var options = {
             title: 'Correlation between life expectancy, fertility rate ' +
                 'and population of some world countries (2010)',
-            hAxis: { title: 'Life Expectancy' },
-            vAxis: { title: 'Fertility Rate' },
+            hAxis: { title: '@(BubbleContent.HorizontalText)' },
+            vAxis: { title: '@(BubbleContent.VerticalText)' },
             bubble: { textStyle: { fontSize: 11 } }
         };
 
-        var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+        var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div@(Model.Index)'));
         chart.draw(data, options);
     }
 </script>
 
 
-<div>
-    <div id="series_chart_div" style="width: 900px; height: 500px;"></div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body" style="padding:unset;">
+        <div id="series_chart_div@(Model.Index)" style="width: 100%; height: 500px;"></div>
+    </div>
 </div>
