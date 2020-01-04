@@ -27,19 +27,18 @@ namespace DashReportViewer.Reports
             var firstName = GetParameterValue<string>("FirstName");
             var date = GetParameterValue<DateRange>("Date");
 
-
             return await Task.Run(() =>
             {
                 var widgets = new List<Widget>();
 
-                widgets.Add(GetUsers(firstName));
+                widgets.Add(GetDownloads());
                 //widgets.Add(GetUsers(null));
 
                 return widgets;
             });
         }
 
-        private Widget GetUsers(string firstName)
+        private Widget GetDownloads()
         {
             var dataPoints = new List<AreaChartDataPoint>();
 
@@ -79,53 +78,6 @@ namespace DashReportViewer.Reports
                 },
                 Column = 6
             };
-
-
-
-
-
-            //var labels = new List<string>();
-            //labels.Add("Year");
-            //labels.Add("Sales");
-            //labels.Add("Expenses");
-            //labels.Add("test");
-            //labels.Add("test");
-
-            //var dataPoints = new List<AreaChartDataPoint>();
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    XAxis = "2013",
-            //    Data = new List<int>() { 1000, 400, 400, 200 }
-            //});
-
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    XAxis = "2014",
-            //    Data = new List<int>() { 1170, 460, 400, 90 }
-            //});
-
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    XAxis = "2015",
-            //    Data = new List<int>() { 1000, 400, 400, 100 }
-            //});
-
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    XAxis = "2016",
-            //    Data = new List<int>() { 1170, 460, 400, 80 }
-            //});
-
-
-
-            //return new Widget("Users") { 
-            //    Content = new AreaChartContent()
-            //    {
-            //        Labels = labels,
-            //        dataPoints = dataPoints
-
-            //    }, Column = 6 
-            //};
         }
     }
 }
