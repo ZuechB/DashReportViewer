@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Downloads", "E79AA1F9-76B3-4902-891E-10104F6BD54B", Description = "This is a test")]
+    [ReportName("Area Chart", "E79AA1F9-76B3-4902-891E-10104F6BD54B", Description = "This is a test")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
         ReportParams("First Name", ReportInputType.TextBox, OrderId = 2)
     ]
-    public class Downloads : ReportEntity, IReport
+    public class AreaChartReport : ReportEntity, IReport
     {
-        public Downloads(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
+        public AreaChartReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {

@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Daily Active Users", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
+    [ReportName("Table Report", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
         ReportParams("First Name", ReportInputType.TextBox, OrderId = 2),
         ReportParams("MultipleOptions", ReportInputType.CustomOption, OrderId = 3),
     ]
-    public class DailyActiveUsers : ReportEntity, IReport
+    public class TableReport : ReportEntity, IReport
     {
-        public DailyActiveUsers(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
+        public TableReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {
