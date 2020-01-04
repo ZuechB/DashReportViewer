@@ -33,7 +33,7 @@ namespace DashReportViewer.Reports
                 var widgets = new List<Widget>();
 
                 widgets.Add(GetUsers(firstName));
-                widgets.Add(GetUsers(null));
+                //widgets.Add(GetUsers(null));
 
                 return widgets;
             });
@@ -52,21 +52,21 @@ namespace DashReportViewer.Reports
             dataPoints.Add(new AreaChartDataPoint()
             {
                 Label = "Expenses",
-                Data = new List<int>() { 1170, 460, 400, 90 }
+                Data = new List<int>() { 1170, 460 }
             });
 
 
-            dataPoints.Add(new AreaChartDataPoint()
-            {
-                Label = "test",
-                Data = new List<int>() { 1000, 460, 400, 80 }
-            });
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    Label = "test",
+            //    Data = new List<int>() { 1000, 460, 400, 80 }
+            //});
 
-            dataPoints.Add(new AreaChartDataPoint()
-            {
-                Label = "test2",
-                Data = new List<int>() { 1000, 460, 400, 80 }
-            });
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    Label = "test2",
+            //    Data = new List<int>() { 1000, 460, 400, 80 }
+            //});
 
 
 

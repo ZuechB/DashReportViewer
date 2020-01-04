@@ -16,6 +16,8 @@
 
         let dataContainer = [];
 
+        //console.log(dataPoints.length);
+
         // put in the year
         let labels = [];
         labels.push(xAxis[0]);
@@ -30,10 +32,9 @@
         let dataIndex = 0;
         let dataLength = dataPoints[0].data.length;
 
-        //let containTempData = [];
         for (var x = 0; x < dataLength; x++) {
             let tempData = [];
-            for (var i = 0; i < (xAxis.length - 1); i++) {
+            for (var i = 0; i < (labels.length - 1); i++) {
 
                 if (isReset) {
                     tempData.push(xAxis[dataIndex + 1]);
@@ -41,12 +42,12 @@
                     isReset = false;
                 }
 
+                let testData = dataPoints[i].data[x];
                 tempData.push(dataPoints[i].data[x]);
             }
             dataContainer.push(tempData);
             isReset = true;
         }
-        console.log(dataContainer);
 
         var data = google.visualization.arrayToDataTable(dataContainer);
 
