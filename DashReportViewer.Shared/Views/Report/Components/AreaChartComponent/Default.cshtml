@@ -1,57 +1,58 @@
 ﻿@model DashReportViewer.Shared.ReportComponents.AreaChartReportComponent
 
 @{
-    var areaChart = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData);
+    var dataPoints = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).dataPoints;
+    var xAxis = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).XAxis;
 }
 
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawAreaChart);
 
-    function drawChart() {
+    function drawAreaChart() {
 
-        var labels = [@Html.Raw(Json.Serialize(areaChart.Labels))];
-        var dataPoints = @Html.Raw(Json.Serialize(areaChart.dataPoints));
+        var dataPoints = @Html.Raw(Json.Serialize(dataPoints));
+        var xAxis = @Html.Raw(Json.Serialize(xAxis));
 
-        
+        let dataContainer = [];
 
-        //let dataContainer = [];
+        // put in the year
+        let labels = [];
+        labels.push(xAxis[0]);
+
+        // attach the labels on the top
         for (var i = 0; i < dataPoints.length; i++) {
-            let tempData = [];
-
-            tempData.push(dataPoints[i].xAxis);
-
-            for (var x = 0; x < dataPoints[i].data.length; x++) {
-                let numData = dataPoints[i].data[x];
-
-                tempData.push(numData);
-            }
-
-            labels.push(tempData);
+            labels.push(dataPoints[i].label);
         }
+        dataContainer.push(labels);
 
-        //console.log(dataContainer);
+        let isReset = true;
+        let dataIndex = 0;
+        let dataLength = dataPoints[0].data.length;
 
-        //let total = [labels, dataContainer];
+        //let containTempData = [];
+        for (var x = 0; x < dataLength; x++) {
+            let tempData = [];
+            for (var i = 0; i < (xAxis.length - 1); i++) {
 
+                if (isReset) {
+                    tempData.push(xAxis[dataIndex + 1]);
+                    dataIndex++;
+                    isReset = false;
+                }
 
+                tempData.push(dataPoints[i].data[x]);
+            }
+            dataContainer.push(tempData);
+            isReset = true;
+        }
+        console.log(dataContainer);
 
-
-        //var data = google.visualization.arrayToDataTable([
-        //    labels,
-        //    dataContainer
-        //    //['2013', 1000, 400, 400],
-        //    //['2014', 1170, 460, 400],
-        //    //['2015', 660, 1120, 400],
-        //    //['2016', 1030, 540, 400]
-        //]);
-
-        var data = google.visualization.arrayToDataTable(labels);
-
+        var data = google.visualization.arrayToDataTable(dataContainer);
 
         var options = {
             //title: 'Company Performance',
-            hAxis: { title: labels[0], titleTextStyle: { color: '#333' } },
+            hAxis: { title: "Test", titleTextStyle: { color: '#333' } },
             vAxis: { minValue: 0 }
         };
 

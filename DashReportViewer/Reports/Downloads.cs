@@ -41,47 +41,91 @@ namespace DashReportViewer.Reports
 
         private Widget GetUsers(string firstName)
         {
-            var labels = new List<string>();
-            labels.Add("Year");
-            labels.Add("Sales");
-            labels.Add("Expenses");
-            labels.Add("test");
-
             var dataPoints = new List<AreaChartDataPoint>();
+
             dataPoints.Add(new AreaChartDataPoint()
             {
-                XAxis = "2013",
-                Data = new List<int>() { 1000, 400, 400 }
+                Label = "Sales",
+                Data = new List<int>() { 1000, 400, 400, 200 }
             });
 
             dataPoints.Add(new AreaChartDataPoint()
             {
-                XAxis = "2014",
-                Data = new List<int>() { 1170, 460, 400 }
+                Label = "Expenses",
+                Data = new List<int>() { 1170, 460, 400, 90 }
+            });
+
+
+            dataPoints.Add(new AreaChartDataPoint()
+            {
+                Label = "test",
+                Data = new List<int>() { 1000, 460, 400, 80 }
             });
 
             dataPoints.Add(new AreaChartDataPoint()
             {
-                XAxis = "2015",
-                Data = new List<int>() { 1000, 400, 400 }
+                Label = "test2",
+                Data = new List<int>() { 1000, 460, 400, 80 }
             });
 
-            dataPoints.Add(new AreaChartDataPoint()
+
+
+            return new Widget("Users")
             {
-                XAxis = "2016",
-                Data = new List<int>() { 1170, 460, 400 }
-            });
-
-
-
-            return new Widget("Users") { 
                 Content = new AreaChartContent()
                 {
-                    Labels = labels,
-                    dataPoints = dataPoints
-
-                }, Column = 6 
+                    dataPoints = dataPoints,
+                    XAxis = new List<string>() { "Year", "2013", "2014", "2015", "2016"}
+                },
+                Column = 6
             };
+
+
+
+
+
+            //var labels = new List<string>();
+            //labels.Add("Year");
+            //labels.Add("Sales");
+            //labels.Add("Expenses");
+            //labels.Add("test");
+            //labels.Add("test");
+
+            //var dataPoints = new List<AreaChartDataPoint>();
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    XAxis = "2013",
+            //    Data = new List<int>() { 1000, 400, 400, 200 }
+            //});
+
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    XAxis = "2014",
+            //    Data = new List<int>() { 1170, 460, 400, 90 }
+            //});
+
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    XAxis = "2015",
+            //    Data = new List<int>() { 1000, 400, 400, 100 }
+            //});
+
+            //dataPoints.Add(new AreaChartDataPoint()
+            //{
+            //    XAxis = "2016",
+            //    Data = new List<int>() { 1170, 460, 400, 80 }
+            //});
+
+
+
+            //return new Widget("Users") { 
+            //    Content = new AreaChartContent()
+            //    {
+            //        Labels = labels,
+            //        dataPoints = dataPoints
+
+            //    }, Column = 6 
+            //};
         }
     }
 }
