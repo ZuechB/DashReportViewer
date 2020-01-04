@@ -1,4 +1,5 @@
 ﻿using DashReportViewer.Shared.Models.Widgets;
+using DashReportViewer.Shared.ReportContent;
 using System.Collections.Generic;
 
 namespace DashReportViewer.Shared.ReportComponents
@@ -17,7 +18,7 @@ namespace DashReportViewer.Shared.ReportComponents
             this.RawData = widget.Content;
         }
 
-        public IEnumerable<object> RawData { get; protected set; }
+        public BaseReportContent RawData { get; protected set; }
 
         public static object GetPropValue(object src, string propName)
         {

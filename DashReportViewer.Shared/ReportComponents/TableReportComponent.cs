@@ -1,5 +1,6 @@
 ﻿using DashReportViewer.Shared.Attributes;
 using DashReportViewer.Shared.Models.Widgets;
+using DashReportViewer.Shared.ReportContent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,9 +18,9 @@ namespace DashReportViewer.Shared.ReportComponents
         {
             get
             {
-                if (_columns == null)
+                if (_columns == null && RawData.GetType() == typeof(TableContent))
                 {
-                    (_columns, _data) = ProcessData(RawData);
+                    (_columns, _data) = ProcessData(((TableContent)RawData).Content);
                 }
                 return _columns;
             }
@@ -29,9 +30,9 @@ namespace DashReportViewer.Shared.ReportComponents
         {
             get
             {
-                if (_data == null)
+                if (_data == null && RawData.GetType() == typeof(TableContent))
                 {
-                    (_columns, _data) = ProcessData(RawData);
+                    (_columns, _data) = ProcessData(((TableContent)RawData).Content);
                 }
                 return _data;
             }

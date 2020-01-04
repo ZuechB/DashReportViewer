@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportComponents;
+using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,27 +52,38 @@ namespace DashReportViewer.Controllers
             var components = new List<BaseReportReportComponent>();
             foreach (Widget widget in report.RawData)
             {
-                switch(widget.WidgetType)
+                if (widget.Content.GetType() == typeof(TableContent))
                 {
-                    case WidgetType.Table:
-                        components.Add(new TableReportComponent(widget));
-                        break;
-                    case WidgetType.AreaChart:
-                        components.Add(new AreaChartReportComponent(widget));
-                        break;
-                    case WidgetType.BarChart:
-                        components.Add(new BarChartReportComponent(widget));
-                        break;
-                    case WidgetType.BubbleChart:
-                        components.Add(new BubbleChartReportComponent(widget));
-                        break;
-                    case WidgetType.CalendarChart:
-                        components.Add(new CalendarChartReportComponent(widget));
-                        break;
-                    case WidgetType.CandlestickChart:
-                        components.Add(new CandlestickChartReportComponent(widget));
-                        break;
+                    components.Add(new TableReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(AreaChartContent))
+                {
+                    components.Add(new AreaChartReportComponent(widget));
+                }
+                //else if (widget.Content.GetType() == )
+
+
+                //switch ()
+                //{
+                //    case WidgetType.Table:
+                //        
+                //        break;
+                //    case WidgetType.AreaChart:
+                        
+                //        break;
+                //    case WidgetType.BarChart:
+                //        components.Add(new BarChartReportComponent(widget));
+                //        break;
+                //    case WidgetType.BubbleChart:
+                //        components.Add(new BubbleChartReportComponent(widget));
+                //        break;
+                //    case WidgetType.CalendarChart:
+                //        components.Add(new CalendarChartReportComponent(widget));
+                //        break;
+                //    case WidgetType.CandlestickChart:
+                //        components.Add(new CandlestickChartReportComponent(widget));
+                //        break;
+                //}
             }
 
             if (report != null)

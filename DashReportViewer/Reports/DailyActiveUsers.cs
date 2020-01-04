@@ -2,6 +2,7 @@
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
+using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,6 @@ namespace DashReportViewer.Reports
 
             var firstName = GetParameterValue<string>("FirstName");
             var date = GetParameterValue<DateRange>("Date");
-
-
 
 
             return await Task.Run(() =>
@@ -110,7 +109,11 @@ namespace DashReportViewer.Reports
                 users = users.Where(u => u.FirstName.ToLower().Contains(firstName.ToLower())).ToList();
             }
 
-            return new Widget("Users", WidgetType.Table) { Content = users, Column = 6 };
+            return new Widget("Users") { Content = new TableContent()
+            {
+                Content = users
+
+            }, Column = 6 };
         }
     }
 

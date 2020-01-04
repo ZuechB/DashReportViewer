@@ -1,29 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using DashReportViewer.Shared.ReportContent;
+using System.Collections.Generic;
 
 namespace DashReportViewer.Shared.Models.Widgets
 {
     public class Widget
     {
-        public Widget(string Name, WidgetType WidgetType)
+        public Widget(string Name)
         {
             this.Name = Name;
-            this.WidgetType = WidgetType;
+            //this.WidgetType = WidgetType;
         }
 
-        public WidgetType WidgetType { get; set; }
+        //public WidgetType WidgetType { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
         public string Name { get; set; }
-        public IEnumerable<object> Content { get; set; }
+        //public IEnumerable<object> Content { get; set; }
+        public BaseReportContent Content { get; set; }
     }
 
-    public enum WidgetType
-    {
-        Table,
-        AreaChart,
-        BarChart,
-        BubbleChart,
-        CalendarChart,
-        CandlestickChart
-    }
+    //public enum WidgetType
+    //{
+    //    Table,
+    //    AreaChart,
+    //    BarChart,
+    //    BubbleChart,
+    //    CalendarChart,
+    //    CandlestickChart
+    //}
 }

@@ -1,28 +1,63 @@
-﻿@*@model string*@
+﻿@model DashReportViewer.Shared.ReportComponents.AreaChartReportComponent
 
+@{
+    var areaChart = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData);
+}
 
 <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'test'],
-          ['2013',  1000,      400, 400],
-          ['2014',  1170,      460, 400],
-          ['2015',  660,       1120, 400],
-          ['2016',  1030,      540, 400]
-        ]);
+    function drawChart() {
+
+        var labels = [@Html.Raw(Json.Serialize(areaChart.Labels))];
+        var dataPoints = @Html.Raw(Json.Serialize(areaChart.dataPoints));
+
+        
+
+        //let dataContainer = [];
+        for (var i = 0; i < dataPoints.length; i++) {
+            let tempData = [];
+
+            tempData.push(dataPoints[i].xAxis);
+
+            for (var x = 0; x < dataPoints[i].data.length; x++) {
+                let numData = dataPoints[i].data[x];
+
+                tempData.push(numData);
+            }
+
+            labels.push(tempData);
+        }
+
+        //console.log(dataContainer);
+
+        //let total = [labels, dataContainer];
+
+
+
+
+        //var data = google.visualization.arrayToDataTable([
+        //    labels,
+        //    dataContainer
+        //    //['2013', 1000, 400, 400],
+        //    //['2014', 1170, 460, 400],
+        //    //['2015', 660, 1120, 400],
+        //    //['2016', 1030, 540, 400]
+        //]);
+
+        var data = google.visualization.arrayToDataTable(labels);
+
 
         var options = {
-          title: 'Company Performance',
-          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
+            //title: 'Company Performance',
+            hAxis: { title: labels[0], titleTextStyle: { color: '#333' } },
+            vAxis: { minValue: 0 }
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
-      }
+    }
 </script>
 
 
