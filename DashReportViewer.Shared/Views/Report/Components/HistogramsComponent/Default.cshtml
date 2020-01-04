@@ -1,0 +1,44 @@
+﻿@model DashReportViewer.Shared.ReportComponents.HistogramsReportComponent
+
+@{
+    var content = ((DashReportViewer.Shared.ReportContent.HistogramsContent)Model.RawData);
+}
+
+<script type="text/javascript">
+
+    google.charts.setOnLoadCallback(drawChart@(Model.Index));
+
+    function drawChart@(Model.Index)() {
+
+        var dataPoints = @Html.Raw(Json.Serialize(content.DataPoints));
+        let dataContent = [];
+
+        dataContent.push(['@(content.NameText)', '@(content.NumberText)']);
+
+        for (var i = 0; i < dataPoints.length; i++) {
+            dataContent.push([dataPoints[i].name, dataPoints[i].number]);
+        }
+
+        var data = google.visualization.arrayToDataTable(dataContent);
+
+        var options = {
+          title: '@(content.Title)',
+          legend: { position: 'none' },
+        };
+
+        var chart = new google.visualization.Histogram(document.getElementById('chart_div@(Model.Index)'));
+        chart.draw(data, options);
+    }
+
+</script>
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body" style="padding:unset;">
+        <div id="chart_div@(Model.Index)" style="width: 100%; height: 500px;"></div>
+    </div>
+</div>

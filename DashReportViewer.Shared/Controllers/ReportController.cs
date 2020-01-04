@@ -72,6 +72,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new PieChartReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(HistogramsContent))
+                {
+                    components.Add(new HistogramsReportComponent(widget));
+                }
             }
 
             if (report != null)
