@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "PieChartComponent")]
     public class PieChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public PieChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public PieChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

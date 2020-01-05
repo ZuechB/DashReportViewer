@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "ScatterChartComponent")]
     public class ScatterChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public ScatterChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public ScatterChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

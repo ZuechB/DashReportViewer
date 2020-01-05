@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "BubbleChartComponent")]
     public class BubbleChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public BubbleChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public BubbleChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

@@ -8,8 +8,8 @@ namespace DashReportViewer.ViewComponents
     [ViewComponent(Name = "CompanyHeaderComponent")]
     public class CompanyHeaderViewComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public CompanyHeaderViewComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public CompanyHeaderViewComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

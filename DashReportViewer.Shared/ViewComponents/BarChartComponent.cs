@@ -12,8 +12,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "BarChartComponent")]
     public class BarChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public BarChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public BarChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

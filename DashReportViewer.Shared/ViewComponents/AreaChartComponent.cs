@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "AreaChartComponent")]
     public class AreaChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public AreaChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public AreaChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

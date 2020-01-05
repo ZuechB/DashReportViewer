@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "CandlestickChartComponent")]
     public class CandlestickChartComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public CandlestickChartComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public CandlestickChartComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

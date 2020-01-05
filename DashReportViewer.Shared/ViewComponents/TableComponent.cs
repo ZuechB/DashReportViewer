@@ -12,8 +12,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "TableComponent")]
     public class TableComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public TableComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public TableComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

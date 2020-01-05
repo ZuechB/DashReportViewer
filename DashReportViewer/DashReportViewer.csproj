@@ -4,6 +4,33 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\**" />
+    <Compile Remove="wwwroot\js\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Compile Remove="wwwroot\scss\**" />
+    <Compile Remove="wwwroot\vendor\**" />
+    <Content Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\js\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <Content Remove="wwwroot\scss\**" />
+    <Content Remove="wwwroot\vendor\**" />
+    <EmbeddedResource Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="wwwroot\scss\**" />
+    <EmbeddedResource Remove="wwwroot\vendor\**" />
+    <None Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\js\**" />
+    <None Remove="wwwroot\lib\**" />
+    <None Remove="wwwroot\scss\**" />
+    <None Remove="wwwroot\vendor\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Authsome" Version="1.0.8" />
@@ -19,6 +46,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DashReportViewer.Shared\DashReportViewer.Shared.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

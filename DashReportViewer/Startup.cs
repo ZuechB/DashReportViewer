@@ -1,7 +1,6 @@
 using Authsome;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
-using DashReportViewer.Shared.Startup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -31,8 +30,8 @@ namespace DashReportViewer
             services.AddScoped<IAuthsomeService, AuthsomeService>();
 
 
-            var appSettings = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettings);
+            var appSettings = Configuration.GetSection("DashReportAppSettings");
+            services.Configure<DashReportAppSettings>(appSettings);
 
             services.AddControllersWithViews();
         }
@@ -54,7 +53,7 @@ namespace DashReportViewer
 
 
             app.UseStaticFiles();
-            app.UseStaticFiles(StaticFiles.UseDashReportViewer());
+            //app.UseStaticFiles(StaticFiles.UseDashReportViewer());
 
 
             app.UseRouting();

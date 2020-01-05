@@ -9,8 +9,8 @@ namespace DashReportViewer.Shared.ViewComponents
     [ViewComponent(Name = "HistogramsComponent")]
     public class HistogramsComponent : ViewComponent
     {
-        readonly AppSettings appSettings;
-        public HistogramsComponent(IOptions<AppSettings> appSettings)
+        readonly DashReportAppSettings appSettings;
+        public HistogramsComponent(IOptions<DashReportAppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }
