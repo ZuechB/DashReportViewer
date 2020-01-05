@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Brandon Zuech",
+  "classifications": [ "Common", "Library" ],
+  "identity": "DashReportViewer.Reports.TemplateReport",
+  "name": "DashReport Template",
+  "shortName": "dashreport",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  }
+}
