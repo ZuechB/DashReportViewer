@@ -1,0 +1,52 @@
+﻿@model DashReportViewer.Shared.ReportComponents.ScatterChartReportComponent
+
+@{
+    var content = ((DashReportViewer.Shared.ReportContent.ScatterChartContent)Model.RawData);
+}
+
+<script type="text/javascript">
+
+    google.charts.setOnLoadCallback(drawChart@(Model.Index));
+
+    function drawChart@(Model.Index)() {
+
+        var dataPoints = @Html.Raw(Json.Serialize(content.DataPoints));
+
+
+        console.log(dataPoints);
+
+        let contentData = [];
+
+        contentData.push(['@(content.XName)', '@(content.YName)']);
+
+        for (var i = 0; i < dataPoints.length; i++) {
+            contentData.push([dataPoints[i].x, dataPoints[i].y]);
+        }
+
+        var data = google.visualization.arrayToDataTable(contentData);
+
+        var options = {
+          title: '@(content.Title)',
+          hAxis: {title: '@(content.XName)', minValue: 0, maxValue: 15},
+          vAxis: {title: '@(content.YName)', minValue: 0, maxValue: 15},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div@(Model.Index)'));
+
+        chart.draw(data, options);
+      }
+</script>
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body" style="padding:unset;">
+
+        <div id="chart_div@(Model.Index)" style="width: 100%; height: 500px;"></div>
+
+    </div>
+</div>

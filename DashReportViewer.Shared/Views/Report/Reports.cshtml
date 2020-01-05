@@ -64,6 +64,10 @@
                     {
                         @await Component.InvokeAsync("HistogramsComponent", component);
                     }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.ScatterChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("ScatterChartComponent", component);
+                    }
                     else
                     {
                         <div>

@@ -76,6 +76,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new HistogramsReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(ScatterChartContent))
+                {
+                    components.Add(new ScatterChartReportComponent(widget));
+                }
             }
 
             if (report != null)
