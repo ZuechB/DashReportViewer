@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -12,10 +13,22 @@ namespace DashReportViewer.Shared.Services
     {
         Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
         IList<Report> GetReports(AppDomain domain, long? UserId = null);
+        T GetService<T>();
     }
 
     public class ReportService : IReportService
     {
+        readonly IServiceProvider serviceProvider;
+        public ReportService(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
+        public T GetService<T>()
+        {
+            return serviceProvider.GetService<T>();
+        }
+
         public async Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null)
         {
             var report = GetReport(domain, id);
@@ -31,6 +44,8 @@ namespace DashReportViewer.Shared.Services
 
             return instance;
         }
+
+
 
         public Report GetReport(AppDomain domain, Guid id)
         {

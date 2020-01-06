@@ -3,19 +3,19 @@ using DashReportViewer.ClickUp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace DashReportViewer.ClickUp
 {
     public interface IClickUpService
     {
-        Task GetTasks(string taskId);
-        Task<Dictionary<string, string>> GetLists();
+        Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false);
+        Task<Dictionary<string, string>> GetLists(string spaceId);
     }
 
     public class ClickUpService : IClickUpService
     {
         private const string apiToken = "";
-        private const string spaceId = "";
 
         readonly IAuthsomeService authsomeService;
 
@@ -24,20 +24,17 @@ namespace DashReportViewer.ClickUp
             this.authsomeService = authsomeService;
         }
 
-        public async Task GetTasks(string taskId)
+        public async Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false)
         {
-            var response = await authsomeService.GetAsync<Tasks>("https://api.clickup.com/api/v2/list/" + taskId + "/task?archived=false", (headerBuilder) =>
+            var response = await authsomeService.GetAsync<Tasks>("https://api.clickup.com/api/v2/list/" + listId + "/task?archived=false&include_closed=" + includeClosed.ToString(), (headerBuilder) =>
             {
                 headerBuilder.IncludeHeader("Authorization", apiToken);
             });
 
-            foreach (var task in response.Content.tasks)
-            {
-                Console.WriteLine(task.name);
-            }
+            return response.Content.tasks.ToList();
         }
 
-        public async Task<Dictionary<string, string>> GetLists()
+        public async Task<Dictionary<string, string>> GetLists(string spaceId)
         {
             var dictionary = new Dictionary<string, string>();
 

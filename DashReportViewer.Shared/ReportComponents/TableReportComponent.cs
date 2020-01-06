@@ -82,6 +82,8 @@ namespace DashReportViewer.Shared.ReportComponents
                 {
                     var propInfo = firstDataType.GetType().GetProperties();
 
+                    //columns = ((Dictionary<string, object>)firstDataType).Keys.ToList();
+
                     foreach (var column in propInfo)
                     {
                         // get the attribute of the column name
@@ -90,14 +92,16 @@ namespace DashReportViewer.Shared.ReportComponents
                         {
                             columns.Add(newName.Name);
                         }
-                        //else
-                        //{
-                        //    if (excludedProperties.Contains((string)column.Name) == false)
-                        //    {
-                        //        var columnName = mappedProperties.ContainsKey((string)column.Name) ? mappedProperties[(string)column.Name] : (string)column.Name;
-                        //        columns.Add(columnName);
-                        //    }
-                        //}
+                        else
+                        {
+                            columns.Add(column.Name);
+
+                            //if (excludedProperties.Contains((string)column.Name) == false)
+                            //{
+                            //    var columnName = mappedProperties.ContainsKey((string)column.Name) ? mappedProperties[(string)column.Name] : (string)column.Name;
+                            //    columns.Add(columnName);
+                            //}
+                        }
                     }
 
                     foreach (var propertyItem in reportData)

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -38,6 +39,12 @@ namespace DashReportViewer.Shared.Services
         {
             RawData = await Main();
         }
+
+        public T GetService<T>()
+        {
+            return reportService.GetService<T>();
+        }
+
 
         public IList<ReportParams> Parameters
         {
