@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using DashReportViewer.Shared.Models;
+using Microsoft.Extensions.Options;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -18,10 +20,12 @@ namespace DashReportViewer.Shared.Services
 
     public class ReportService : IReportService
     {
+        readonly DashReportAppSettings appSettings;
         readonly IServiceProvider serviceProvider;
-        public ReportService(IServiceProvider serviceProvider)
+        public ReportService(IServiceProvider serviceProvider, IOptions<DashReportAppSettings> appSettings)
         {
             this.serviceProvider = serviceProvider;
+            this.appSettings = appSettings.Value;
         }
 
         public T GetService<T>()
@@ -56,7 +60,9 @@ namespace DashReportViewer.Shared.Services
         {
             var reports = new List<Report>();
 
-            var reportTypes = GetReportTypesInNamespace(domain.GetAssemblies().Where(a => a.FullName.Contains("DashReportViewer")));
+            
+
+            var reportTypes = GetReportTypesInNamespace(domain.GetAssemblies().Where(a => a.FullName.Contains(appSettings.ProjectName)));
 
             foreach (var report in reportTypes)
             {
@@ -90,7 +96,7 @@ namespace DashReportViewer.Shared.Services
         {
             // First load Orbose Reports.
             var reports = assemblies.SelectMany(s => s.GetTypes())
-                             .Where(c => typeof(IReport).IsAssignableFrom(c) && c.IsClass && c.Namespace == "DashReportViewer.Reports")
+                             .Where(c => typeof(IReport).IsAssignableFrom(c) && c.IsClass && c.Namespace == appSettings.ProjectName + ".Reports")
                              .ToArray();
 
             return reports;
