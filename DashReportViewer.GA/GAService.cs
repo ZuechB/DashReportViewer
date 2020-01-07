@@ -8,16 +8,16 @@ namespace DashReportViewer.GA
 {
     public interface IGAService
     {
-        List<BrowserSession> GetSessionsData(string viewId, string startDate, string endDate);
+        List<BrowserSession> GetDeviceSessions(string authenticationJson, string viewId, string startDate, string endDate);
     }
 
     public class GAService : IGAService
     {
-        public List<BrowserSession> GetSessionsData(string viewId, string startDate, string endDate)
+        public List<BrowserSession> GetDeviceSessions(string authenticationJson, string viewId, string startDate, string endDate)
         {
             var browserSessions = new List<BrowserSession>();
 
-            var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile("helloraye-24ac233148fc.json")
+            var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromJson(authenticationJson)
                 .CreateScoped(new[] { Google.Apis.AnalyticsReporting.v4.AnalyticsReportingService.Scope.AnalyticsReadonly });
 
             using (var analytics = new Google.Apis.AnalyticsReporting.v4.AnalyticsReportingService(new Google.Apis.Services.BaseClientService.Initializer
