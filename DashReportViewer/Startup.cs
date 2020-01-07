@@ -1,5 +1,7 @@
 using Authsome;
 using DashReportViewer.ClickUp;
+using DashReportViewer.ClickUp.Settings;
+using DashReportViewer.GA;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Builder;
@@ -30,10 +32,17 @@ namespace DashReportViewer
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IAuthsomeService, AuthsomeService>();
             services.AddScoped<IClickUpService, ClickUpService>();
+            services.AddScoped<IGAService, GAService>();
+            
 
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
             services.Configure<DashReportAppSettings>(appSettings);
+
+
+            var clickUpSettings = Configuration.GetSection("ClickUpSettings");
+            services.Configure<ClickUpSettings>(clickUpSettings);
+
 
             services.AddControllersWithViews();
         }

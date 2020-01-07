@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
 
@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DashReportViewer.ClickUp\DashReportViewer.ClickUp.csproj" />
+    <ProjectReference Include="..\DashReportViewer.GA\DashReportViewer.GA.csproj" />
     <ProjectReference Include="..\DashReportViewer.Shared\DashReportViewer.Shared.csproj" />
   </ItemGroup>
 

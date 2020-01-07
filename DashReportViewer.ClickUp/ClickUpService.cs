@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using DashReportViewer.ClickUp.Settings;
 
 namespace DashReportViewer.ClickUp
 {
@@ -15,20 +17,20 @@ namespace DashReportViewer.ClickUp
 
     public class ClickUpService : IClickUpService
     {
-        private const string apiToken = "";
-
         readonly IAuthsomeService authsomeService;
+        readonly ClickUpSettings appSettings;
 
-        public ClickUpService(IAuthsomeService authsomeService)
+        public ClickUpService(IAuthsomeService authsomeService, IOptions<ClickUpSettings> appSettings)
         {
             this.authsomeService = authsomeService;
+            this.appSettings = appSettings.Value;
         }
 
         public async Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false)
         {
             var response = await authsomeService.GetAsync<Tasks>("https://api.clickup.com/api/v2/list/" + listId + "/task?archived=false&include_closed=" + includeClosed.ToString(), (headerBuilder) =>
             {
-                headerBuilder.IncludeHeader("Authorization", apiToken);
+                headerBuilder.IncludeHeader("Authorization", appSettings.ApiToken);
             });
 
             return response.Content.tasks.ToList();
@@ -40,7 +42,7 @@ namespace DashReportViewer.ClickUp
 
             var response = await authsomeService.GetAsync<Folders>("https://api.clickup.com/api/v2/space/" + spaceId + "/folder?archived=false", (headerBuilder) =>
             {
-                headerBuilder.IncludeHeader("Authorization", apiToken);
+                headerBuilder.IncludeHeader("Authorization", appSettings.ApiToken);
             });
 
             foreach (var folder in response.Content.folders)
