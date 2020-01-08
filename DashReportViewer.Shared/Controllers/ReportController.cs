@@ -8,10 +8,12 @@ using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportComponents;
 using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DashReportViewer.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         readonly IReportService reportService;

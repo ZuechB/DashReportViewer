@@ -1,11 +1,14 @@
 using Authsome;
 using DashReportViewer.ClickUp;
 using DashReportViewer.ClickUp.Settings;
+using DashReportViewer.Context;
 using DashReportViewer.GA;
+using DashReportViewer.Models;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,16 +27,16 @@ namespace DashReportViewer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<dbcontext>(options =>
-            //{
-            //    options.UseSqlServer(mydbconnectionstring);
-            //}, ServiceLifetime.Scoped);
+            services.AddDbContext<DashReportViewerContext>(options =>
+                options.UseSqlServer(DBConnectionStrings.DevelopmentDatabase));
+
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<DashReportViewerContext>();
 
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IAuthsomeService, AuthsomeService>();
             services.AddScoped<IClickUpService, ClickUpService>();
             services.AddScoped<IGAService, GAService>();
-            
 
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
@@ -69,6 +72,7 @@ namespace DashReportViewer
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -76,6 +80,7 @@ namespace DashReportViewer
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
