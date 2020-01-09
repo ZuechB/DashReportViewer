@@ -1797,9 +1797,4 @@
     <None Include="wwwroot\vendor\jquery\jquery.slim.min.map" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

@@ -9,6 +9,7 @@ using DashReportViewer.Shared.ReportComponents;
 using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DashReportViewer.Controllers
@@ -26,6 +27,11 @@ namespace DashReportViewer.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult LogOut()
+        {
+            return Redirect("~/home/logout");
         }
 
         public async Task<ActionResult> Reports(Guid reportType, string param = null, ReportType ContentType = ReportType.View)
