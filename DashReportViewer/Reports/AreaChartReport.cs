@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Area Chart", "E79AA1F9-76B3-4902-891E-10104F6BD54B", Description = "This is a test")]
+    [ReportName("Area Chart", "E79AA1F9-76B3-4902-891E-10104F6BD54B", Description = "This is a test", Folder = "test")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
         ReportParams("First Name", ReportInputType.TextBox, OrderId = 2)

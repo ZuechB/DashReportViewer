@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Calendar Chart", "E4D6ACBC-09F6-4B98-9322-A5F9057CFE20", Description = "This is a test")]
+    [ReportName("Calendar Chart", "E4D6ACBC-09F6-4B98-9322-A5F9057CFE20", Description = "This is a test", Folder = "test")]
     [ReportParams("Date", ReportInputType.DateRange, OrderId = 1)]
     public class CalendarChartReport : ReportEntity, IReport
     {
