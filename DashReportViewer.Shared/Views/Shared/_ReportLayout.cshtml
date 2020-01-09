@@ -265,7 +265,10 @@
 
         @if (ViewData["disableFilter"] == null || (bool)ViewData["disableFilter"] == false)
         {
-            <button id="trigger"><i class="fa fa-cog" aria-hidden="true"></i> <span>Filters</span></button>
+            @if ((bool)ViewData["AnyParams"])
+            {
+                <button id="trigger"><i class="fa fa-cog" aria-hidden="true"></i> <span>Filters</span></button>
+            }
         }
 
         <!-- Bootstrap core JavaScript-->

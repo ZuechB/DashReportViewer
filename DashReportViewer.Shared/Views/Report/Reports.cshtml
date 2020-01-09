@@ -2,6 +2,7 @@
 @{
     Layout = "~/Views/Shared/_ReportLayout.cshtml";
     ViewData["Title"] = Model.ReportName;
+    ViewData["AnyParams"] = Model.Parameters.Any();
 }
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -87,7 +88,8 @@
 
 
 
-
+@if (Model.Parameters.Any())
+{
 <div id="slider">
     <div>
         <div>
@@ -101,6 +103,7 @@
         </div>
     </div>
 </div>
+}
 
 <input id="ReportType" type="hidden" value="@Model.UniqueID" />
 <input id="ContentType" type="hidden" value="0" />

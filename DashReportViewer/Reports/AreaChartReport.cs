@@ -31,7 +31,7 @@ namespace DashReportViewer.Reports
             {
                 var widgets = new List<Widget>();
 
-                widgets.Add(GetDownloads("My local downloads"));
+                //widgets.Add(GetDownloads("My local downloads"));
                 widgets.Add(GetDownloads("My global downloads"));
 
                 return widgets;
@@ -53,21 +53,6 @@ namespace DashReportViewer.Reports
                 Label = "Expenses",
                 Data = new List<int>() { 1170, 460, 1000, 3000 }
             });
-
-
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    Label = "test",
-            //    Data = new List<int>() { 1000, 460, 400, 80 }
-            //});
-
-            //dataPoints.Add(new AreaChartDataPoint()
-            //{
-            //    Label = "test2",
-            //    Data = new List<int>() { 1000, 460, 400, 80 }
-            //});
-
-
 
             return new Widget(widgetName)
             {

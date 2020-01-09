@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace DashReportViewer.Reports
 {
     [ReportName("Pie Chart", "6A69C2CA-ED05-4B28-9962-AF02C8716D67", Description = "This is a test")]
-    [ReportParams("Date", ReportInputType.DateRange, OrderId = 1)]
     public class PieChartReport : ReportEntity, IReport
     {
         public PieChartReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
