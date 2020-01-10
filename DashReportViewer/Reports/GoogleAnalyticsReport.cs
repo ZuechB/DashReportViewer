@@ -7,6 +7,7 @@ using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
+using Google.Apis.AnalyticsReporting.v4.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,16 +31,21 @@ namespace DashReportViewer.Reports
         protected override async Task<IEnumerable<object>> Main()
         {
             var widgets = new List<Widget>();
-            var sessions = new List<BrowserSession>();
-            var date = GetParameterValue<DateRange>("Date");
+            var sessions = new List<DimensionResult>();
+            var date = GetParameterValue<Shared.Models.DateRange>("Date");
             if (date != null)
             {
                 var startDate = date.Start.ToString("yyyy-MM-dd");
                 var endDate = date.End.ToString("yyyy-MM-dd");
 
                 var json = GetJson();
-                sessions = gAService.GetDeviceSessions(json, "198345607", startDate, endDate);
-                gAService.GetPageViews(json, "198345607", startDate, endDate);
+
+                sessions = gAService.GetDimensionsAndMetrics(
+                    json, 
+                    "198345607", 
+                    new List<Dimension>() { UserDimension.browser, UserDimension.campaign, UserDimension.age }, 
+                    new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers }, 
+                    startDate, endDate);
             }
 
             widgets.Add(new Widget("Devices")
