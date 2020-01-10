@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Bubble Chart", "086A8665-C70D-4495-8469-4D462A505AC5", Description = "This is a test")]
+    [ReportName("Bubble Chart", "086A8665-C70D-4495-8469-4D462A505AC5", Description = "This is a test", Folder = "test")]
     [ReportParams("Date", ReportInputType.DateRange, OrderId = 1)]
     public class BubbleChartReport : ReportEntity, IReport
     {

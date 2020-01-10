@@ -1,29 +1,38 @@
 ﻿@model IList<DashReportViewer.Shared.Models.Reporting.Report>
 
-@foreach (var report in Model)
+@{
+    var groupedReports = Model.GroupBy(m => m.Folder);
+}
+
+@foreach (var folder in groupedReports)
 {
-    if (String.IsNullOrWhiteSpace(report.Folder))
+    if (!String.IsNullOrWhiteSpace(folder.Key))
     {
-        <li class="nav-item active">
-            <a class="nav-link" href="~/report/reports?reportType=@(report.Id.ToString())">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>@(report.Name)</span>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>@(folder.Key)</span>
             </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    @foreach (var report in folder.ToList())
+                    {
+                        <a class="collapse-item" href="~/report/reports?reportType=@(report.Id.ToString())">@(report.Name)</a>
+                    }
+                </div>
+            </div>
         </li>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                @*<i class="fas fa-fw fa-cog"></i>*@
-                <span>@(report.Folder)</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="~/report/reports?reportType=@(report.Id.ToString())">@(report.Name)</a>
-                    @*<a class="collapse-item" href="cards.html">Cards</a>*@
-                </div>
-            </div>
-        </li>
+        @foreach (var report in folder.ToList())
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="~/report/reports?reportType=@(report.Id.ToString())">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>@(report.Name)</span>
+                </a>
+            </li>
+        }
     }
 }
