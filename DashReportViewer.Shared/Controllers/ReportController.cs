@@ -88,6 +88,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new ScatterChartReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(TextContent))
+                {
+                    components.Add(new TextReportComponent(widget));
+                }
             }
 
             if (report != null)

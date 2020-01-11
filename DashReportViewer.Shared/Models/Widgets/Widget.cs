@@ -5,7 +5,7 @@ namespace DashReportViewer.Shared.Models.Widgets
 {
     public class Widget
     {
-        public Widget(string Name)
+        public Widget(string Name = "")
         {
             this.Name = Name;
             //this.WidgetType = WidgetType;

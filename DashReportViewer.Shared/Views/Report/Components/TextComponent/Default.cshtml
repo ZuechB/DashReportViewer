@@ -1,0 +1,49 @@
+﻿@model DashReportViewer.Shared.ReportComponents.TextReportComponent
+
+@{
+    var content = (DashReportViewer.Shared.ReportContent.TextContent)Model.RawData;
+
+    string horizontalAlign = "left";
+    switch(content.HorizontalAlign)
+    {
+        case DashReportViewer.Shared.ReportContent.TextHorizontalAlign.Left:
+            horizontalAlign = "left";
+            break;
+        case DashReportViewer.Shared.ReportContent.TextHorizontalAlign.Center:
+            horizontalAlign = "center";
+            break;
+        case DashReportViewer.Shared.ReportContent.TextHorizontalAlign.Right:
+            horizontalAlign = "right";
+            break;
+    }
+
+    string verticalAlign = "top";
+    switch(content.VerticalAlign)
+    {
+        case DashReportViewer.Shared.ReportContent.TextVerticalAlign.Top:
+            verticalAlign = "top";
+            break;
+        case DashReportViewer.Shared.ReportContent.TextVerticalAlign.Middle:
+            verticalAlign = "middle";
+            break;
+        case DashReportViewer.Shared.ReportContent.TextVerticalAlign.Bottom:
+            verticalAlign = "bottom";
+            break;
+    }
+}
+
+<div class="card shadow mb-4" style="font-size">
+    @if (!String.IsNullOrWhiteSpace(Model.Name))
+    {
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    }
+    <div class="card-body" style="padding:unset;">
+        <div style="display:table; width: 100%; font-size:@(content.FontSize); text-align:@(horizontalAlign); height: @(content.WidgetHeight);">
+            <div style="display:table-cell; vertical-align: @(verticalAlign); width:100%; height:100%;">
+                @(content.Text)
+            </div>
+        </div>
+    </div>
+</div>

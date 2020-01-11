@@ -70,6 +70,10 @@
                     {
                         @await Component.InvokeAsync("ScatterChartComponent", component);
                     }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TextReportComponent))
+                    {
+                        @await Component.InvokeAsync("TextComponent", component);
+                    }
                     else
                     {
                         <div>
