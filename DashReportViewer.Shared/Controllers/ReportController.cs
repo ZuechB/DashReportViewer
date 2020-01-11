@@ -26,6 +26,11 @@ namespace DashReportViewer.Controllers
 
         public IActionResult Index()
         {
+            var report = reportService.GetReports(AppDomain.CurrentDomain).FirstOrDefault();
+            if (report != null)
+            {
+                return Redirect("~/report/reports?reportType=" + report.Id.ToString());
+            }
             return View();
         }
 

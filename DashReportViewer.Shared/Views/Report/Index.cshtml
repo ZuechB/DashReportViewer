@@ -1,28 +1,33 @@
 ﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
 @{
     Layout = "~/Views/Shared/_ReportLayout.cshtml";
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Welcome to DashReportViewer";
     ViewData["disableFilter"] = true;
 }
 
     <div>
-        This product is currently in development. This is what I am expecting to have on the official release.
+        <div>
+            <h2>Add your first report!</h2>  Visit <a target="_blank" href="https://github.com/ZuechB/DashReportViewer/wiki">https://github.com/ZuechB/DashReportViewer/wiki</a> to learn more!
+        </div>
 
-        <ol>
-            <li>More Charts!</li>
-            <li>Favorites</li>
-            <li>Authentication Example</li>
-            <li>Third party connections with Click Up and maybe even GA</li>
-            <li>Searching for reports</li>
-            <li>Basic color customization</li>
-            <li>Dragable and reorderable widgets</li>
-            <li>A better homepage that shows you your favorites and objectives</li>
-            <li>Webhooks for updating the UI in real-time from other software</li>
-            <li>Auto refresh option on reports</li>
-            <li>SQL sample page for when you aren't using LINQ</li>
-            <li>Conditional checking within your reports to highlight focus points</li>
-            <li>Hangfire support for performing background checks on data within your database</li>
-            <li>Sendgrid support for notifications and invites and screen shots</li>
-            <li>Share reports outside of your personal team</li>
-        </ol>
+        <div style="padding-top:50px;">
+            <h3>Features coming soon!</h3>
+            <ol>
+                <li>More Charts!</li>
+                <li>Favorites</li>
+                <li style="text-decoration: line-through;">Authentication Example</li>
+                <li>Third party connections with Click Up and maybe even GA (in progress)</li>
+                <li>Searching for reports</li>
+                <li>Basic color customization</li>
+                <li>Dragable and reorderable widgets</li>
+                <li>A better homepage that shows you your favorites and objectives</li>
+                <li>Webhooks for updating the UI in real-time from other software</li>
+                <li>Auto refresh option on reports</li>
+                <li>SQL sample page for when you aren't using LINQ - (Later release)</li>
+                <li>Conditional checking within your reports to highlight focus points</li>
+                <li>Hangfire support for performing background checks on data within your database</li>
+                <li>Sendgrid support for notifications and invites and screen shots</li>
+                <li>Share reports outside of your personal team</li>
+            </ol>
+        </div>
     </div>
