@@ -10,7 +10,7 @@
         public string id { get; set; }
         public string name { get; set; }
         public int orderindex { get; set; }
-        public bool override_statuses { get; set; }
+        public string override_statuses { get; set; }
         public bool hidden { get; set; }
         public string task_count { get; set; }
         public bool archived { get; set; }
@@ -31,7 +31,7 @@
         public object due_date { get; set; }
         public object start_date { get; set; }
         public bool archived { get; set; }
-        public bool override_statuses { get; set; }
+        public string override_statuses { get; set; }
         public Folders_Status1[] statuses { get; set; }
     }
 

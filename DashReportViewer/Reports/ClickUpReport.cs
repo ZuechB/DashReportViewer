@@ -38,7 +38,7 @@ namespace DashReportViewer.Reports
 
         private async Task<List<Widget>> GetAllSprints(List<Widget> widgets)
         {
-            var lists = await clickUpService.GetLists("2339092");
+            var lists = await clickUpService.GetLists("2339092", "sprint"); // will get all the lists with the name sprint in it like for example: sprint 1, sprint 2, etc...
             foreach (var item in lists)
             {
                 var tasks = await clickUpService.GetTasks(item.Key, true);

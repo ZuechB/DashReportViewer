@@ -12,7 +12,7 @@ namespace DashReportViewer.ClickUp
     public interface IClickUpService
     {
         Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false);
-        Task<Dictionary<string, string>> GetLists(string spaceId);
+        Task<Dictionary<string, string>> GetLists(string spaceId, string containsName);
     }
 
     public class ClickUpService : IClickUpService
@@ -36,7 +36,7 @@ namespace DashReportViewer.ClickUp
             return response.Content.tasks.ToList();
         }
 
-        public async Task<Dictionary<string, string>> GetLists(string spaceId)
+        public async Task<Dictionary<string, string>> GetLists(string spaceId, string containsName)
         {
             var dictionary = new Dictionary<string, string>();
 
@@ -47,15 +47,19 @@ namespace DashReportViewer.ClickUp
 
             foreach (var folder in response.Content.folders)
             {
-                Console.WriteLine(folder.name);
-
                 foreach (var list in folder.lists)
                 {
-                    if (list.name.ToLower().Contains("sprint"))
+                    if (!String.IsNullOrWhiteSpace(containsName))
+                    {
+                        if (list.name.ToLower().Contains(containsName))
+                        {
+                            dictionary.Add(list.id, list.name);
+                        }
+                    }
+                    else
                     {
                         dictionary.Add(list.id, list.name);
                     }
-                    Console.WriteLine(list.id + " - " + list.name);
                 }
             }
 
