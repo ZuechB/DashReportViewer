@@ -19,7 +19,7 @@
         public Tasks_Creator creator { get; set; }
         public Tasks_Assignee[] assignees { get; set; }
         public object[] checklists { get; set; }
-        public object[] tags { get; set; }
+        public Tag[] tags { get; set; }
         public object parent { get; set; }
         public object priority { get; set; }
         public object due_date { get; set; }

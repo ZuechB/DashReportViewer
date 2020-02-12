@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Click Up Sample", "724DB366-5A96-43F5-A2FC-20DC108597E8", Description = "Shows how to connect to third party services that are connected to DashReportViewer")]
+    [ReportName("Click Up Sample", "724DB366-5A96-43F5-A2FC-20DC108597E8", Description = "Shows how to connect to third party service that is connected to DashReportViewer")]
     [
         ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
         ReportParams("First Name", ReportInputType.TextBox, OrderId = 2)
@@ -28,12 +28,58 @@ namespace DashReportViewer.Reports
 
         protected override async Task<IEnumerable<object>> Main()
         {
-            var firstName = GetParameterValue<string>("FirstName");
-            var date = GetParameterValue<DateRange>("Date");
+            //var firstName = GetParameterValue<string>("FirstName");
+            //var date = GetParameterValue<DateRange>("Date");
             
             var widgets = new List<Widget>();
             widgets = await GetAllSprints(widgets);
+
+            widgets.Insert(0, TrendsGraph(widgets));
+
             return widgets;
+        }
+
+        private Widget TrendsGraph(List<Widget> widgets)
+        {
+            var dataPoints = new List<AreaChartDataPoint>();
+
+            var sprintPoints = new List<int>();
+            var bugPoints = new List<int>();
+            var sprintNames = new List<string>();
+            sprintNames.Add("Sprints");
+
+            foreach (var widget in widgets)
+            {
+                sprintNames.Add(widget.Name);
+
+                var table = (TableContent)widget.Content;
+                var tasks = (List<TasksPerSprint>)table.Content;
+
+                sprintPoints.Add(tasks.Where(t => t.Username != "Total").Sum(t => t.SprintPoints));
+                bugPoints.Add(tasks.Where(t => t.Username != "Total").Sum(t => t.BugPoints));
+            }
+
+            dataPoints.Add(new AreaChartDataPoint()
+            {
+                Label = "Sprint Points",
+                Data = sprintPoints
+            });
+
+            dataPoints.Add(new AreaChartDataPoint()
+            {
+                Label = "Bug Points",
+                Data = bugPoints
+            });
+
+            return new Widget("Tends over time")
+            {
+                Content = new AreaChartContent()
+                {
+                    dataPoints = dataPoints,
+                    XAxis = sprintNames
+                },
+                Column = 12
+            };
         }
 
         private async Task<List<Widget>> GetAllSprints(List<Widget> widgets)
@@ -43,42 +89,88 @@ namespace DashReportViewer.Reports
             {
                 var tasks = await clickUpService.GetTasks(item.Key, true);
 
-
                 var sprintTasks = new List<TasksPerSprint>();
 
-                var tasksByUser = tasks.Where(t => t.status.type == "closed").GroupBy(t => t.assignees.FirstOrDefault().username);
-                foreach (var userTask in tasksByUser)
+                var closedTickets = tasks.Where(t => t.status.type == "closed");
+                if (closedTickets != null)
                 {
-                    var sprintTask = new TasksPerSprint();
-                    sprintTask.Username = userTask.Key;
-                    sprintTask.Count = userTask.Count();
-
-                    foreach (var task in userTask)
+                    var tasksByUser = closedTickets.GroupBy(t => t.assignees.FirstOrDefault() != null ? t.assignees.FirstOrDefault().username : null);
+                    foreach (var userTask in tasksByUser)
                     {
-                        var scrumPoint = task.custom_fields.Where(c => c.name == "Scrum Points").FirstOrDefault();
-                        var option = scrumPoint.type_config.options.Where(t => t.orderindex == scrumPoint.value).FirstOrDefault();
-                        
-                        sprintTask.SprintPoints += Convert.ToInt32(option.name);
+                        var sprintTask = new TasksPerSprint();
+                        sprintTask.Username = userTask.Key;
+                        sprintTask.Count = userTask.Count();
+
+                        int totalTickets = 0;
+                        int totalBugs = 0;
+                        foreach (var task in userTask)
+                        {
+                            bool isBug = false;
+                            if (task.tags != null && task.tags.Any())
+                            {
+                                var bug = task.tags.Where(t => t.name.ToLower() == "bug").FirstOrDefault();
+                                if (bug != null)
+                                {
+                                    isBug = true;
+                                }
+                            }
+
+                            var scrumPoint = task.custom_fields.Where(c => c.name == "Scrum Points").FirstOrDefault();
+                            if (scrumPoint != null)
+                            {
+                                var option = scrumPoint.type_config.options.Where(t => t.orderindex == scrumPoint.value).FirstOrDefault();
+                                if (option != null)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(option.name))
+                                    {
+                                        if (!isBug)
+                                        {
+                                            sprintTask.SprintPoints += Convert.ToInt32(option.name);
+                                            totalTickets++;
+                                        }
+                                        else
+                                        {
+                                            sprintTask.BugPoints += Convert.ToInt32(option.name);
+                                            totalBugs++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        sprintTask.Tickets = totalTickets;
+                        sprintTask.Bugs = totalBugs;
+
+                        sprintTasks.Add(sprintTask);
                     }
 
-                    sprintTasks.Add(sprintTask);
-                }
-
-                sprintTasks.Add(new Models.TasksPerSprint()
-                {
-                    Username = "Total",
-                    Count = sprintTasks.Sum(t => t.Count),
-                    SprintPoints = sprintTasks.Sum(t => t.SprintPoints)
-                });
-
-                widgets.Add(new Widget(item.Value)
-                {
-                    Content = new TableContent()
+                    if (sprintTasks != null && !String.IsNullOrWhiteSpace(item.Value))
                     {
-                        Content = sprintTasks
-                    },
-                    Column = 6
-                });
+                        var count = sprintTasks.Sum(t => t.Count);
+                        var sprintPoints = sprintTasks.Sum(t => t.SprintPoints);
+
+                        if (count == 0 && sprintPoints == 0)
+                        {
+                            continue;
+                        }
+
+                        sprintTasks.Add(new Models.TasksPerSprint()
+                        {
+                            Username = "Total",
+                            Count = count,
+                            SprintPoints = sprintPoints
+                        });
+
+                        widgets.Add(new Widget(item.Value)
+                        {
+                            Content = new TableContent()
+                            {
+                                Content = sprintTasks
+                            },
+                            Column = 6
+                        });
+                    }
+                }
             }
 
             return widgets;
