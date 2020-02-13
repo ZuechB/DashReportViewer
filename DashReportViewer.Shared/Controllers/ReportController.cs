@@ -97,6 +97,10 @@ namespace DashReportViewer.Controllers
                 {
                     components.Add(new TextReportComponent(widget));
                 }
+                else if (widget.Content.GetType() == typeof(AnnotationChartContent))
+                {
+                    components.Add(new AnnotationChartReportComponent(widget));
+                }
             }
 
             if (report != null)
