@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_ReportLayout.cshtml";
     ViewData["Title"] = Model.ReportName;
     ViewData["AnyParams"] = Model.Parameters.Any();
+    ViewData["KioskMode"] = (Model.ContentType == DashReportViewer.Shared.Models.Reporting.ReportType.FullScreen ? true : false);
 }
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

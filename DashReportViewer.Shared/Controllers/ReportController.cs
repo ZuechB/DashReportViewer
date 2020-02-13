@@ -107,6 +107,7 @@ namespace DashReportViewer.Controllers
                     ReportDescription = report.Description,
                     UniqueID = report.Id,
                     Components = components,
+                    ContentType = ContentType,
                     Parameters = report.Parameters
                 };
 

@@ -11,6 +11,7 @@ namespace DashReportViewer.Shared.Models.Reporting
 
         public string ReportName { get; set; }
         public string ReportDescription { get; set; }
+        public ReportType ContentType { get; set; }
         public Guid UniqueID { get; set; }
         public IEnumerable<ReportParams> Parameters
         {
