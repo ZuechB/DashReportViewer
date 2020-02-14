@@ -49,8 +49,6 @@ namespace DashReportViewer.Shared.Services
             return instance;
         }
 
-
-
         public Report GetReport(AppDomain domain, Guid id)
         {
             return GetReports(domain).Where(r => r.Id == id).FirstOrDefault();
@@ -59,9 +57,6 @@ namespace DashReportViewer.Shared.Services
         public IList<Report> GetReports(AppDomain domain, long? UserId = null)
         {
             var reports = new List<Report>();
-
-            
-
             var reportTypes = GetReportTypesInNamespace(domain.GetAssemblies().Where(a => a.FullName.Contains(appSettings.ProjectName)));
 
             foreach (var report in reportTypes)

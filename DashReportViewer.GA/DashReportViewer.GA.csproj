@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.AnalyticsReporting.v4" Version="1.43.0.1828" />
+    <PackageReference Include="Google.Apis.AnalyticsReporting.v4" Version="1.43.0.1856" />
   </ItemGroup>
 
 </Project>
