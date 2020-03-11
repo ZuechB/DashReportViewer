@@ -1,4 +1,5 @@
-﻿using DashReportViewer.Models;
+﻿using DashReportViewer.AzureDevOps.Models;
+using DashReportViewer.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,6 @@ namespace DashReportViewer.Context
     {
         public DashReportViewerContext(DbContextOptions<DashReportViewerContext> options) : base(options) { }
 
-
+        public DbSet<AzureDevOp> AzureDevOps { get; set; }
     }
 }

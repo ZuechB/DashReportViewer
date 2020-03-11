@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewer.ClickUp", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewer.GA", "DashReportViewer.GA\DashReportViewer.GA.csproj", "{B1D5B824-D5C5-4C74-A333-4113AF9AA2D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashReportViewerKiosk", "DashReportViewerKiosk\DashReportViewerKiosk.csproj", "{BE1B8CB0-3F27-4DBC-96E7-D8B1D868852F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewerKiosk", "DashReportViewerKiosk\DashReportViewerKiosk.csproj", "{BE1B8CB0-3F27-4DBC-96E7-D8B1D868852F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

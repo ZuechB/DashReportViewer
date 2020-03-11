@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Annotation Chart (In Development)", "927D99A4-71AD-4BEF-A12C-BFE8428D0ACB", Description = "This is a test", Folder = "test")]
-    public class AnnotationChartReport : ReportEntity, IReport
+    [ReportName("Column Chart", "35E385C0-BC0E-4A60-AAA0-6A42406CA2E9", Description = "This is a test", Folder = "test")]
+    public class ColumnChartReport : ReportEntity, IReport
     {
-        public AnnotationChartReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
+        public ColumnChartReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {
@@ -23,9 +23,9 @@ namespace DashReportViewer.Reports
                 var widgets = new List<Widget>();
 
 
-                widgets.Add(new Widget("Annotation Chart")
+                widgets.Add(new Widget("Column Chart Report")
                 {
-                    Content = new AnnotationChartContent()
+                    Content = new ColumnChartContent()
                     {
 
                     },

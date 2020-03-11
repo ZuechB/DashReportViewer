@@ -79,6 +79,10 @@
                     {
                         @await Component.InvokeAsync("AnnotationChartComponent", component);
                     }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.ColumnChartComponent))
+                    {
+                        @await Component.InvokeAsync("ColumnChartComponent", component);
+                    }
                     else
                     {
                         <div>

@@ -1,0 +1,61 @@
+﻿@model DashReportViewer.Shared.ReportComponents.AnnotationChartReportComponent
+
+@*@{
+    var dataPoints = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).dataPoints;
+    var xAxis = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).XAxis;
+}*@
+
+<script type="text/javascript">
+
+    google.charts.setOnLoadCallback(drawChart@(Model.Index));
+
+    function drawChart@(Model.Index)() {
+
+        @*var dataPoints = @Html.Raw(Json.Serialize(dataPoints));
+        var xAxis = @Html.Raw(Json.Serialize(xAxis));*@
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'Kepler-22b mission');
+        data.addColumn('string', 'Kepler title');
+        data.addColumn('string', 'Kepler text');
+        data.addColumn('number', 'Gliese 163 mission');
+        data.addColumn('string', 'Gliese title');
+        data.addColumn('string', 'Gliese text');
+        data.addRows([
+          [new Date(2314, 2, 15), 12400, undefined, undefined,
+                                  10645, undefined, undefined],
+          [new Date(2314, 2, 16), 24045, 'Lalibertines', 'First encounter',
+                                  12374, undefined, undefined],
+          [new Date(2314, 2, 17), 35022, 'Lalibertines', 'They are very tall',
+                                  15766, 'Gallantors', 'First Encounter'],
+          [new Date(2314, 2, 18), 12284, 'Lalibertines', 'Attack on our crew!',
+                                  34334, 'Gallantors', 'Statement of shared principles'],
+          [new Date(2314, 2, 19), 8476, 'Lalibertines', 'Heavy casualties',
+                                  66467, 'Gallantors', 'Mysteries revealed'],
+          [new Date(2314, 2, 20), 0, 'Lalibertines', 'All crew lost',
+                                  79463, 'Gallantors', 'Omniscience achieved']
+        ]);
+
+        var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div@(Model.Index)'));
+
+        var options = {
+          displayAnnotations: true
+        };
+
+        chart.draw(data, options);
+    }
+</script>
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@(Model.Name)</h6>
+    </div>
+    <div class="card-body">
+
+        <div id="chart_div@(Model.Index)" style="height: 500px;"></div>
+
+    </div>
+</div>

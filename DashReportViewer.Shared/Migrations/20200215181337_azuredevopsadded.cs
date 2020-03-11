@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DashReportViewer.Migrations
+namespace DashReportViewer.Shared.Migrations
 {
-    public partial class init : Migration
+    public partial class azuredevopsadded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,6 +52,26 @@ namespace DashReportViewer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AzureDevOps",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EnvironmentId = table.Column<long>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    Owner = table.Column<string>(nullable: true),
+                    ReleaseName = table.Column<string>(nullable: true),
+                    DeploymentText = table.Column<string>(nullable: true),
+                    ProjectName = table.Column<string>(nullable: true),
+                    EnvironmentName = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AzureDevOps", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,6 +236,9 @@ namespace DashReportViewer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AzureDevOps");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

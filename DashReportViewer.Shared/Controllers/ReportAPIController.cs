@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DashReportViewer.Shared.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DashReportViewer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ReportAPIController : ControllerBase
     {
         readonly IReportService reportService;
-
         public ReportAPIController(IReportService reportService)
         {
             this.reportService = reportService;

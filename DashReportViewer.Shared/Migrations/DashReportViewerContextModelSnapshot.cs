@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DashReportViewer.Migrations
+namespace DashReportViewer.Shared.Migrations
 {
     [DbContext(typeof(DashReportViewerContext))]
     partial class DashReportViewerContextModelSnapshot : ModelSnapshot
@@ -15,9 +15,48 @@ namespace DashReportViewer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DashReportViewer.AzureDevOps.Models.AzureDevOp", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeploymentText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("EnvironmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("EnvironmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ReleaseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReleaseName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AzureDevOps");
+                });
 
             modelBuilder.Entity("DashReportViewer.Models.ApplicationUser", b =>
                 {
