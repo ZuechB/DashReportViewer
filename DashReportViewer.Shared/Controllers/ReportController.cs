@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportComponents;
@@ -11,6 +12,7 @@ using DashReportViewer.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace DashReportViewer.Controllers
 {
@@ -18,10 +20,12 @@ namespace DashReportViewer.Controllers
     public class ReportController : Controller
     {
         readonly IReportService reportService;
+        readonly DashReportAppSettings appSettings;
 
-        public ReportController(IReportService reportService)
+        public ReportController(IReportService reportService, IOptions<DashReportAppSettings> appSettings)
         {
             this.reportService = reportService;
+            this.appSettings = appSettings.Value;
         }
 
         public IActionResult Index()
@@ -112,7 +116,8 @@ namespace DashReportViewer.Controllers
                     UniqueID = report.Id,
                     Components = components,
                     ContentType = ContentType,
-                    Parameters = report.Parameters
+                    Parameters = report.Parameters,
+                    SideBarBackgroundColor = appSettings.SideBarColor
                 };
 
                 return View(viewModel);
@@ -121,51 +126,51 @@ namespace DashReportViewer.Controllers
         }
 
 
-        private DataTable ConvertToDataTable(List<string> columns, List<List<object>> dataTable)
-        {
-            DataTable dt = new DataTable();
-            foreach (var cItem in columns)
-            {
-                dt.Columns.Add(cItem);
-            }
+        //private DataTable ConvertToDataTable(List<string> columns, List<List<object>> dataTable)
+        //{
+        //    DataTable dt = new DataTable();
+        //    foreach (var cItem in columns)
+        //    {
+        //        dt.Columns.Add(cItem);
+        //    }
 
-            foreach (var dItem in dataTable)
-            {
-                object[] rowObj = new object[(dItem.Count())];
-                for (int i = 0; i < (dItem.Count()); i++)
-                {
-                    rowObj[i] = dItem[i];
-                }
+        //    foreach (var dItem in dataTable)
+        //    {
+        //        object[] rowObj = new object[(dItem.Count())];
+        //        for (int i = 0; i < (dItem.Count()); i++)
+        //        {
+        //            rowObj[i] = dItem[i];
+        //        }
 
-                dt.Rows.Add(rowObj);
-            }
-            return dt;
-        }
+        //        dt.Rows.Add(rowObj);
+        //    }
+        //    return dt;
+        //}
 
-        private string CellToString(object dataCell)
-        {
-            if (dataCell.GetType() == typeof(decimal))
-            {
-                return ((decimal)dataCell).ToString("C");
-            }
+        //private string CellToString(object dataCell)
+        //{
+        //    if (dataCell.GetType() == typeof(decimal))
+        //    {
+        //        return ((decimal)dataCell).ToString("C");
+        //    }
 
-            return dataCell.ToString();
-        }
+        //    return dataCell.ToString();
+        //}
 
-        private List<List<object>> CellsToString(List<List<object>> data)
-        {
-            List<List<object>> toReturn = new List<List<object>>();
-            foreach (var row in data)
-            {
-                var stringRow = new List<object>();
-                toReturn.Add(stringRow);
-                foreach (var cell in row)
-                {
-                    stringRow.Add(CellToString(cell));
-                }
-            }
+        //private List<List<object>> CellsToString(List<List<object>> data)
+        //{
+        //    List<List<object>> toReturn = new List<List<object>>();
+        //    foreach (var row in data)
+        //    {
+        //        var stringRow = new List<object>();
+        //        toReturn.Add(stringRow);
+        //        foreach (var cell in row)
+        //        {
+        //            stringRow.Add(CellToString(cell));
+        //        }
+        //    }
 
-            return toReturn;
-        }
+        //    return toReturn;
+        //}
     }
 }

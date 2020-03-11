@@ -4,6 +4,7 @@
     ViewData["Title"] = Model.ReportName;
     ViewData["AnyParams"] = Model.Parameters.Any();
     ViewData["KioskMode"] = (Model.ContentType == DashReportViewer.Shared.Models.Reporting.ReportType.FullScreen ? true : false);
+    ViewData["SideBarBackgroundColor"] = Model.SideBarBackgroundColor;
 }
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

@@ -9,6 +9,8 @@ namespace DashReportViewer.Shared.Models.Reporting
     {
         private IEnumerable<ReportParams> parameters = new List<ReportParams>();
 
+        public string SideBarBackgroundColor { get; set; }
+
         public string ReportName { get; set; }
         public string ReportDescription { get; set; }
         public ReportType ContentType { get; set; }
