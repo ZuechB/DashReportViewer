@@ -1,0 +1,217 @@
+﻿@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+    ViewData["Title"] = "Welcome to DashReportViewer";
+    ViewData["disableFilter"] = true;
+    ViewData["KioskMode"] = false;
+}
+
+<style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+        background-color: #EFEFEF;
+    }
+
+    #editor {
+        margin: 0;
+        /*position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 320px;
+        left: 0;*/
+        border-right: 1px solid black;
+        width:100%;
+        height:500px;
+    }
+
+    #info {
+        position: absolute;
+        top: 30px;
+        bottom: 10px;
+        right: 10px;
+        width: 300px;
+        font-size: 12px;
+    }
+
+    .hotkeys td {
+        vertical-align: top;
+    }
+
+    .hotkeys tr td:nth-child(2) {
+        padding-left: 7px;
+    }
+
+    h3 {
+        margin-top: 20px;
+        margin-bottom: 3px
+    }
+</style>
+
+
+
+<div>
+    <pre id="editor"></pre>
+
+    <select id="modeSelect" onchange="window.location.hash=this.value; setModeFromHash();" style="visibility:hidden;">
+        <option>javascript</option>
+        <option>html</option>
+    </select>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="~/ace-builds/src-noconflict/ace.js"></script>
+@*<script src="~/ace-builds/src-noconflict/ext-language_tools.js"></script>*@
+<script>
+    // set to false to prevent using worker, which is needed to run this from local html file due to browser security restritions
+    var useWebWorker = window.location.search.toLowerCase().indexOf('noworker') == -1;
+
+
+    //create editor
+    var editor = ace.edit("editor");
+    editor.getSession().setUseWorker(useWebWorker);
+
+    setModeFromHash(); //set editor content for demo only
+
+    //#region not relevant to tern, just some deafults I prefer
+    editor.setTheme("ace/theme/chrome");
+    editor.getSession().setUseWrapMode(true);
+    editor.getSession().setWrapLimitRange(null, null);
+    editor.setShowPrintMargin(false);
+    editor.$blockScrolling = Infinity;//prevents ace from logging annoying warnings
+    //#endregion
+
+
+    //editor.setOptions({
+    //    enableBasicAutocompletion: true,
+    //    enableSnippets: true,
+    //    enableLiveAutocompletion: false,
+    //});
+
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false,
+        theme: 'ace/theme/tomorrow_night'
+    });
+
+    //ace.config.loadModule('ace/ext/language_tools', function (langTools) {
+
+    //    var staticWordCompleter = {
+    //        getCompletions: function(editor, session, pos, prefix, callback) {
+    //            var wordList = ["database", "bar", "baz", "Brandon"];
+    //            callback(null, wordList.map(function(word) {
+    //                return {
+    //                    caption: word,
+    //                    value: word,
+    //                    meta: "static"
+    //                };
+    //            }));
+
+    //        }
+    //    }
+    //    langTools.addCompleter(staticWordCompleter);
+    //});
+
+
+    ace.config.loadModule('ace/ext/tern', function () {
+
+        editor.setOptions({
+            /**
+             * Either `true` or `false` or to enable with custom options pass object that
+             * has options for tern server: http://ternjs.net/doc/manual.html#server_api
+             * If `true`, then default options will be used
+             */
+            enableTern: {
+                /* http://ternjs.net/doc/manual.html#option_defs */
+                defs: ['ecma5'],
+                /* http://ternjs.net/doc/manual.html#plugins */
+                plugins: {
+                    doc_comment: {
+                        fullDocs: true
+                    }
+                },
+                /**
+                 * (default is true) If web worker is used for tern server.
+                 * This is recommended as it offers better performance, but prevents this from working in a local html file due to browser security restrictions
+                 */
+                useWorker: useWebWorker,
+                /* if your editor supports switching between different files (such as tabbed interface) then tern can do this when jump to defnition of function in another file is called, but you must tell tern what to execute in order to jump to the specified file */
+                switchToDoc: function (name, start) {
+                    console.log('switchToDoc called but not defined. name=' + name + '; start=', start);
+                },
+                /**
+                 * if passed, this function will be called once ternServer is started.
+                 * This is needed when useWorker=false because the tern source files are loaded asynchronously before the server is started.
+                 */
+                startedCb: function () {
+                    //once tern is enabled, it can be accessed via editor.ternServer
+                    console.log('editor.ternServer:', editor.ternServer);
+                },
+            }
+        });
+    });
+
+    
+    
+
+
+    //#region not relevant to tern (custom beautify plugin) and demo loading
+    ace.config.loadModule('ace/ext/html_beautify', function (beautify) {
+
+        editor.setOptions({
+
+            // beautify when closing bracket typed in javascript or css mode
+            autoBeautify: true,
+            // this enables the plugin to work with hotkeys (ctrl+b to beautify)
+            htmlBeautify: true,
+        });
+
+        //modify beautify options as needed:
+        window.beautifyOptions = beautify.options;
+        console.log('beautifyOptions:', beautifyOptions);
+    });
+
+    function GetFile(file, c) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", file, true);
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) c(xhr.responseText, xhr.status);
+        };
+    }
+
+    function setModeFromHash() {
+        var available = [];
+        var modeSelect = document.getElementById('modeSelect');
+        for (var i = 0; i < modeSelect.options.length; i++) {
+            available.push(modeSelect.options[i].text);
+        }
+        var mode = window.location.hash.replace('#', '');
+        if (!mode || available.indexOf(mode) === -1) {
+            window.location.hash = modeSelect.value;
+            setModeFromHash();
+            return;
+        }
+
+        if (modeSelect.value != mode)
+            modeSelect.options[available.indexOf(mode)].selected = true;
+
+        editor.session.setMode("ace/mode/" + mode);
+    }
+        //#endregion
+</script>
