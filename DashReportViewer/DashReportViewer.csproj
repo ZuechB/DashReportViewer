@@ -20,9 +20,11 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Apolloio\Apolloio.csproj" />
     <ProjectReference Include="..\DashReportViewer.ClickUp\DashReportViewer.ClickUp.csproj" />
     <ProjectReference Include="..\DashReportViewer.GA\DashReportViewer.GA.csproj" />
     <ProjectReference Include="..\DashReportViewer.Shared\DashReportViewer.Shared.csproj" />
+    <ProjectReference Include="..\DashReportViewer.Stripe\DashReportViewer.Stripe.csproj" />
   </ItemGroup>
 
 

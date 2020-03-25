@@ -1,3 +1,4 @@
+using Apolloio;
 using Authsome;
 using DashReportViewer.ClickUp;
 using DashReportViewer.ClickUp.Settings;
@@ -6,6 +7,7 @@ using DashReportViewer.GA;
 using DashReportViewer.Models;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
+using DashReportViewer.Stripe;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -71,10 +73,13 @@ namespace DashReportViewer
             services.AddScoped<IClickUpService, ClickUpService>();
             services.AddScoped<IGAService, GAService>();
             services.AddScoped<IAzureDevOpsService, AzureDevOpsService>(); // required for AzureDevOps Webhook
+            services.AddScoped<IApolloService, ApolloService>();
+            services.AddScoped<IStripeService, StripeService>();
+
+            
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
             services.Configure<DashReportAppSettings>(appSettings);
-
 
             var clickUpSettings = Configuration.GetSection("ClickUpSettings");
             services.Configure<ClickUpSettings>(clickUpSettings);
