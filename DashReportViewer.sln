@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewer.GA", "Dash
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewerKiosk", "DashReportViewerKiosk\DashReportViewerKiosk.csproj", "{BE1B8CB0-3F27-4DBC-96E7-D8B1D868852F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apolloio", "Apolloio\Apolloio.csproj", "{A4D081AB-3A05-4203-B7A0-26E6F0D0E2EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apolloio", "Apolloio\Apolloio.csproj", "{A4D081AB-3A05-4203-B7A0-26E6F0D0E2EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashReportViewer.Stripe", "DashReportViewer.Stripe\DashReportViewer.Stripe.csproj", "{F0BDB626-072D-41E8-8608-3DAA51A0B68F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DashReportViewer.Stripe", "DashReportViewer.Stripe\DashReportViewer.Stripe.csproj", "{F0BDB626-072D-41E8-8608-3DAA51A0B68F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashReportViewer.GoogleSheets", "DashReportViewer.GoogleSheets\DashReportViewer.GoogleSheets.csproj", "{A7809453-CC6E-4158-8F3F-53FCB6000D1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{F0BDB626-072D-41E8-8608-3DAA51A0B68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0BDB626-072D-41E8-8608-3DAA51A0B68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0BDB626-072D-41E8-8608-3DAA51A0B68F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7809453-CC6E-4158-8F3F-53FCB6000D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7809453-CC6E-4158-8F3F-53FCB6000D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7809453-CC6E-4158-8F3F-53FCB6000D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7809453-CC6E-4158-8F3F-53FCB6000D1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{B1D5B824-D5C5-4C74-A333-4113AF9AA2D6} = {EB385E8C-6661-4600-B5CB-EDFFA6CFA29B}
 		{A4D081AB-3A05-4203-B7A0-26E6F0D0E2EA} = {EB385E8C-6661-4600-B5CB-EDFFA6CFA29B}
 		{F0BDB626-072D-41E8-8608-3DAA51A0B68F} = {EB385E8C-6661-4600-B5CB-EDFFA6CFA29B}
+		{A7809453-CC6E-4158-8F3F-53FCB6000D1E} = {EB385E8C-6661-4600-B5CB-EDFFA6CFA29B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0A0B10B-57F9-492A-A1F7-EC89183E08FC}
