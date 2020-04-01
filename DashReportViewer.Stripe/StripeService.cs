@@ -1,9 +1,10 @@
 ﻿using DashReportViewer.Stripe.Models;
 using Stripe;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using NetCoreBackPack.Currency;
+using Microsoft.Extensions.Options;
 
 namespace DashReportViewer.Stripe
 {
@@ -14,57 +15,40 @@ namespace DashReportViewer.Stripe
 
     public class StripeService : IStripeService
     {
-        public StripeService()
+        readonly StripeSettings appSettings;
+        public StripeService(IOptions<StripeSettings> appSettings)
         {
-
+            this.appSettings = appSettings.Value;
         }
 
         public async Task<List<StripeTransaction>> GetListOfTransactions()
         {
             var transactions = new List<StripeTransaction>();
 
-            var stripeClient = new StripeClient("");
+            var stripeClient = new StripeClient(appSettings.ApiSecret);
 
-            var options = new ChargeListOptions { Limit = 3 };
+            var options = new ChargeListOptions { Limit = 100 };
             var service = new ChargeService(stripeClient);
             StripeList<Charge> charges = service.List(
               options
             );
 
-            return charges.Data.Select(c => new StripeTransaction
+            return charges.Data.Select(c => new StripeTransaction()
             {
-                id = c.Id,
-                paid = c.Paid,
-                amount = c.Amount,
-                created = c.Created,
-                failure_code = c.FailureCode,
-                failure_message = c.FailureMessage
+                Id = c.Id,
+                Paid = c.Paid,
+                ApplicationFeeAmount = Dollars.CentsToDollar(c.ApplicationFeeAmount != null ? c.ApplicationFeeAmount.Value : 0),
+                Status = c.Status,
+                Description = c.Description,
+                PaymentType = c.Object,
+                AmountRefunded = Dollars.CentsToDollar(c.AmountRefunded),
+                Amount = Dollars.CentsToDollar(c.Amount),
+                Created = c.Created,
+                FailureCode = c.FailureCode,
+                FailureMessage = c.FailureMessage,
+                TotalAmount = Dollars.CentsToDollar(c.Amount) - Dollars.CentsToDollar(c.AmountRefunded)
 
             }).ToList();
         }
-
-        //public void CopyProperties(object objSource, object objDestination)
-        //{
-        //    //get the list of all properties in the destination object
-        //    var destProps = objDestination.GetType().GetProperties();
-
-        //    //get the list of all properties in the source object
-        //    foreach (var sourceProp in objSource.GetType().GetProperties())
-        //    {
-        //        foreach (var destProperty in destProps)
-        //        {
-        //            //if we find match between source & destination properties name, set
-        //            //the value to the destination property
-        //            if (destProperty.Name == sourceProp.Name &&
-        //                    destProperty.PropertyType.IsAssignableFrom(sourceProp.PropertyType))
-        //            {
-        //                destProperty.SetValue(destProps, sourceProp.GetValue(
-        //                    sourceProp, new object[] { }), new object[] { });
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-
     }
 }

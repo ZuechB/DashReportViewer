@@ -28,31 +28,28 @@ namespace DashReportViewer.Reports
             var transactions = await stripeService.GetListOfTransactions();
 
 
-            widgets.Add(new Widget("Users")
+            widgets.Add(new Widget("Total Amount")
+            {
+                Content = new TextContent()
+                {
+                    Text = transactions.Sum(t => t.TotalAmount).ToString("C"),
+                    FontSize = "30px",
+                    HorizontalAlign = TextHorizontalAlign.Center,
+                    VerticalAlign = TextVerticalAlign.Middle,
+                    WidgetHeight = "200px"
+                },
+                Column = 3
+            });
+
+
+            widgets.Add(new Widget("Payment History")
             {
                 Content = new TableContent()
                 {
                     Content = transactions
-
                 },
                 Column = 12
             });
-
-            return widgets;
-
-
-            //widgets.Add(new Widget()
-            //{
-            //    Content = new TextContent()
-            //    {
-            //        Text = authResponse.is_logged_in,
-            //        FontSize = "30px",
-            //        HorizontalAlign = TextHorizontalAlign.Center,
-            //        VerticalAlign = TextVerticalAlign.Middle,
-            //        WidgetHeight = "200px"
-            //    },
-            //    Column = 3
-            //});
 
             return widgets;
         }

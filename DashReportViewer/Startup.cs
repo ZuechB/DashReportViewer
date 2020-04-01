@@ -8,6 +8,7 @@ using DashReportViewer.Models;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
 using DashReportViewer.Stripe;
+using DashReportViewer.Stripe.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -83,6 +84,10 @@ namespace DashReportViewer
 
             var clickUpSettings = Configuration.GetSection("ClickUpSettings");
             services.Configure<ClickUpSettings>(clickUpSettings);
+
+            var StripeSettings = Configuration.GetSection("StripeSettings");
+            services.Configure<StripeSettings>(StripeSettings);
+            
 
 
             services.AddControllersWithViews();

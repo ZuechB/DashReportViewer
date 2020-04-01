@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stripe.net" Version="35.9.0" />
+    <PackageReference Include="NetCoreBackPack" Version="1.0.0" />
+    <PackageReference Include="Stripe.net" Version="35.11.1" />
   </ItemGroup>
 
 </Project>
