@@ -29,7 +29,7 @@ namespace DashReportViewer.Stripe
 
             var options = new ChargeListOptions { Limit = 100 };
             var service = new ChargeService(stripeClient);
-            StripeList<Charge> charges = service.List(
+            StripeList<Charge> charges = await service.ListAsync(
               options
             );
 
