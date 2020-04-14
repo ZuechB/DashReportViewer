@@ -44,7 +44,7 @@ namespace DashReportViewer.Reports
                     json, 
                     "198345607", 
                     new List<Dimension>() { UserDimension.browser, UserDimension.campaign, UserDimension.age }, 
-                    new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers }, 
+                    new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers },     
                     startDate, endDate);
             }
 

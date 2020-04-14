@@ -1,9 +1,9 @@
-using Apolloio;
 using Authsome;
 using DashReportViewer.ClickUp;
 using DashReportViewer.ClickUp.Settings;
 using DashReportViewer.Context;
 using DashReportViewer.GA;
+using DashReportViewer.GoogleSheets;
 using DashReportViewer.Models;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Services;
@@ -74,10 +74,9 @@ namespace DashReportViewer
             services.AddScoped<IClickUpService, ClickUpService>();
             services.AddScoped<IGAService, GAService>();
             services.AddScoped<IAzureDevOpsService, AzureDevOpsService>(); // required for AzureDevOps Webhook
-            services.AddScoped<IApolloService, ApolloService>();
             services.AddScoped<IStripeService, StripeService>();
+            services.AddScoped<IGSheetsService, GSheetsService>();
 
-            
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
             services.Configure<DashReportAppSettings>(appSettings);
@@ -87,7 +86,9 @@ namespace DashReportViewer
 
             var StripeSettings = Configuration.GetSection("StripeSettings");
             services.Configure<StripeSettings>(StripeSettings);
-            
+
+            var GSheetSettings = Configuration.GetSection("GoogleService");
+            services.Configure<GoogleJson>(GSheetSettings);
 
 
             services.AddControllersWithViews();
