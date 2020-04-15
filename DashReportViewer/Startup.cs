@@ -41,7 +41,7 @@ namespace DashReportViewer
             });
 
             services.AddDbContext<DashReportViewerContext>(options =>
-                options.UseSqlServer(DBConnectionStrings.DevelopmentDatabase));
+                options.UseSqlServer("Data Source=localhost;Initial Catalog=DashReportViewer;Integrated Security=true;"));
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<DashReportViewerContext>();
@@ -131,12 +131,12 @@ namespace DashReportViewer
             });
         }
 
-        //private void ApplyMigration(IApplicationBuilder app)
-        //{
-        //    using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-        //    {
-        //        scope.ServiceProvider.GetRequiredService<DashReportViewerContext>().Database.Migrate();
-        //    }
-        //}
+        private void ApplyMigration(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<DashReportViewerContext>().Database.Migrate();
+            }
+        }
     }
 }
