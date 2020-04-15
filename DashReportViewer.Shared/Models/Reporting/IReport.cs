@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DashReportViewer.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace DashReportViewer.Shared.Models.Reporting
         void RowClick(int Id);
         void RowClick(Guid Id);
         void RowClick(long Id);
+
+        Task<ApplicationUser> GetCurrentUser();
 
         Task Run();
     }

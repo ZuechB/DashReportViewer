@@ -7,7 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+using DashReportViewer.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using DashReportViewer.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -45,6 +49,19 @@ namespace DashReportViewer.Shared.Services
             return reportService.GetService<T>();
         }
 
+        public async Task<ApplicationUser> GetCurrentUser()
+        {
+            var httpContextAccessor = GetService<IHttpContextAccessor>();
+            var context = GetService<DashReportViewerContext>();
+            var userIdContext = httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+            if (userIdContext != null)
+            {
+                var userId = Convert.ToInt64(userIdContext.Value);
+                return await context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            }
+
+            return null;
+        }
 
         public IList<ReportParams> Parameters
         {

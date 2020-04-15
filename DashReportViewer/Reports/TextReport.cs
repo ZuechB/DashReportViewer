@@ -1,12 +1,9 @@
 ﻿using DashReportViewer.Shared.Attributes;
-using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
@@ -18,28 +15,26 @@ namespace DashReportViewer.Reports
 
         protected override async Task<IEnumerable<object>> Main()
         {
-            return await Task.Run(() =>
+            var widgets = new List<Widget>();
+
+            var currentUser = await GetCurrentUser();
+
+
+            widgets.Add(new Widget()
             {
-                var widgets = new List<Widget>();
-
-
-                widgets.Add(new Widget()
+                Content = new TextContent()
                 {
-                    Content = new TextContent()
-                    {
-                        Text = "Hello World!",
-                        FontSize = "30px",
-                        HorizontalAlign = TextHorizontalAlign.Center,
-                        VerticalAlign = TextVerticalAlign.Middle,
-                        WidgetHeight = "200px"
-                    },
-                    Column = 3
-                });
-
-
-                return widgets;
+                    Text = "Hello " + currentUser.FullName,
+                    FontSize = "30px",
+                    HorizontalAlign = TextHorizontalAlign.Center,
+                    VerticalAlign = TextVerticalAlign.Middle,
+                    WidgetHeight = "200px"
+                },
+                Column = 3
             });
-        }
 
+
+            return widgets;
+        }
     }
 }
