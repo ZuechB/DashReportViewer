@@ -76,7 +76,7 @@ namespace DashReportViewer
             services.AddScoped<IAzureDevOpsService, AzureDevOpsService>(); // required for AzureDevOps Webhook
             services.AddScoped<IStripeService, StripeService>();
             services.AddScoped<IGSheetsService, GSheetsService>();
-
+            services.AddScoped<IUserService, UserService>();
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
             services.Configure<DashReportAppSettings>(appSettings);
