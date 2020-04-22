@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DashReportViewer.Shared.RealTimeCompiler;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,8 @@ namespace DashReportViewer.Shared.Controllers
         [HttpPost]
         public async Task<IActionResult> Execute(string code)
         {
-            // https://github.com/sebastienros/jint
-
-            return Json("");
+            var result = Compile.Execute(code);
+            return Json(result);
         }
     }
 }

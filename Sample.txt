@@ -1,0 +1,23 @@
+using System;
+
+namespace RoslynCompileSample
+{
+	public class Writer
+	{
+		public string Write(string message)
+		{
+			var myMoney = Test();
+			message = myMoney + " " + message;
+			return message;
+		}
+
+		public string Test()
+		{
+			decimal money = 0.00m;
+
+			money += 5.00m;
+
+			return money.ToString();
+		}
+	}
+}
