@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using DashReportViewer.Shared.Models.CoreBackPack.Time;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
@@ -21,22 +22,40 @@ namespace DashReportViewer.Shared.RealTimeCompiler
 
 
             var coreDir = Path.GetDirectoryName(typeof(object).GetTypeInfo().Assembly.Location);
-            var mscorlib = MetadataReference.CreateFromFile(Path.Combine(coreDir, "mscorlib.dll"));
+            
+            var files = Directory.GetFiles(coreDir, "*.dll");
+
+            List<MetadataReference> references = new List<MetadataReference>();
+            foreach (var item in files)
+            {
+                var fi = new FileInfo(item);
+                if (fi.Name.Contains("System."))
+                {
+                    references.Add(MetadataReference.CreateFromFile(item));
+                }
+            }
+
+            references.Add(MetadataReference.CreateFromFile(typeof(TimeZoneExtention).Assembly.Location));
+
+
+
 
             // define other necessary objects for compilation
             string assemblyName = Path.GetRandomFileName();
-            MetadataReference[] references = new MetadataReference[]
-            {
-                //MetadataReference.CreateAssemblyReference("mscorlib"),
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(String).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Assembly).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(decimal).Assembly.Location),
-                MetadataReference.CreateFromFile(@"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\v4.6.1\\Facades\\System.Runtime.dll"),
-                mscorlib
-            };
+            //MetadataReference[] references = new MetadataReference[]
+            //{
+            //    //MetadataReference.CreateAssemblyReference("mscorlib"),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "mscorlib.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Linq.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Data.Linq.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Data.DataSetExtensions.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Xml.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Xml.Linq.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.dll")),
+            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Core.dll")),
+            //    MetadataReference.CreateFromFile(typeof(TimeZoneExtention).Assembly.Location)
+            //};
 
             // analyse and generate IL code from syntax tree
             CSharpCompilation compilation = CSharpCompilation.Create(
@@ -69,27 +88,39 @@ namespace DashReportViewer.Shared.RealTimeCompiler
                     ms.Seek(0, SeekOrigin.Begin);
                     Assembly assembly = Assembly.Load(ms.ToArray());
 
-                    // create instance of the desired class and call the desired function
-                    Type type = assembly.GetType("DashReportViewer.Reports.Report");
-                    object obj = Activator.CreateInstance(type);
-                    var returnObj = (Task<IEnumerable<object>>)type.InvokeMember("Main",
-                        BindingFlags.Default | BindingFlags.InvokeMethod,
-                        null,
-                        obj,
-                        new object[] { }); //{ "Hello World" });
-
-
-                    var enumeration = await returnObj;
+                    try
+                    {
+                        // just need to define these two....
+                        Dictionary<string, object> parameterValues = new Dictionary<string, object>();
+                        ReportService reportService
 
 
 
+                        // create instance of the desired class and call the desired function
+                        Type type = assembly.GetType("DashReportViewer.Reports.Report");
+                        object obj = Activator.CreateInstance(type, parameterValues, reportService);
+                        var returnObj = type.InvokeMember("Main",
+                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null,
+                            obj,
+                            null); //{ "Hello World" });
+
+                        var enumeration = returnObj;
+                    }
+                    catch(Exception exp)
+                    {
+
+                    }
+
+                    
 
 
 
 
 
 
-                    output.Add(returnObj);
+
+                    //output.Add(returnObj);
 
                     return output;
                 }

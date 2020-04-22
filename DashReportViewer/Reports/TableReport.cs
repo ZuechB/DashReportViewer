@@ -12,11 +12,6 @@ using System.Threading.Tasks;
 namespace DashReportViewer.Reports
 {
     [ReportName("Table Report", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
-    [
-        ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
-        ReportParams("First Name", ReportInputType.TextBox, OrderId = 2),
-        ReportParams("MultipleOptions", ReportInputType.CustomOption, OrderId = 3),
-    ]
     public class TableReport : ReportEntity, IReport
     {
         public TableReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
@@ -25,95 +20,43 @@ namespace DashReportViewer.Reports
         {
             var parm = parameters;
 
-            var firstName = GetParameterValue<string>("FirstName");
-            var date = GetParameterValue<DateRange>("Date");
-
-
             return await Task.Run(() =>
             {
-                //return GetUsersList();
+            var widgets = new List<Widget>();
 
-                var widgets = new List<Widget>();
-
-                widgets.Add(GetUsers(firstName));
-                widgets.Add(GetUsers(null));
-
-                return widgets;
-            });
-        }
-
-        private List<User> GetUsersList()
-        {
-            var users = new List<User>();
-            users.Add(new User()
-            {
-                FirstName = "Brandon",
-                LastName = "Zuech"
-            });
-            users.Add(new User()
-            {
-                FirstName = "Mallory",
-                LastName = "Zuech"
-            });
-                users.Add(new User()
-            {
-                FirstName = "Cameron",
-                LastName = "Zuech"
-            });
-            users.Add(new User()
-            {
-                FirstName = "Carter",
-                LastName = "Zuech"
-            });
-            return users;
-        }
-
-        [ReportParams("Multiple Options")]
-        public List<KeyValuePair<string, string>> MultipleOptions()
-        {
-            var options = new List<KeyValuePair<string, string>>();
-
-            options.Add(new KeyValuePair<string, string>("1", "This is a test"));
-            options.Add(new KeyValuePair<string, string>("2", "This is another test"));
-
-            return options;
-        }
-
-        private Widget GetUsers(string firstName)
-        {
             var users = new List<User>();
 
             users.Add(new User()
             {
-                FirstName = "Brandon",
-                LastName = "Zuech"
+                FirstName = "FirstName1",
+                LastName = "FirstName1"
             });
             users.Add(new User()
             {
-                FirstName = "Mallory",
-                LastName = "Zuech"
+                FirstName = "FirstName2",
+                LastName = "FirstName2"
             });
             users.Add(new User()
             {
-                FirstName = "Cameron",
-                LastName = "Zuech"
+                FirstName = "FirstName3",
+                LastName = "FirstName3"
             });
             users.Add(new User()
             {
-                FirstName = "Carter",
-                LastName = "Zuech"
+                FirstName = "FirstName4",
+                LastName = "FirstName4"
             });
 
-            if (!String.IsNullOrWhiteSpace(firstName))
-            { 
-                users = users.Where(u => u.FirstName.ToLower().Contains(firstName.ToLower())).ToList();
-            }
+            widgets.Add(new Widget("Users") {
+                Content = new TableContent()
+                {
+                    Content = users
 
-            return new Widget("Users") { Content = new TableContent()
-            {
-                Content = users
+                }, Column = 6 });
 
-            }, Column = 6 };
+
+            return widgets;
+            });
         }
     }
 

@@ -40,7 +40,6 @@ namespace DashReportViewer.Shared.Services
         {
             var report = GetReport(domain, id);
 
-
             var instance = (IReport)Activator.CreateInstance(report.ReportType, paramsList, this);
 
             await instance.Run();

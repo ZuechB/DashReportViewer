@@ -6,97 +6,67 @@ using DashReportViewer.Shared.ReportContent;
 using DashReportViewer.Shared.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Bubble Chart", "086A8665-C70D-4495-8469-4D462A505AC5", Description = "This is a test", Folder = "test")]
-    [ReportParams("Date", ReportInputType.DateRange, OrderId = 1)]
+    [ReportName("Table Report", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
     public class Report : ReportEntity, IReport
     {
         public Report(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {
-            var date = GetParameterValue<DateRange>("Date");
+            var parm = parameters;
 
             return await Task.Run(() =>
             {
-                var widgets = new List<Widget>();
+            var widgets = new List<Widget>();
 
+            var users = new List<User>();
 
-                var dataPoints = new List<BubbleDataPoint>();
+            users.Add(new User()
+            {
+                FirstName = "FirstName1",
+                LastName = "FirstName1"
+            });
+            users.Add(new User()
+            {
+                FirstName = "FirstName2",
+                LastName = "FirstName2"
+            });
+            users.Add(new User()
+            {
+                FirstName = "FirstName3",
+                LastName = "FirstName3"
+            });
+            users.Add(new User()
+            {
+                FirstName = "FirstName4",
+                LastName = "FirstName4"
+            });
 
-                dataPoints.Add(new BubbleDataPoint()
+            widgets.Add(new Widget("Users") {
+                Content = new TableContent()
                 {
-                    Id = "USA",
-                    Name = "North America",
-                    X = 80.66m,
-                    Y = 1.67m,
-                    Size = 307007000.255m
-                });
+                    Content = users
 
-                dataPoints.Add(new BubbleDataPoint()
-                {
-                    Id = "Canada",
-                    Name = "North America",
-                    X = 60.66m,
-                    Y = 2.67m,
-                    Size = 307007000.255m
-                });
-
-                dataPoints.Add(new BubbleDataPoint()
-                {
-                    Id = "Italy",
-                    Name = "Europe",
-                    X = 20.66m,
-                    Y = 5.67m,
-                    Size = 307007200.255m
-                });
+                }, Column = 6 });
 
 
-                widgets.Add(new Widget("Sample Widget")
-                {
-                    Content = new BubbleChartContent()
-                    {
-                        Header = new BubbleHeader()
-                        {
-                            X = "Life Expectancy",
-                            Y = "Fertility Rate",
-                            Name = "Region",
-                            Size = "Population"
-                        },
-                        Title = "This is about the widget",
-                        HorizontalText = "Horizontal Here",
-                        VerticalText = "Vertical Here",
-                        dataPoints = dataPoints,
-                    },
-                    Column = 6
-                });
-
-
-                widgets.Add(new Widget("Sample Widget")
-                {
-                    Content = new BubbleChartContent()
-                    {
-                        Header = new BubbleHeader()
-                        {
-                            X = "Life Expectancy",
-                            Y = "Fertility Rate",
-                            Name = "Region",
-                            Size = "Population"
-                        },
-                        Title = "This is about the widget",
-                        HorizontalText = "Horizontal Here",
-                        VerticalText = "Vertical Here",
-                        dataPoints = dataPoints,
-                    },
-                    Column = 6
-                });
-
-                return widgets;
-
+            return widgets;
             });
         }
+    }
+
+    public class User
+    {
+        [ColumnName("First Name")]
+        public string FirstName { get; set; }
+        [ColumnName("Last Name")]
+        public string LastName { get; set; }
+        [ColumnName("Joined")]
+        public DateTimeOffset Created { get; set; }
     }
 }
