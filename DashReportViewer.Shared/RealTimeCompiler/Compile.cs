@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
@@ -11,7 +12,7 @@ namespace DashReportViewer.Shared.RealTimeCompiler
 {
     public class Compile
     {
-        public static List<string> Execute(string cSharpCode)
+        public async static Task<List<string>> Execute(Guid id, string cSharpCode)
         {
             var output = new List<string>();
 
@@ -69,13 +70,23 @@ namespace DashReportViewer.Shared.RealTimeCompiler
                     Assembly assembly = Assembly.Load(ms.ToArray());
 
                     // create instance of the desired class and call the desired function
-                    Type type = assembly.GetType("RoslynCompileSample.Writer");
+                    Type type = assembly.GetType("DashReportViewer.Reports.Report");
                     object obj = Activator.CreateInstance(type);
-                    var returnObj = (string)type.InvokeMember("Write",
+                    var returnObj = (Task<IEnumerable<object>>)type.InvokeMember("Main",
                         BindingFlags.Default | BindingFlags.InvokeMethod,
                         null,
                         obj,
-                        new object[] { "Hello World" });
+                        new object[] { }); //{ "Hello World" });
+
+
+                    var enumeration = await returnObj;
+
+
+
+
+
+
+
 
 
                     output.Add(returnObj);

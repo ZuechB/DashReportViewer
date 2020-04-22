@@ -19,7 +19,8 @@ namespace DashReportViewer.Shared.Controllers
         [HttpPost]
         public async Task<IActionResult> Execute(string code)
         {
-            var result = Compile.Execute(code);
+            Guid id = Guid.Parse("a21fda13-f36f-4af5-ac05-2a3dabae04ef");
+            var result = Compile.Execute(id, code);
             return Json(result);
         }
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using DashReportViewer.Shared.Models;
 using Microsoft.Extensions.Options;
+using DashReportViewer.Context;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -22,10 +23,12 @@ namespace DashReportViewer.Shared.Services
     {
         readonly DashReportAppSettings appSettings;
         readonly IServiceProvider serviceProvider;
-        public ReportService(IServiceProvider serviceProvider, IOptions<DashReportAppSettings> appSettings)
+        readonly DashReportViewerContext dashReportViewerContext;
+        public ReportService(IServiceProvider serviceProvider, IOptions<DashReportAppSettings> appSettings, DashReportViewerContext dashReportViewerContext)
         {
             this.serviceProvider = serviceProvider;
             this.appSettings = appSettings.Value;
+            this.dashReportViewerContext = dashReportViewerContext;
         }
 
         public T GetService<T>()
@@ -89,7 +92,6 @@ namespace DashReportViewer.Shared.Services
 
         private Type[] GetReportTypesInNamespace(IEnumerable<Assembly> assemblies)
         {
-            // First load Orbose Reports.
             var reports = assemblies.SelectMany(s => s.GetTypes())
                              .Where(c => typeof(IReport).IsAssignableFrom(c) && c.IsClass && c.Namespace == appSettings.ProjectName + ".Reports")
                              .ToArray();
