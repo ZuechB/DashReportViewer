@@ -1,6 +1,5 @@
 ﻿using DashReportViewer.Shared.Attributes;
 using DashReportViewer.Shared.Models;
-using DashReportViewer.Models.CoreBackPack.Time;
 using DashReportViewer.Shared.Models.Reporting;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using DashReportViewer.Context;
 using Microsoft.EntityFrameworkCore;
+using CoreBackpack.Time;
 
 namespace DashReportViewer.Shared.Services
 {
@@ -111,8 +111,8 @@ namespace DashReportViewer.Shared.Services
                             DateTime end;
 
                             var dates = ((string)paramVal.Value).Trim().Split("-");
-                            start = TimeFrame.StartOfDay(DateTime.Parse(dates[0]));
-                            end = TimeFrame.EndOfDay(DateTime.Parse(dates[1]));
+                            start = DateTimeExtensions.StartOfDay(DateTime.Parse(dates[0]));
+                            end = DateTimeExtensions.EndOfDay(DateTime.Parse(dates[1]));
 
                             paramVal.DefaultValue = new DateRange() { Start = start, End = end };
                         }

@@ -33,7 +33,7 @@
                             {
                                 if (column.GetType() == typeof(DateTimeOffset))
                                 {
-                                    var dtData = DashReportViewer.Shared.Models.CoreBackPack.Time.TimeZoneExtention.Convert((DateTimeOffset)column, "Eastern Standard Time");
+                                    var dtData = CoreBackpack.Time.TimeZoneExtention.Convert((DateTimeOffset)column, "Eastern Standard Time");
 
                                     <td>@Html.Raw(dtData.ToString())</td>
                                 }
