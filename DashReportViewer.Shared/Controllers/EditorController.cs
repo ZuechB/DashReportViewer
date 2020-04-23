@@ -33,7 +33,7 @@ namespace DashReportViewer.Shared.Controllers
             Guid id = Guid.Parse("a21fda13-f36f-4af5-ac05-2a3dabae04ef");
             await reportService.UpdateCode(id, code);
             var result = await Compile.Execute(id, code, reportService, appSettings);
-            return View("Index", result);
+            return Json(result);
         }
     }
 }

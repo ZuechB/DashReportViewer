@@ -45,10 +45,10 @@ namespace DashReportViewer.Shared.ViewComponents
                 }
             }
 
-            var code = await reportService.GetCode(reportType);
-            if (code != null)
+            var result = await reportService.GetCode(reportType);
+            if (result != null && !String.IsNullOrWhiteSpace(result.Code))
             {
-                var report = await Compile.Execute(reportType, code.Code, reportService, appSettings);
+                var report = await Compile.Execute(reportType, result.Code, reportService, appSettings);
 
                 //var report = await reportService.RunReport(AppDomain.CurrentDomain, reportType, paramsList);
 
@@ -112,7 +112,7 @@ namespace DashReportViewer.Shared.ViewComponents
             }
             else
             {
-                return View();
+                return View(null);
             }
         }
     }
