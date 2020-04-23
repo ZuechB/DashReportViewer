@@ -4,7 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Models.CoreBackPack.Time;
+using DashReportViewer.Shared.Models.Reporting;
+using DashReportViewer.Shared.Models.Widgets;
+using DashReportViewer.Shared.ReportComponents;
+using DashReportViewer.Shared.ReportContent;
+using DashReportViewer.Shared.Services;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
@@ -13,7 +19,7 @@ namespace DashReportViewer.Shared.RealTimeCompiler
 {
     public class Compile
     {
-        public async static Task<List<string>> Execute(Guid id, string cSharpCode)
+        public async static Task<ReportEntity> Execute(Guid id, string cSharpCode, IReportService reportService, DashReportAppSettings appSettings, ReportType ContentType = ReportType.View)
         {
             var output = new List<string>();
 
@@ -37,25 +43,8 @@ namespace DashReportViewer.Shared.RealTimeCompiler
 
             references.Add(MetadataReference.CreateFromFile(typeof(TimeZoneExtention).Assembly.Location));
 
-
-
-
             // define other necessary objects for compilation
             string assemblyName = Path.GetRandomFileName();
-            //MetadataReference[] references = new MetadataReference[]
-            //{
-            //    //MetadataReference.CreateAssemblyReference("mscorlib"),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "mscorlib.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Linq.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Data.Linq.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Data.DataSetExtensions.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Xml.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Xml.Linq.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.dll")),
-            //    MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Core.dll")),
-            //    MetadataReference.CreateFromFile(typeof(TimeZoneExtention).Assembly.Location)
-            //};
 
             // analyse and generate IL code from syntax tree
             CSharpCompilation compilation = CSharpCompilation.Create(
@@ -88,45 +77,72 @@ namespace DashReportViewer.Shared.RealTimeCompiler
                     ms.Seek(0, SeekOrigin.Begin);
                     Assembly assembly = Assembly.Load(ms.ToArray());
 
-                    try
+                    // just need to define these two....
+                    Dictionary<string, object> parameterValues = new Dictionary<string, object>(); // empty right now
+
+
+                    // create instance of the desired class and call the desired function
+                    Type type = assembly.GetType("DashReportViewer.Reports.Report");
+                    ReportEntity obj = (ReportEntity)Activator.CreateInstance(type, parameterValues, reportService);
+
+                    await obj.Run();
+
+
+
+
+
+
+
+                    var components = new List<BaseReportReportComponent>();
+                    foreach (Widget widget in obj.RawData)
                     {
-                        // just need to define these two....
-                        Dictionary<string, object> parameterValues = new Dictionary<string, object>();
-                        ReportService reportService
-
-
-
-                        // create instance of the desired class and call the desired function
-                        Type type = assembly.GetType("DashReportViewer.Reports.Report");
-                        object obj = Activator.CreateInstance(type, parameterValues, reportService);
-                        var returnObj = type.InvokeMember("Main",
-                            BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null,
-                            obj,
-                            null); //{ "Hello World" });
-
-                        var enumeration = returnObj;
+                        if (widget.Content.GetType() == typeof(TableContent))
+                        {
+                            components.Add(new TableReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(AreaChartContent))
+                        {
+                            components.Add(new AreaChartReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(BubbleChartContent))
+                        {
+                            components.Add(new BubbleChartReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(CalendarChartContent))
+                        {
+                            components.Add(new CalendarChartReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(PieChartContent))
+                        {
+                            components.Add(new PieChartReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(HistogramsContent))
+                        {
+                            components.Add(new HistogramsReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(ScatterChartContent))
+                        {
+                            components.Add(new ScatterChartReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(TextContent))
+                        {
+                            components.Add(new TextReportComponent(widget));
+                        }
+                        else if (widget.Content.GetType() == typeof(AnnotationChartContent))
+                        {
+                            components.Add(new AnnotationChartReportComponent(widget));
+                        }
                     }
-                    catch(Exception exp)
+
+                    if (obj != null)
                     {
-
+                        return obj;
                     }
-
-                    
-
-
-
-
-
-
-
-                    //output.Add(returnObj);
-
-                    return output;
+                    throw new Exception("Report is null");
                 }
             }
 
-            return output;
+            return null;
         }
     }
 }

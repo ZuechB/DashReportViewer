@@ -1,0 +1,276 @@
+﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', { 'packages': ['corechart', 'calendar', 'annotationchart'] });
+</script>
+
+<div class="mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <h1 class="h3 mb-0 text-gray-800">@Html.Raw(Model.ReportName)</h1>
+        @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>*@
+    </div>
+    <div>
+        @if (!String.IsNullOrWhiteSpace(Model.ReportDescription))
+        {
+            <span style="font-size:16px;">@(Model.ReportDescription)</span>
+        }
+    </div>
+</div>
+
+
+<div class="wrapper-content">
+
+    <div class="row">
+        @{
+            int index = 1;
+            foreach (var component in Model.Components)
+            {
+                component.Index = index;
+
+                <div class="col-md-@(component.ColumnNum)">
+                    @if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TableReportComponent))
+                    {
+                        @await Component.InvokeAsync("TableComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.AreaChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("AreaChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BarChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("BarChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.BubbleChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("BubbleChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CalendarChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("CalendarChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.CandlestickChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("CandlestickChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.PieChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("PieChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.HistogramsReportComponent))
+                    {
+                        @await Component.InvokeAsync("HistogramsComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.ScatterChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("ScatterChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.TextReportComponent))
+                    {
+                        @await Component.InvokeAsync("TextComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.AnnotationChartReportComponent))
+                    {
+                        @await Component.InvokeAsync("AnnotationChartComponent", component);
+                    }
+                    else if (component.GetType() == typeof(DashReportViewer.Shared.ReportComponents.ColumnChartComponent))
+                    {
+                        @await Component.InvokeAsync("ColumnChartComponent", component);
+                    }
+                    else
+                    {
+                        <div>
+                            Unknown component
+                        </div>
+                    }
+                </div>
+
+                index++;
+            }
+        }
+    </div>
+
+</div>
+
+
+
+
+@if (Model.Parameters.Any())
+{
+    <div id="slider">
+        <div>
+            <div>
+                Filters
+            </div>
+
+            @await Html.PartialAsync("Parameters", Model.Parameters)
+
+            <div class="btnFilterContainer">
+                <button id="btnApply" class="btn btn-primary">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+}
+
+<input id="ReportType" type="hidden" value="@Model.UniqueID" />
+<input id="ContentType" type="hidden" value="0" />
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+        $(function () {
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('.reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            }
+
+            $('.reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+        });
+
+        $("#btnApply").click(function () {
+            LoadReport();
+        });
+
+        function LoadReport() {
+            var reportType = $("#ReportType").val();
+            var contentType = $("#ContentType").val();
+
+            var fields = $('.dashField').map(function () {
+                return "[" + $(this).attr("name") + "~" + handleInput(this) + "]";
+            }).get();
+
+            var encoded = encodeURIComponent(fields);
+            var url = "/report/reports?reportType=" + reportType + "&param=" + encoded + "&ContentType=" + contentType
+
+            window.location = url;
+        }
+
+        function handleInput(input) {
+            if ($(input).is(":checkbox")) {
+                if ($(input).prop('checked')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return input.value;
+        };
+
+
+        $(function () {
+
+            // Area Chart Example
+            var ctx = document.getElementsByClassName("myAreaChart");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "Earnings",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'date'
+                            },
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                // Include a dollar sign in the ticks
+                                callback: function (value, index, values) {
+                                    return '$' + number_format(value);
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        intersect: false,
+                        mode: 'index',
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function (tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+
+    </script>
+}

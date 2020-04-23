@@ -9,14 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 using DashReportViewer.Shared.Models;
 using Microsoft.Extensions.Options;
 using DashReportViewer.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DashReportViewer.Shared.Services
 {
     public interface IReportService
     {
+        Task UpdateCode(Guid id, string code);
         Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
         IList<Report> GetReports(AppDomain domain, long? UserId = null);
         T GetService<T>();
+        Task<CompanyReport> GetCode(Guid id);
     }
 
     public class ReportService : IReportService
@@ -49,6 +52,22 @@ namespace DashReportViewer.Shared.Services
             }
 
             return instance;
+        }
+
+        public async Task UpdateCode(Guid id, string code)
+        {
+            var report = await dashReportViewerContext.Reports.Where(r => r.Id == id).FirstOrDefaultAsync();
+            if (report != null)
+            {
+                report.Code = code;
+
+                await dashReportViewerContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CompanyReport> GetCode(Guid id)
+        {
+            return await dashReportViewerContext.Reports.Where(r => r.Id == id).FirstOrDefaultAsync();
         }
 
         public Report GetReport(AppDomain domain, Guid id)

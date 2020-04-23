@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
+
+@{
 	Layout = "~/Views/Shared/_ReportLayout.cshtml";
 	ViewData["Title"] = "Welcome to DashReportViewer";
 	ViewData["disableFilter"] = true;
@@ -10,21 +12,18 @@
 
 <div>
 	<section class="try">
-		<div class="container">
-			<h3>Editor</h3>
-			<div class="editor row">
-				<div>
-					<div class="row">
-						<div class="col-md-12" style="padding-right:1000px">&nbsp;</div>
-					</div>
-					<div class="editor-frame">
-						<div class="loading editor" style="display: none;">
-							<div class="progress progress-striped active">
-								<div class="bar"></div>
-							</div>
+		<div class="container" style="max-width:unset;">
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="editor-frame col-md-12">
+					<div class="loading editor" style="display: none;">
+						<div class="progress progress-striped active">
+							<div class="bar"></div>
 						</div>
-						<div id="editor"></div>
 					</div>
+					<div id="editor"></div>
 				</div>
 			</div>
 		</div>
@@ -33,26 +32,86 @@
 <button id="btnSend">Send</button>
 
 
+
+
+
+
+
+
+
+
+@await Component.InvokeAsync("ReportComponent", new { reportType = Guid.Parse("A21FDA13-F36F-4AF5-AC05-2A3DABAE04EF") });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section Scripts
 {
 	<script type="text/javascript" src="/js/require.js"></script>
 
 
 	<script type="text/javascript">
-        $(document).ready(function ($) {
-            $("#btnSend").click(function () {
+		$(document).ready(function ($) {
+			$("#btnSend").click(function () {
 
-                var value = window.editor.getValue();
+				var value = window.editor.getValue();
 
-                $.post("/Editor/Execute", {
-                    code: value
-                }, function (data, status) {
+				$.post("/Editor/Execute", {
+					code: value
+				}, function (data, status) {
 
-                    alert(data);
-                });
+					alert(data);
+				});
 
-            });
-        });
+			});
+		});
 	</script>
 
 	<script type="text/javascript">
