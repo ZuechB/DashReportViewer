@@ -45,13 +45,13 @@ namespace DashReportViewer.Reports
             dataPoints.Add(new AreaChartDataPoint()
             {
                 Label = "Sales",
-                Data = new List<int>() { 1000, 400, 400, 200 }
+                Data = new List<double>() { 1000, 400, 400, 200 }
             });
 
             dataPoints.Add(new AreaChartDataPoint()
             {
                 Label = "Expenses",
-                Data = new List<int>() { 1170, 460, 1000, 3000 }
+                Data = new List<double>() { 1170, 460.25, 1000, 3000 }
             });
 
             return new Widget(widgetName)

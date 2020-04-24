@@ -43,8 +43,8 @@ namespace DashReportViewer.Reports
         {
             var dataPoints = new List<AreaChartDataPoint>();
 
-            var sprintPoints = new List<int>();
-            var bugPoints = new List<int>();
+            var sprintPoints = new List<double>();
+            var bugPoints = new List<double>();
             var sprintNames = new List<string>();
             sprintNames.Add("Sprints");
 

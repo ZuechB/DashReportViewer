@@ -11,6 +11,6 @@ namespace DashReportViewer.Shared.ReportContent
     public class AreaChartDataPoint
     {
         public string Label { get; set; }
-        public List<int> Data { get; set; }
+        public List<double> Data { get; set; }
     }
 }
