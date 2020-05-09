@@ -20,7 +20,7 @@ namespace DashReportViewer.Reports
             var currentUser = await GetCurrentUser();
 
 
-            widgets.Add(new Widget()
+            widgets.Add(new Widget("test")
             {
                 Content = new TextContent()
                 {
