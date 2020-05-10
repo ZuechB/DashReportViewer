@@ -1,13 +1,12 @@
 ﻿using DashReportViewer.Context;
 using DashReportViewer.Models;
-using DashReportViewer.Models.CoreBackPack.Time;
-using DashReportViewer.Shared.Models.CoreBackPack.Time;
 using DashReportViewer.Shared.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreBackpack.Time;
 
 namespace DashReportViewer.Shared.Services
 {

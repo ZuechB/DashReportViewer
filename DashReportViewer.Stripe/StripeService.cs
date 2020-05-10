@@ -3,8 +3,8 @@ using Stripe;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using NetCoreBackPack.Currency;
 using Microsoft.Extensions.Options;
+using CoreBackpack.cMath;
 
 namespace DashReportViewer.Stripe
 {
@@ -37,16 +37,16 @@ namespace DashReportViewer.Stripe
             {
                 Id = c.Id,
                 Paid = c.Paid,
-                ApplicationFeeAmount = Dollars.CentsToDollar(c.ApplicationFeeAmount != null ? c.ApplicationFeeAmount.Value : 0),
+                ApplicationFeeAmount = MoneyExtender.ConvertToDollars(c.ApplicationFeeAmount != null ? c.ApplicationFeeAmount.Value : 0),
                 Status = c.Status,
                 Description = c.Description,
                 PaymentType = c.Object,
-                AmountRefunded = Dollars.CentsToDollar(c.AmountRefunded),
-                Amount = Dollars.CentsToDollar(c.Amount),
+                AmountRefunded = MoneyExtender.ConvertToDollars(c.AmountRefunded),
+                Amount = MoneyExtender.ConvertToDollars(c.Amount),
                 Created = c.Created,
                 FailureCode = c.FailureCode,
                 FailureMessage = c.FailureMessage,
-                TotalAmount = Dollars.CentsToDollar(c.Amount) - Dollars.CentsToDollar(c.AmountRefunded)
+                TotalAmount = MoneyExtender.ConvertToDollars(c.Amount) - MoneyExtender.ConvertToDollars(c.AmountRefunded)
 
             }).ToList();
         }
