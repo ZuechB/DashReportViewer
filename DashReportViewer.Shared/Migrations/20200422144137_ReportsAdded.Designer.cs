@@ -4,14 +4,16 @@ using DashReportViewer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DashReportViewer.Shared.Migrations
 {
     [DbContext(typeof(DashReportViewerContext))]
-    partial class DashReportViewerContextModelSnapshot : ModelSnapshot
+    [Migration("20200422144137_ReportsAdded")]
+    partial class ReportsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,12 +179,6 @@ namespace DashReportViewer.Shared.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");

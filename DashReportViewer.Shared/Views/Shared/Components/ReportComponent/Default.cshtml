@@ -1,12 +1,8 @@
 ﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
-@{
-    Layout = "~/Views/Shared/_ReportLayout.cshtml";
-    ViewData["Title"] = Model.ReportName;
-    ViewData["AnyParams"] = Model.Parameters.Any();
-    ViewData["KioskMode"] = (Model.ContentType == DashReportViewer.Shared.Models.Reporting.ReportType.FullScreen ? true : false);
-    ViewData["SideBarBackgroundColor"] = Model.SideBarBackgroundColor;
-}
 
+
+@if (Model != null)
+{
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     google.charts.load('current', { 'packages': ['corechart', 'calendar', 'annotationchart'] });
@@ -104,44 +100,23 @@
 
 @if (Model.Parameters.Any())
 {
-<div id="slider">
-    <div>
+    <div id="slider">
         <div>
-            Filters
-        </div>
+            <div>
+                Filters
+            </div>
 
-        @await Html.PartialAsync("Parameters", Model.Parameters)
+            @await Html.PartialAsync("Parameters", Model.Parameters)
 
-        <div class="btnFilterContainer">
-            <button id="btnApply" class="btn btn-primary">Apply Filters</button>
+            <div class="btnFilterContainer">
+                <button id="btnApply" class="btn btn-primary">Apply Filters</button>
+            </div>
         </div>
     </div>
-</div>
 }
 
 <input id="ReportType" type="hidden" value="@Model.UniqueID" />
 <input id="ContentType" type="hidden" value="0" />
-
-
-<div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Notes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <textarea style="width:100%; height:100px;"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts
 {
@@ -157,10 +132,6 @@
 
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             }
-
-            $(".infoSys").click(function () {
-                $('#notesModal').modal('show');
-            })
 
             $('.reportrange').daterangepicker({
                 startDate: start,
@@ -304,4 +275,5 @@
         });
 
     </script>
+}
 }

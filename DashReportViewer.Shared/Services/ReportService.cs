@@ -8,24 +8,30 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using DashReportViewer.Shared.Models;
 using Microsoft.Extensions.Options;
+using DashReportViewer.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DashReportViewer.Shared.Services
 {
     public interface IReportService
     {
+        Task UpdateCode(Guid id, string code);
         Task<IReport> RunReport(AppDomain domain, Guid id, Dictionary<string, object> paramsList, dynamic Id = null);
         IList<Report> GetReports(AppDomain domain, long? UserId = null);
         T GetService<T>();
+        Task<CompanyReport> GetCode(Guid id);
     }
 
     public class ReportService : IReportService
     {
         readonly DashReportAppSettings appSettings;
         readonly IServiceProvider serviceProvider;
-        public ReportService(IServiceProvider serviceProvider, IOptions<DashReportAppSettings> appSettings)
+        readonly DashReportViewerContext dashReportViewerContext;
+        public ReportService(IServiceProvider serviceProvider, IOptions<DashReportAppSettings> appSettings, DashReportViewerContext dashReportViewerContext)
         {
             this.serviceProvider = serviceProvider;
             this.appSettings = appSettings.Value;
+            this.dashReportViewerContext = dashReportViewerContext;
         }
 
         public T GetService<T>()
@@ -37,7 +43,6 @@ namespace DashReportViewer.Shared.Services
         {
             var report = GetReport(domain, id);
 
-
             var instance = (IReport)Activator.CreateInstance(report.ReportType, paramsList, this);
 
             await instance.Run();
@@ -47,6 +52,22 @@ namespace DashReportViewer.Shared.Services
             }
 
             return instance;
+        }
+
+        public async Task UpdateCode(Guid id, string code)
+        {
+            var report = await dashReportViewerContext.Reports.Where(r => r.Id == id).FirstOrDefaultAsync();
+            if (report != null)
+            {
+                report.Code = code;
+
+                await dashReportViewerContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CompanyReport> GetCode(Guid id)
+        {
+            return await dashReportViewerContext.Reports.Where(r => r.Id == id).FirstOrDefaultAsync();
         }
 
         public Report GetReport(AppDomain domain, Guid id)
@@ -89,7 +110,6 @@ namespace DashReportViewer.Shared.Services
 
         private Type[] GetReportTypesInNamespace(IEnumerable<Assembly> assemblies)
         {
-            // First load Orbose Reports.
             var reports = assemblies.SelectMany(s => s.GetTypes())
                              .Where(c => typeof(IReport).IsAssignableFrom(c) && c.IsClass && c.Namespace == appSettings.ProjectName + ".Reports")
                              .ToArray();

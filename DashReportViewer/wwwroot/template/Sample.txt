@@ -1,4 +1,4 @@
-﻿using DashReportViewer.Shared.Attributes;
+using DashReportViewer.Shared.Attributes;
 using DashReportViewer.Shared.Models;
 using DashReportViewer.Shared.Models.Reporting;
 using DashReportViewer.Shared.Models.Widgets;
@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace DashReportViewer.Reports
 {
     [ReportName("Table Report", "E7135E62-0DCA-4133-8273-5606182F9EDD", Description = "This is a test")]
-    public class TableReport : ReportEntity, IReport
+    public class Report : ReportEntity, IReport
     {
-        public TableReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
+        public Report(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
 
         protected override async Task<IEnumerable<object>> Main()
         {

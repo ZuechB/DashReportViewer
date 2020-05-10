@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DashReportViewer.Shared.Models.Reporting.ReportViewModel
+
+@{
 	Layout = "~/Views/Shared/_ReportLayout.cshtml";
 	ViewData["Title"] = "Welcome to DashReportViewer";
 	ViewData["disableFilter"] = true;
@@ -8,78 +10,159 @@
 <link href="~/editor/editor.main.css" rel="stylesheet" type="text/css">
 <link data-inline="yes-please" href="~/editor/monarch/monarch.css" rel="stylesheet" />
 
-<div>
-	<section class="try">
-		<div class="container">
-			<h3>Editor</h3>
-			<div class="editor row">
-				<div>
-					<div class="row">
-						<div class="col-md-12" style="padding-right:1000px">&nbsp;</div>
-					</div>
-					<div class="editor-frame">
-						<div class="loading editor" style="display: none;">
-							<div class="progress progress-striped active">
-								<div class="bar"></div>
+
+<div class="container" style="max-width:unset; padding-left:unset; padding-right:unset;">
+	<div class="row">
+		<div class="col-md-12">
+
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Editor</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Preview</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+					<div>
+						<section class="try">
+							<div class="container" style="max-width:unset; padding-left:unset; padding-right:unset;">
+								<div class="row">
+									<div class="editor-frame col-md-12">
+										<div class="loading editor" style="display: none;">
+											<div class="progress progress-striped active">
+												<div class="bar"></div>
+											</div>
+										</div>
+										<div id="editor"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div id="editor"></div>
+						</section>
+					</div>
+
+
+					<button id="btnSend">Save</button>
+
+
+				</div>
+				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					<div style="padding:40px;">
+
+						@await Component.InvokeAsync("ReportComponent", new { reportType = Guid.Parse("A21FDA13-F36F-4AF5-AC05-2A3DABAE04EF") })
+
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+
+	</div>
 </div>
-<button id="btnSend">Send</button>
+
+
+
+
+
+
+
+
+
+
+
+	<input id="hTemplateUrl" type="hidden" value="/template/Sample.txt" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @section Scripts
 {
 	<script type="text/javascript" src="/js/require.js"></script>
 
-
 	<script type="text/javascript">
-        $(document).ready(function ($) {
-            $("#btnSend").click(function () {
+		$(document).ready(function ($) {
+			$("#btnSend").click(function () {
 
-                var value = window.editor.getValue();
+				var value = window.editor.getValue();
 
-                $.post("/Editor/Execute", {
-                    code: value
-                }, function (data, status) {
+				$.post("/Editor/Execute", {
+					code: value
+				}, function (data, status) {
 
-                    alert(data);
-                });
+                    window.location.reload(true);
+				});
 
-            });
-        });
+			});
+		});
 	</script>
 
 	<script type="text/javascript">
+
 
 		'use strict';
 		require.config({
 			baseUrl: 'https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/'
 		});
 
-
 		var editor = null, diffEditor = null;
 
 		$(document).ready(function () {
 			require(['vs/editor/editor.main'], function () {
-
-
-				loadSample();
-
-				changeTheme(1);
-
-				loadDiffSample();
-
-				$('#inline-diff-checkbox').change(function () {
-					diffEditor.updateOptions({
-						renderSideBySide: !$(this).is(':checked')
-					});
-				});
+                loadSample();
 			});
 
 			window.onresize = function () {
@@ -92,10 +175,13 @@
 			};
 		});
 
-		function loadSample() {
+        function loadSample() {
+
+            let url = $("#hTemplateUrl").val();
+
 			$.ajax({
 				type: 'GET',
-				url: "https://microsoft.github.io/monaco-editor/index/samples/sample.csharp.txt",
+				url: url,
 				dataType: 'text',
 				beforeSend: function () {
 					$('.loading.editor').show();
@@ -116,9 +202,16 @@
 				if (!editor) {
 					$('#editor').empty();
 					editor = monaco.editor.create(document.getElementById('editor'), {
-						model: null,
+                        model: null,
+						theme: "vs-dark",
 					});
-				}
+                }
+
+
+
+
+
+
 
 				var oldModel = editor.getModel();
 				var newModel = monaco.editor.createModel(data, "csharp");
@@ -126,68 +219,47 @@
 				if (oldModel) {
 					oldModel.dispose();
 				}
-				$('.loading.editor').fadeOut({ duration: 300 });
+                $('.loading.editor').fadeOut({ duration: 300 });
+
+				monaco.languages.register({ id: 'mySpecialLanguage' });
+
+
+				// Register a completion item provider for the new language
+				monaco.languages.registerCompletionItemProvider('mySpecialLanguage', {
+					provideCompletionItems: () => {
+						var suggestions = [{
+							label: 'simpleText',
+							kind: monaco.languages.CompletionItemKind.Text,
+							insertText: 'simpleText'
+						}, {
+							label: 'testing',
+							kind: monaco.languages.CompletionItemKind.Keyword,
+							insertText: 'testing(${1:condition})',
+							insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+						}, {
+							label: 'ifelse',
+							kind: monaco.languages.CompletionItemKind.Snippet,
+							insertText: [
+								'if (${1:condition}) {',
+								'\t$0',
+								'} else {',
+								'\t',
+								'}'
+							].join('\n'),
+							insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+							documentation: 'If-Else Statement'
+						}];
+						return { suggestions: suggestions };
+					}
+				});
+
+
+
+
+
+
+
 			});
-		}
-
-		function loadDiffSample() {
-
-			var onError = function () {
-				$('.loading.diff-editor').fadeOut({ duration: 200 });
-				$('#diff-editor').append('<p class="alert alert-error">Failed to load diff editor sample</p>');
-			};
-
-			$('.loading.diff-editor').show();
-
-			var lhsData = null, rhsData = null, jsMode = null;
-
-			$.ajax({
-				type: 'GET',
-				url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.lhs.txt',
-				dataType: 'text',
-				error: onError
-			}).done(function (data) {
-				lhsData = data;
-				onProgress();
-			});
-
-			$.ajax({
-				type: 'GET',
-				url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.rhs.txt',
-				dataType: 'text',
-				error: onError
-			}).done(function (data) {
-				rhsData = data;
-				onProgress();
-			});
-
-			function onProgress() {
-				if (lhsData && rhsData) {
-					diffEditor = monaco.editor.createDiffEditor(document.getElementById('diff-editor'), {
-						enableSplitViewResizing: false
-					});
-
-					var lhsModel = monaco.editor.createModel(lhsData, 'text/javascript');
-					var rhsModel = monaco.editor.createModel(rhsData, 'text/javascript');
-
-					diffEditor.setModel({
-						original: lhsModel,
-						modified: rhsModel
-					});
-
-					$('.loading.diff-editor').fadeOut({ duration: 300 });
-				}
-			}
-		}
-
-		function changeTheme(theme) {
-			var newTheme = (theme === 1 ? 'vs-dark' : (theme === 0 ? 'vs' : 'hc-black'));
-			if (editor) {
-				editor.updateOptions({ 'theme': newTheme });
-			}
-			if (diffEditor) {
-				diffEditor.updateOptions({ 'theme': newTheme });
-			}
 		}
 
 	</script>
