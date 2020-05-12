@@ -33,6 +33,7 @@
             int index = 1;
             foreach (var component in Model.Components)
             {
+                component.ReportId = Model.UniqueID;
                 component.Index = index;
 
                 <div class="col-md-@(component.ColumnNum)">
@@ -122,6 +123,9 @@
 <input id="ReportType" type="hidden" value="@Model.UniqueID" />
 <input id="ContentType" type="hidden" value="0" />
 
+<input id="hReportId" type="hidden" value="" />
+<input id="hCardId" type="hidden" value="" />
+
 
 <div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -133,11 +137,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <textarea style="width:100%; height:100px;"></textarea>
+                <textarea id="txtNotes" style="width:100%; height:100px;"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button id="btnSaveChanges" type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -157,9 +161,28 @@
 
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             }
+            
 
             $(".infoSys").click(function () {
-                $('#notesModal').modal('show');
+
+                let reportId = $(this).attr("data-reportId");
+                let cardId = $(this).attr("data-cardId");
+
+                $("#hReportId").val(reportId);
+                $("#hCardId").val(cardId);
+
+
+                $.post("/Report/GetNotes",
+                {
+                    reportId: reportId,
+                    cardId: cardId
+
+                }, function (data, status) {
+
+                    $("#txtNotes").val(data);
+                    $('#notesModal').modal('show');
+                });
+                
             })
 
             $('.reportrange').daterangepicker({
@@ -176,6 +199,28 @@
             }, cb);
 
             cb(start, end);
+
+        });
+
+        $("#btnSaveChanges").click(function () {
+
+            let reportId = $("#hReportId").val();
+            let cardId = $("#hCardId").val();
+            let notes = $("#txtNotes").val();
+
+            $.post("/Report/SaveNotes",
+                {
+                    reportId: reportId,
+                    cardId: cardId,
+                    notes: notes
+
+                }, function (data, status) {
+
+
+                    $('#notesModal').modal('hide');
+
+                //alert("Data: " + data + "\nStatus: " + status);
+            });
 
         });
 

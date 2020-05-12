@@ -1,5 +1,6 @@
 ﻿using DashReportViewer.Shared.Models.Widgets;
 using DashReportViewer.Shared.ReportContent;
+using System;
 using System.Collections.Generic;
 
 namespace DashReportViewer.Shared.ReportComponents
@@ -10,6 +11,7 @@ namespace DashReportViewer.Shared.ReportComponents
         public int RowNum { get; set; }
         public int ColumnNum { get; set; }
         public int Index { get; set; }
+        public Guid ReportId { get; set; }
 
         public BaseReportReportComponent(Widget widget)
         {

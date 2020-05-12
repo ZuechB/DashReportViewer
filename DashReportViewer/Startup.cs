@@ -77,6 +77,7 @@ namespace DashReportViewer
             services.AddScoped<IStripeService, StripeService>();
             services.AddScoped<IGSheetsService, GSheetsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<INotesService, NotesService>();
 
             var appSettings = Configuration.GetSection("DashReportAppSettings");
             services.Configure<DashReportAppSettings>(appSettings);

@@ -20,12 +20,14 @@ namespace DashReportViewer.Controllers
     public class ReportController : Controller
     {
         readonly IReportService reportService;
+        readonly INotesService notesService;
         readonly DashReportAppSettings appSettings;
 
-        public ReportController(IReportService reportService, IOptions<DashReportAppSettings> appSettings)
+        public ReportController(IReportService reportService, INotesService notesService, IOptions<DashReportAppSettings> appSettings)
         {
             this.reportService = reportService;
             this.appSettings = appSettings.Value;
+            this.notesService = notesService;
         }
 
         public IActionResult Index()
@@ -36,6 +38,20 @@ namespace DashReportViewer.Controllers
                 return Redirect("~/report/reports?reportType=" + report.Id.ToString());
             }
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetNotes(Guid reportId, int cardId)
+        {
+            var message = await notesService.GetNote(reportId, cardId);
+            return Ok(message);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveNotes(Guid reportId, int cardId, string notes)
+        {
+            await notesService.SaveNotes(reportId, cardId, notes);
+            return Ok();
         }
 
         public IActionResult LogOut()

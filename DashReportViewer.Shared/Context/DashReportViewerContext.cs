@@ -12,5 +12,16 @@ namespace DashReportViewer.Context
 
         public DbSet<AzureDevOp> AzureDevOps { get; set; }
         public DbSet<CompanyReport> Reports { get; set; }
+        public DbSet<Note> Notes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Note>(entity =>
+            {
+                entity.HasKey(p => new { p.ReportId, p.CardId });
+            });
+
+            base.OnModelCreating(builder);
+        }
     }
 }
