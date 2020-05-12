@@ -84,6 +84,7 @@ namespace DashReportViewer.Shared.Services
             {
                 var reportAttribute = report.GetCustomAttribute<ReportNameAttribute>();
                 var Id = Guid.Parse(reportAttribute.ReportId);
+                string icon = reportAttribute.Icon;
 
                 bool isFavorite = false;
                 //if (UserId != null)
@@ -102,7 +103,8 @@ namespace DashReportViewer.Shared.Services
                     ReportType = report,
                     Description = reportAttribute.Description,
                     IsFavorite = isFavorite,
-                    Folder = reportAttribute.Folder
+                    Folder = reportAttribute.Folder,
+                    Icon = icon
                 });
             }
             return reports.OrderBy(r => r.Name).ToList();

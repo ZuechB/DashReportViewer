@@ -136,6 +136,14 @@ namespace DashReportViewer.Shared.Services
             }
         }
 
+        public string Icon
+        {
+            get
+            {
+                return GetType().GetCustomAttribute<ReportNameAttribute>().Icon;
+            }
+        }
+
         public string Name
         {
             get
