@@ -62,6 +62,8 @@ namespace DashReportViewer
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = false;
 
+                // this is a test
+
                 // User settings.
                 //options.User.AllowedUserNameCharacters =
                 //"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
