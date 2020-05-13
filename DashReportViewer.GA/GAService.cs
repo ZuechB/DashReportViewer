@@ -8,12 +8,12 @@ namespace DashReportViewer.GA
 {
     public interface IGAService
     {
-        List<DimensionResult> GetDimensionsAndMetrics(string authenticationJson, string viewId, List<Dimension> dimensions, List<Metric> metrics, string startDate, string endDate, string filter = "");
+        List<DimensionResult> GetDimensionsAndMetrics(string authenticationJson, string viewId, List<Dimension> dimensions, List<Metric> metrics, string startDate, string endDate, string filter = "", OrderBy orderBy = null);
     }
 
     public class GAService : IGAService
     {
-        public List<DimensionResult> GetDimensionsAndMetrics(string authenticationJson, string viewId, List<Dimension> dimensions, List<Metric> metrics, string startDate, string endDate, string filter = "")
+        public List<DimensionResult> GetDimensionsAndMetrics(string authenticationJson, string viewId, List<Dimension> dimensions, List<Metric> metrics, string startDate, string endDate, string filter = "", OrderBy orderBy = null)
         {
             var browserSessions = new List<DimensionResult>();
 
@@ -36,6 +36,7 @@ namespace DashReportViewer.GA
                     DateRanges = new List<DateRange>() { dateRange },
                     Dimensions = dimensions, // new List<Dimension>() { browser, campaign, age },
                     FiltersExpression = filter,
+                    OrderBys = new List<OrderBy>() { orderBy },
                     Metrics = metrics, // new List<Metric>() { sessions, pageviews }
                 };
 
