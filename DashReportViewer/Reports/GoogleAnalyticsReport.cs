@@ -32,6 +32,7 @@ namespace DashReportViewer.Reports
         {
             var widgets = new List<Widget>();
             var sessions = new List<DimensionResult>();
+            var searchMaterials = new List<DimensionResult>();
             var date = GetParameterValue<Shared.Models.DateRange>("Date");
             if (date != null)
             {
@@ -46,6 +47,17 @@ namespace DashReportViewer.Reports
                     new List<Dimension>() { UserDimension.browser, UserDimension.campaign, UserDimension.age }, 
                     new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers },     
                     startDate, endDate);
+
+                //searchMaterials = gAService.GetDimensionsAndMetrics(
+                //    json,
+                //    "198345607",
+                //    new List<Dimension>() { new Dimension { Name = "ga:pagePath" } },
+                //    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
+                //    "2019-01-01",
+                //    DateTime.Now.ToString("yyyy-MM-dd"),
+                //    "ga:pagePath=@Materials");
+
+
             }
 
             widgets.Add(new Widget("Devices")
@@ -56,6 +68,15 @@ namespace DashReportViewer.Reports
                 },
                 Column = 12
             });
+
+            //widgets.Add(new Widget("Devices")
+            //{
+            //    Content = new TableContent()
+            //    {
+            //        Content = searchMaterials
+            //    },
+            //    Column = 12
+            //});
 
             return widgets;
         }
