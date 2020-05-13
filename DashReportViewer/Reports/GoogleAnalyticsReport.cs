@@ -48,14 +48,15 @@ namespace DashReportViewer.Reports
                     new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers },     
                     startDate, endDate);
 
-                //searchMaterials = gAService.GetDimensionsAndMetrics(
-                //    json,
-                //    "198345607",
-                //    new List<Dimension>() { new Dimension { Name = "ga:pagePath" } },
-                //    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
-                //    "2019-01-01",
-                //    DateTime.Now.ToString("yyyy-MM-dd"),
-                //    "ga:pagePath=@Materials");
+                searchMaterials = gAService.GetDimensionsAndMetrics(
+                    json,
+                    "198345607",
+                    new List<Dimension>() { new Dimension { Name = "ga:pagePath" } },
+                    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
+                    "2019-01-01",
+                    DateTime.Now.ToString("yyyy-MM-dd"),
+                    "ga:pagePath=@Product/",
+                    new OrderBy { FieldName = "ga:pageViews", SortOrder = "DESCENDING" });
 
 
             }
@@ -69,14 +70,14 @@ namespace DashReportViewer.Reports
                 Column = 12
             });
 
-            //widgets.Add(new Widget("Devices")
-            //{
-            //    Content = new TableContent()
-            //    {
-            //        Content = searchMaterials
-            //    },
-            //    Column = 12
-            //});
+            widgets.Add(new Widget("Top Product Views")
+            {
+                Content = new TableContent()
+                {
+                    Content = searchMaterials
+                },
+                Column = 12
+            });
 
             return widgets;
         }
