@@ -1,4 +1,5 @@
-﻿using DashReportViewer.GA;
+﻿using CoreBackpack.Time;
+using DashReportViewer.GA;
 using DashReportViewer.GA.Models;
 using DashReportViewer.Models;
 using DashReportViewer.Shared.Attributes;
@@ -32,7 +33,9 @@ namespace DashReportViewer.Reports
         {
             var widgets = new List<Widget>();
             var sessions = new List<DimensionResult>();
-            var searchMaterials = new List<DimensionResult>();
+            var activeUsers = new List<DimensionResult4Columns>();
+            var organicSearches = new List<DimensionResult4Columns>();
+            var otherTraffic = new List<DimensionResult4Columns>();
             var date = GetParameterValue<Shared.Models.DateRange>("Date");
             if (date != null)
             {
@@ -48,17 +51,38 @@ namespace DashReportViewer.Reports
                     new List<Metric>() { GASession.Session, GAUser.PageViews, GAUser.NewUsers },     
                     startDate, endDate);
 
-                searchMaterials = gAService.GetDimensionsAndMetrics(
+                //searchMaterials = gAService.GetDimensionsAndMetrics(
+                //    json,
+                //    "198345607",
+                //    new List<Dimension>() { new Dimension { Name = "ga:pagePath" } },
+                //    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
+                //    "2019-01-01",
+                //    DateTime.Now.ToString("yyyy-MM-dd"),
+                //    "ga:pagePath=@Product/",
+                //    new OrderBy { FieldName = "ga:pageViews", SortOrder = "DESCENDING" });
+
+                activeUsers = gAService.GetDimensionsAndMetricsUneven(
                     json,
                     "198345607",
-                    new List<Dimension>() { new Dimension { Name = "ga:pagePath" } },
-                    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
-                    "2019-01-01",
-                    DateTime.Now.ToString("yyyy-MM-dd"),
-                    "ga:pagePath=@Product/",
-                    new OrderBy { FieldName = "ga:pageViews", SortOrder = "DESCENDING" });
+                    new List<Dimension>() { new Dimension { Name = "ga:day" }, new Dimension { Name = "ga:month" }, new Dimension { Name = "ga:year" } },
+                    new List<Metric>() { new Metric { Expression = "ga:users" } },
+                    startDate, endDate);
 
+                organicSearches = gAService.GetDimensionsAndMetricsUneven(
+                    json,
+                    "198345607",
+                    new List<Dimension>() { new Dimension { Name = "ga:day" }, new Dimension { Name = "ga:month" }, new Dimension { Name = "ga:year" } },
+                    new List<Metric>() { new Metric { Expression = "ga:organicSearches" } },
+                    startDate, endDate,
+                    "ga:userType=@New");
 
+                otherTraffic = gAService.GetDimensionsAndMetricsUneven(
+                    json,
+                    "198345607",
+                    new List<Dimension>() { new Dimension { Name = "ga:day" }, new Dimension { Name = "ga:month" }, new Dimension { Name = "ga:year" }, new Dimension { Name = "ga:fullReferrer" } },
+                    new List<Metric>() { new Metric { Expression = "ga:newUsers" } },
+                    startDate, endDate,
+                    "ga:organicSearches==0");
             }
 
             widgets.Add(new Widget("Devices")
@@ -70,11 +94,98 @@ namespace DashReportViewer.Reports
                 Column = 12
             });
 
-            widgets.Add(new Widget("Top Product Views")
+            var dates = new List<string>();
+            var countsActiveUsers = new List<double>();
+            var countsOrganicSearches = new List<double>();
+            var countsOtherTraffic = new List<double>();
+
+            foreach (var day in activeUsers)
+            {
+                day.Date = new DateTime(int.Parse(day.ThirdColumn), int.Parse(day.SecondColumn), int.Parse(day.FirstColumn));
+            }
+
+            foreach (var day in organicSearches)
+            {
+                day.Date = new DateTime(int.Parse(day.ThirdColumn), int.Parse(day.SecondColumn), int.Parse(day.FirstColumn));
+            }
+
+            foreach (var day in otherTraffic)
+            {
+                day.Date = new DateTime(int.Parse(day.ThirdColumn), int.Parse(day.SecondColumn), int.Parse(day.FirstColumn));
+            }
+
+            if (date != null)
+            {
+                //if weeks
+                dates.Add("Weekly");
+                var weeks = DateTimeExtensions.GetWeeks(date.Start, date.End);
+                foreach (var week in weeks)
+                {
+                    dates.Add(week.StartDate.ToShortDateString() + " to " + week.EndDate.AddDays(-1).ToShortDateString());
+
+                    var countActiveUsers = 0;
+                    var countOrganicSearches = 0;
+                    var countOtherTraffic = 0;
+
+                    countActiveUsers += activeUsers.Where(d => d.Date >= week.StartDate && d.Date <= week.EndDate.AddDays(-1).EndOfDay()).Sum(d => int.Parse(d.Value));
+                    countOrganicSearches += organicSearches.Where(d => d.Date >= week.StartDate && d.Date <= week.EndDate.AddDays(-1).EndOfDay()).Sum(d => int.Parse(d.Value));
+                    countOtherTraffic += otherTraffic.Where(d => d.Date >= week.StartDate && d.Date <= week.EndDate.AddDays(-1).EndOfDay()).Sum(d => int.Parse(d.Value));
+
+                    //counts.Add(count);
+
+                    var weekLength = week.EndDate - week.StartDate;
+                    countsActiveUsers.Add((double)((double)countActiveUsers / (double)weekLength.Days)); // if you want to see average
+                    countsOrganicSearches.Add((double)((double)countOrganicSearches / (double)weekLength.Days));
+                    countsOtherTraffic.Add((double)((double)countOtherTraffic / (double)weekLength.Days));
+                }
+            }
+
+            var dataPoints = new List<AreaChartDataPoint>();
+            dataPoints.Add(new AreaChartDataPoint()
+            {
+                Label = "Average daily Active Users",
+                Data = countsActiveUsers
+            });
+
+            widgets.Add(new Widget("Active Users")
+            {
+                Content = new AreaChartContent()
+                {
+                    dataPoints = dataPoints,
+                    XAxis = dates
+                },
+                Column = 12
+            });
+
+            var dataPointsTraffic = new List<AreaChartDataPoint>();
+            dataPointsTraffic.Add(new AreaChartDataPoint()
+            {
+                Label = "Organic New Users",
+                Data = countsOrganicSearches
+            });
+
+            dataPointsTraffic.Add(new AreaChartDataPoint()
+            {
+                Label = "Referal/Direct New Users",
+                Data = countsOtherTraffic
+            });
+
+            widgets.Add(new Widget("Average Organic vs Referal/Direct Users")
+            {
+                Content = new AreaChartContent()
+                {
+                    dataPoints = dataPointsTraffic,
+                    XAxis = dates
+                },
+                Column = 12
+            });
+
+
+            widgets.Add(new Widget("activeUsers")
             {
                 Content = new TableContent()
                 {
-                    Content = searchMaterials
+                    Content = activeUsers
                 },
                 Column = 12
             });
