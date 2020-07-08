@@ -36,6 +36,7 @@ namespace DashReportViewer.Reports
             var activeUsers = new List<DimensionResult4Columns>();
             var organicSearches = new List<DimensionResult4Columns>();
             var otherTraffic = new List<DimensionResult4Columns>();
+            var productPageViews = new List<DimensionResult5Columns>();
             var date = GetParameterValue<Shared.Models.DateRange>("Date");
             if (date != null)
             {
@@ -83,6 +84,15 @@ namespace DashReportViewer.Reports
                     new List<Metric>() { new Metric { Expression = "ga:newUsers" } },
                     startDate, endDate,
                     "ga:organicSearches==0");
+
+                productPageViews = gAService.GetDimensionsAndMetrics5Columns(
+                    json,
+                    "198345607",
+                    new List<Dimension>() { new Dimension { Name = "ga:day" }, new Dimension { Name = "ga:month" }, new Dimension { Name = "ga:year" }, new Dimension { Name = "ga:pagePath" } },
+                    new List<Metric>() { new Metric { Expression = "ga:pageViews" } },
+                    startDate, endDate,
+                    "ga:pagePath=@Product/",
+                    new OrderBy { FieldName = "ga:pageViews", SortOrder = "DESCENDING" });
             }
 
             widgets.Add(new Widget("Devices")
@@ -98,6 +108,7 @@ namespace DashReportViewer.Reports
             var countsActiveUsers = new List<double>();
             var countsOrganicSearches = new List<double>();
             var countsOtherTraffic = new List<double>();
+            var countsProductPageViews = new List<double>();
 
             foreach (var day in activeUsers)
             {
@@ -110,6 +121,11 @@ namespace DashReportViewer.Reports
             }
 
             foreach (var day in otherTraffic)
+            {
+                day.Date = new DateTime(int.Parse(day.ThirdColumn), int.Parse(day.SecondColumn), int.Parse(day.FirstColumn));
+            }
+
+            foreach (var day in productPageViews)
             {
                 day.Date = new DateTime(int.Parse(day.ThirdColumn), int.Parse(day.SecondColumn), int.Parse(day.FirstColumn));
             }
@@ -189,6 +205,10 @@ namespace DashReportViewer.Reports
                 },
                 Column = 12
             });
+
+
+
+  
 
             return widgets;
         }
