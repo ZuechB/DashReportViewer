@@ -143,13 +143,13 @@ namespace DashReportViewer.GA
                 DateRange dateRange = new DateRange() { StartDate = startDate, EndDate = endDate };
 
                 // Create the ReportRequest object.
-                // Create the ReportRequest object.
                 ReportRequest reportRequest = new ReportRequest
                 {
                     ViewId = viewId,
                     DateRanges = new List<DateRange>() { dateRange },
                     Dimensions = dimensions, // new List<Dimension>() { browser, campaign, age },
                     FiltersExpression = filter,
+                    PageSize = 10000,
                     OrderBys = new List<OrderBy>() { orderBy },
                     Metrics = metrics, // new List<Metric>() { sessions, pageviews }
                 };
