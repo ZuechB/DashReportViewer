@@ -37,6 +37,7 @@ namespace DashReportViewer.Reports
             var organicSearches = new List<DimensionResult4Columns>();
             var otherTraffic = new List<DimensionResult4Columns>();
             var productPageViews = new List<DimensionResult5Columns>();
+            var productDetailPageViews = new List<DimensionResultFlexible>();
             var date = GetParameterValue<Shared.Models.DateRange>("Date");
             if (date != null)
             {
@@ -93,6 +94,15 @@ namespace DashReportViewer.Reports
                     startDate, endDate,
                     "ga:pagePath=@Product/",
                     new OrderBy { FieldName = "ga:pageViews", SortOrder = "DESCENDING" });
+
+                productDetailPageViews = gAService.GetDimensionsAndMetricsFlexible(
+                    json,
+                    "198345607",
+                    new List<Dimension>() { new Dimension { Name = "ga:dimension1" }, new Dimension { Name = "ga:dimension2" }, new Dimension { Name = "ga:pagePath" } },
+                    new List<Metric>() { new Metric { Expression = "ga:users" } },
+                    startDate, endDate,
+                    "ga:pagePath=@Product/;ga:dimension2==5");
+
             }
 
             widgets.Add(new Widget("Devices")
