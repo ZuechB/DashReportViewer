@@ -19,7 +19,8 @@ namespace DashReportViewer.Reports
 {
     [ReportName("Google Analytics Report", "25BCFF06-4233-4BA5-9586-914FF4B0F960", Description = "This is a test")]
     [
-        ReportParams("Date", ReportInputType.DateRange, OrderId = 1)
+        ReportParams("Date", ReportInputType.DateRange, OrderId = 1),
+        ReportParams("IsCompareCheckbox", ReportInputType.Checkbox, OrderId = 2)
     ]
     public class GoogleAnalyticsReport : ReportEntity, IReport
     {
