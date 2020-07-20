@@ -13,6 +13,8 @@ namespace DashReportViewer.ClickUp
     {
         Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false);
         Task<Dictionary<string, string>> GetLists(string spaceId, string containsName);
+        Task<List<Member>> GetListMembers(string listId);
+        Task<List<Team>> GetTeams();
     }
 
     public class ClickUpService : IClickUpService
@@ -26,6 +28,18 @@ namespace DashReportViewer.ClickUp
             this.appSettings = appSettings.Value;
         }
 
+
+        public async Task<List<Team>> GetTeams()
+        {
+            var response = await authsomeService.GetAsync<Teams>("https://api.clickup.com/api/v2/team", (headerBuilder) =>
+            {
+                headerBuilder.IncludeHeader("Authorization", appSettings.ApiToken);
+            });
+
+            return response.Content.teams.ToList();
+        }
+
+
         public async Task<List<Tasks_Task>> GetTasks(string listId, bool includeClosed = false)
         {
             var response = await authsomeService.GetAsync<Tasks>("https://api.clickup.com/api/v2/list/" + listId + "/task?archived=false&include_closed=" + includeClosed.ToString(), (headerBuilder) =>
@@ -34,6 +48,16 @@ namespace DashReportViewer.ClickUp
             });
 
             return response.Content.tasks.ToList();
+        }
+
+        public async Task<List<Member>> GetListMembers(string listId)
+        {
+            var response = await authsomeService.GetAsync<Members>("https://api.clickup.com/api/v2/list/" + listId + " /member", (headerBuilder) =>
+            {
+                headerBuilder.IncludeHeader("Authorization", appSettings.ApiToken);
+            });
+
+            return response.Content.members.ToList();
         }
 
         public async Task<Dictionary<string, string>> GetLists(string spaceId, string containsName)
