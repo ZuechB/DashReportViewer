@@ -97,7 +97,7 @@
         public Tasks_Type_Config type_config { get; set; }
         public string date_created { get; set; }
         public bool hide_from_guests { get; set; }
-        public int value { get; set; }
+        public string value { get; set; }
     }
 
     public class Tasks_Type_Config

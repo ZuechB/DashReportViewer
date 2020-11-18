@@ -118,7 +118,7 @@ namespace DashReportViewer.Reports
                             var scrumPoint = task.custom_fields.Where(c => c.name == "Scrum Points").FirstOrDefault();
                             if (scrumPoint != null)
                             {
-                                var option = scrumPoint.type_config.options.Where(t => t.orderindex == scrumPoint.value).FirstOrDefault();
+                                var option = scrumPoint.type_config.options.Where(t => t.orderindex == Convert.ToInt32(scrumPoint.value)).FirstOrDefault();
                                 if (option != null)
                                 {
                                     if (!String.IsNullOrWhiteSpace(option.name))
