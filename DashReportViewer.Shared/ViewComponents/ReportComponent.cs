@@ -63,6 +63,10 @@ namespace DashReportViewer.Shared.ViewComponents
                     {
                         components.Add(new AreaChartReportComponent(widget));
                     }
+                    else if (widget.Content.GetType() == typeof(GaugeChartContent))
+                    {
+                        components.Add(new GaugeChartReportComponent(widget));
+                    }
                     else if (widget.Content.GetType() == typeof(BubbleChartContent))
                     {
                         components.Add(new BubbleChartReportComponent(widget));
