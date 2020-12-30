@@ -136,7 +136,22 @@ namespace DashReportViewer
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<DashReportViewerContext>().Database.Migrate();
+                var reportContext = scope.ServiceProvider.GetRequiredService<DashReportViewerContext>();
+                reportContext.Database.Migrate();
+
+
+                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+                userService.CreateUser(new Shared.Models.User.NewUser()
+                {
+                    FirstName = "admin",
+                    LastName = "admin",
+                    Email = "admin@admin.com",
+                    Password = "Admin1234!",
+                    Role = Shared.Models.User.Role.Admin,
+                    Timezone = "Eastern Standard Time"
+                }).GetAwaiter().GetResult();
+
             }
         }
     }
