@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.14</Version>
+    <Version>1.1.17</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,14 +38,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreBackpack" Version="1.0.21" />
+    <PackageReference Include="CoreBackpack" Version="1.0.26" />
     <PackageReference Include="Jint" Version="2.11.58" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
     <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
   </ItemGroup>
 

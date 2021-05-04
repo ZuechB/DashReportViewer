@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Histograms Chart", "A64939B8-4BC6-4787-ADB2-357BF1A59822", Description = "This is a test", Folder = "test2")]
+    [ReportName("Histograms Chart", "A64939B8-4BC6-4787-ADB2-357BF1A59822", Description = "This is a test", Folder = "user report test")]
     [ReportParams("Date", ReportInputType.DateRange, OrderId = 1)]
     public class HistogramsReport : ReportEntity, IReport
     {
