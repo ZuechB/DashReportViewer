@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_ReportLayout.cshtml";
     ViewData["Title"] = Model.ReportName;
     ViewData["AnyParams"] = Model.Parameters.Any();
-    ViewData["KioskMode"] = (Model.ContentType == DashReportViewer.Shared.Models.Reporting.ReportType.FullScreen ? true : false);
+    ViewData["KioskMode"] = false;
     ViewData["SideBarBackgroundColor"] = Model.SideBarBackgroundColor;
 }
 
