@@ -41,7 +41,7 @@ namespace DashReportViewer
             });
 
             services.AddDbContext<DashReportViewerContext>(options =>
-                options.UseSqlServer("Data Source=localhost;Initial Catalog=DashReportViewer;Integrated Security=true;"));
+                options.UseSqlServer("Data Source=localhost;Initial Catalog=DashReportViewer;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=true;"));
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<DashReportViewerContext>();
