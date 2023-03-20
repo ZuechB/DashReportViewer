@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.18</Version>
+    <Version>1.1.19</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.60.0.2909" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.60.0.2979" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
   </ItemGroup>
 

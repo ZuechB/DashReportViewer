@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.18</Version>
+    <Version>1.1.19</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreBackpack" Version="1.0.36" />
+    <PackageReference Include="CoreBackpack" Version="1.0.38" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageReference Include="Stripe.net" Version="41.7.0" />
+    <PackageReference Include="Stripe.net" Version="41.10.0" />
   </ItemGroup>
 
 </Project>
