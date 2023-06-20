@@ -55,7 +55,42 @@ namespace DashReportViewer.Reports
                 }, Column = 6 });
 
 
-            return widgets;
+                
+                var wideTableData = new List<WideTable>();
+                wideTableData.Add(new WideTable()
+                {
+                    Test1 = "test asdsadsdsaddasdasdadasds",
+                    Test10 = "test asdsadsadasasdasd",
+                    Test11 = "test",
+                    Test12 = "test",
+                    Test13 = "test asdasdasdasdasdasd",
+                    Test14 = "test",
+                    Test15 = "test",
+                    Test16 = "test",
+                    Test17 = "test",
+                    Test18 = "test",
+                    Test2 = "test",
+                    Test3 = "test",
+                    Test4 = "test adsadasddsdasd",
+                    Test5 = "test",
+                    Test6 = "testasdasdasdasdsddasdasd",
+                    Test7 = "test asdasdasdasd",
+                    Test8 = "test asdsadsdasdasd",
+                    Test9 = "testasdasdasdasdasd",
+                });
+
+                widgets.Add(new Widget("Users")
+                {
+                    Content = new TableContent()
+                    {
+                        Content = wideTableData
+
+                    },
+                    Column = 12
+                });
+
+
+                return widgets;
             });
         }
     }
@@ -68,5 +103,29 @@ namespace DashReportViewer.Reports
         public string LastName { get; set; }
         [ColumnName("Joined")]
         public DateTimeOffset Created { get; set; }
+    }
+
+    public class WideTable
+    {
+        public string Test1 { get; set; }
+        public string Test2 { get; set; }
+        public string Test3 { get; set; }
+        public string Test4 { get; set; }
+        public string Test5 { get; set; }
+        public string Test6 { get; set; }
+        public string Test7 { get; set; }
+        public string Test8 { get; set; }
+        public string Test9 { get; set; }
+        public string Test10 { get; set; }
+        public string Test11 { get; set; }
+        public string Test12 { get; set; }
+        public string Test13 { get; set; }
+
+        public string Test14 { get; set; }
+        public string Test15 { get; set; }
+
+        public string Test16 { get; set; }
+        public string Test17 { get; set; }
+        public string Test18 { get; set; }
     }
 }

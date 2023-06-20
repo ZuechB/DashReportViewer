@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="CoreBackpack" Version="1.0.38" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageReference Include="Stripe.net" Version="41.10.0" />
+    <PackageReference Include="Stripe.net" Version="41.20.0" />
   </ItemGroup>
 
 </Project>
