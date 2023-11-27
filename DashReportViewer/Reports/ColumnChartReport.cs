@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DashReportViewer.Reports
 {
-    [ReportName("Column Chart", "35E385C0-BC0E-4A60-AAA0-6A42406CA2E9", Description = "This is a test", Folder = "test")]
+    [ReportName("Column Chart", "7DDBD662-C10D-46BD-A370-387BAB168819", Description = "Simple Column Chart", Folder = "test")]
     public class ColumnChartReport : ReportEntity, IReport
     {
         public ColumnChartReport(Dictionary<string, object> parameterValues, IReportService reportService) : base(parameterValues, reportService) { }
@@ -23,11 +23,46 @@ namespace DashReportViewer.Reports
                 var widgets = new List<Widget>();
 
 
+
+                // header
+
+
+
+                var dataPoints = new List<ColumnChartDataHeader>();
+                
+                
+                
+                dataPoints.Add(new ColumnChartDataHeader() {
+                    Name = "food",
+                    ColumnChartDataPoints = new ColumnChartDataPoints()
+                    {
+                        Label = "2010",
+                        Data = new List<double>() { 10, 24 }
+                    } 
+                });
+
+                dataPoints.Add(new ColumnChartDataHeader()
+                {
+                    Name = "drink",
+                    ColumnChartDataPoints = new ColumnChartDataPoints()
+                    {
+                        Label = "2012",
+                        Data = new List<double>() { 10, 24 }
+                    }
+                });
+
+
+
+
+
                 widgets.Add(new Widget("Column Chart Report")
                 {
                     Content = new ColumnChartContent()
                     {
-
+                        DataPoints = dataPoints,
+                        IsStacked = true,
+                        //Title = "Hello Chart",
+                        WidgetHeight = "200px"
                     },
                     Column = 12
                 });
