@@ -1,9 +1,12 @@
-﻿@model DashReportViewer.Shared.ReportComponents.AnnotationChartReportComponent
+﻿@model DashReportViewer.Shared.ReportComponents.ColumnChartComponent
 
-@*@{
-    var dataPoints = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).dataPoints;
-    var xAxis = ((DashReportViewer.Shared.ReportContent.AreaChartContent)Model.RawData).XAxis;
-}*@
+@{
+    var content = ((DashReportViewer.Shared.ReportContent.ColumnChartContent)Model.RawData);
+    // var dataPoints = ((DashReportViewer.Shared.ReportContent.ColumnChartContent)Model.RawData).DataPoints;
+    // var xAxis = ((DashReportViewer.Shared.ReportContent.ColumnChartContent)Model.RawData).XAxis;
+
+    int index = 0;
+}
 
 <script type="text/javascript">
 
@@ -11,37 +14,49 @@
 
     function drawChart@(Model.Index)() {
 
-        @*var dataPoints = @Html.Raw(Json.Serialize(dataPoints));
-        var xAxis = @Html.Raw(Json.Serialize(xAxis));*@
+        // var dataPoints = Html.Raw(Json.Serialize(dataPoints));
+        // var xAxis = Html.Raw(Json.Serialize(xAxis));
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Date');
-        data.addColumn('number', 'Kepler-22b mission');
-        data.addColumn('string', 'Kepler title');
-        data.addColumn('string', 'Kepler text');
-        data.addColumn('number', 'Gliese 163 mission');
-        data.addColumn('string', 'Gliese title');
-        data.addColumn('string', 'Gliese text');
-        data.addRows([
-          [new Date(2314, 2, 15), 12400, undefined, undefined,
-                                  10645, undefined, undefined],
-          [new Date(2314, 2, 16), 24045, 'Lalibertines', 'First encounter',
-                                  12374, undefined, undefined],
-          [new Date(2314, 2, 17), 35022, 'Lalibertines', 'They are very tall',
-                                  15766, 'Gallantors', 'First Encounter'],
-          [new Date(2314, 2, 18), 12284, 'Lalibertines', 'Attack on our crew!',
-                                  34334, 'Gallantors', 'Statement of shared principles'],
-          [new Date(2314, 2, 19), 8476, 'Lalibertines', 'Heavy casualties',
-                                  66467, 'Gallantors', 'Mysteries revealed'],
-          [new Date(2314, 2, 20), 0, 'Lalibertines', 'All crew lost',
-                                  79463, 'Gallantors', 'Omniscience achieved']
-        ]);
+        var master = [];
 
-        var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div@(Model.Index)'));
+        var header = ['Genre'];
+        @foreach (var item in content.DataPoints)
+        {
+            <text>
+                header.push('@(item.Name)');
+            </text>
+        }
+        master.push(header);
+
+        @foreach (var item in content.DataPoints)
+        {
+            <text>
+                var dataPoint@(index) = ['@(item.ColumnChartDataPoints.Label)']; 
+
+                @foreach (var columnData in item.ColumnChartDataPoints.Data)
+                {
+                    <text>
+                        dataPoint@(index).push(@(columnData));
+                    </text>
+                }
+
+                master.push(dataPoint@(index));
+            </text>
+
+            index++;
+        }
+
+        var data = google.visualization.arrayToDataTable(master);
+
 
         var options = {
-          displayAnnotations: true
+            title: "@content.Title",
+            //legend: { position: '@(content.legend.position)}',
+            // bar: { groupWidth: '75%' },
+            isStacked: '@(content.IsStacked)',
         };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div@(Model.Index)'));
 
         chart.draw(data, options);
     }
