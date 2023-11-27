@@ -55,7 +55,20 @@ namespace DashReportViewer.Reports
 
 
 
-                widgets.Add(new Widget("Column Chart Report")
+                widgets.Add(new Widget("Standard Column Widget")
+                {
+                    Content = new ColumnChartContent()
+                    {
+                        DataPoints = dataPoints,
+                        IsStacked = false,
+                        //Title = "Hello Chart",
+                        WidgetHeight = "200px"
+                    },
+                    Column = 6
+                });
+
+
+                widgets.Add(new Widget("Stacked Column Widget")
                 {
                     Content = new ColumnChartContent()
                     {
@@ -64,7 +77,7 @@ namespace DashReportViewer.Reports
                         //Title = "Hello Chart",
                         WidgetHeight = "200px"
                     },
-                    Column = 12
+                    Column = 6
                 });
 
 
